@@ -19,11 +19,11 @@ def login_register(request):
         
         if user is not None:
             login(request, user)
-            if user.get_role() == 'Administrador':
+            if user.get_role() == 'ADMIN':
                 return redirect('admin/')
-            if user.get_role() == 'Estudiante':
+            if user.get_role() == 'ESTUDIANTE':
                 return redirect('estudiante/')
-            if user.get_role() == 'Profesor':
+            if user.get_role() == 'PROFESOR':
                 return redirect('profesor/')
         else:
             messages.error(request, "El usuario o contraseña no coinciden")
@@ -33,3 +33,6 @@ def login_register(request):
 
 def estudiante(request):
     return render(request, 'estudiante/estudiante.html')
+
+def profesor(request):
+    return render(request, 'profesor/profesor.html')
