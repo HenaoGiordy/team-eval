@@ -1,35 +1,50 @@
-{% extends 'main.html' %}
+{% extends 'login/mainlogin.html' %}
 
 {% block content %}
-
-<div class="d-flex flex-column justify-content-center align-items-center vh-100">
-    {% if messages %}
-    <div class="alert alert-danger w-50 d-flex justify-content-center">
+{% if messages %}
+    <div class="alert alert-danger  d-flex justify-content-center w-75">
         {% for message in messages %}
         <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
         {% endfor %}
     </div>
     {% endif %}
 
-    <form class="card w-50 h-50 d-flex justify-content-center align-items-center"  method="POST" action="" >
-        {% csrf_token %} 
-        <h1 class="card-title text-center mt-1">Login</h1>
+<div class="row bg-white rounded-4 shadow w-75">
 
-        <div class="d-flex flex-column  w-50 h-50">
-
-            <label  class="form-label mt-5">Usuario</label>
-            <input type="text"  name="username" class="form-control" required>
-            
-            
-            <label  class="form-label">Contraseña</label>
-            <input type="password"  name="password" class="form-control mb-3" required>
-            
+    <div class="col d-none d-xl-block col-md-5 col-lg-5 col-xl-6 rounded-4" style="background-image: url(static/img/background.jpg); background-size: 100% 100%; background-position: center center">
         
-            <button class="btn btn-primary" type="submit">Ingresar</button>
+    </div>
+    <div class="col mb-4">
+
+        <div class="text-end">
+        
+            <img src="#" width="48" alt="Logo"/>
         </div>
-    </form>
-
-
-</div>
+        <h1 class="fw-bold text-center my-5" >Login</h1>
+    
+        <form method="POST" action="" >
+            {% csrf_token %} 
+    
+            <div class=" mb-4">
+                <label  class="form-label mt-5" >Usuario</label>
+                <input type="text"  name="username" class="form-control" required>
+            </div>
+                
+            <div class=" mb-4">
+                <label  for="password" class="form-label" >Contraseña</label>
+                <input type="password"  name="password" class="form-control" required>
+            </div>
+                
+            <div class="d-grid">
+                <button class="btn btn-primary" type="submit">Ingresar</button>
+            </div>
+                
+            
+        </form>
+    
+    
+    </div>
+    </div>
+    
 
 {% endblock %}
