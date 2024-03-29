@@ -1,5 +1,5 @@
 {% extends 'login/mainlogin.html' %}
-
+{%load static%}
 {% block content %}
 {% if messages %}
     <div class="alert alert-danger  d-flex justify-content-center w-75">
@@ -16,26 +16,29 @@
     </div>
     <div class="col mb-4">
 
-        <div class="text-end">
-        
-            <img src="#" width="48" alt="Logo"/>
-        </div>
-        <h1 class="fw-bold text-center my-5" >Login</h1>
+        <h1 class="fw-bold text-center my-5" >Team Eval</h1>
     
-        <form method="POST" action="" >
+        <form method="POST" class="d-flex flex-column align-items-center" action="" >
             {% csrf_token %} 
     
-            <div class=" mb-4">
-                <label  class="form-label mt-5" >Usuario</label>
-                <input type="text"  name="username" class="form-control" required>
+            <div class="contenedor-input mb-4 w-75 ">
+                <label for="username" id="username-label" class="form-label label-modifi">
+                     <abbr>*</abbr>
+                    Usuario
+                </label>
+                <input type="text" id="username" name="username" class="form-control" required >
             </div>
                 
-            <div class=" mb-4">
-                <label  for="password" class="form-label" >Contraseña</label>
-                <input type="password"  name="password" class="form-control" required>
+            <div class="contenedor-input mb-4 w-75 ">
+                <label  for="password" id="password-label" class="form-label label-modifi" 
+                >
+                    <abbr>*</abbr>
+                    Contraseña
+                    </label>
+                <input type="password" id="password"  name="password" class="form-control" required >
             </div>
                 
-            <div class="d-grid">
+            <div class="d-grid w-75">
                 <button class="btn btn-primary" type="submit">Ingresar</button>
             </div>
                 
@@ -45,6 +48,5 @@
     
     </div>
     </div>
-    
 
 {% endblock %}

@@ -7,9 +7,14 @@
     <title>Document</title>
 </head>
 <body class="container bg-light w-75 vh-100 d-flex flex-column justify-content-center align-items-center">
+    {% if user.is_authenticated and user.role == "PROFESOR"%}
     {% block content %}
     {% endblock %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
+    {%else%}
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <h1>No tienes acceso a esta página</h1>
+    </div>
+    {% endif %}
 </body>
 </html>
