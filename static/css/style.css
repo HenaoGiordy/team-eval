@@ -20,11 +20,16 @@ label:hover{
 .label-modifi{
     position: relative;
     z-index: 1;
-    top: 20px;
-    left: 10px;
+    top: -58px;
+    left: 5px;
     background: white;
     padding: 0 10px 0 10px;
     font-size: 14px;
+    color: #6a6f74;
+}
+
+input:focus ~ label{
+    color: #0a58ca;
 }
 
 .form-control:focus {
