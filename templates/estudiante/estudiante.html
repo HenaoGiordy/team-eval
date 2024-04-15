@@ -1,6 +1,9 @@
 {% extends 'estudiante/mainestudiante.html' %}
-
+{%load static%}
 {% block content %}
-<h1>ESTUDIANTE</h1>
-{{ user.username }}
+{% include "estudiante/components/sidebar.html" %}
+<div style="margin-left:15%; min">
+    <h1 class="prueba text-center my-4 ">Lista de Cursos</h1>
+</div>
+
 {% endblock%}
