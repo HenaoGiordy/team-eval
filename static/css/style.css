@@ -42,7 +42,48 @@ input:focus ~ label{
 }
 
 /* END CSS CORRESPONDIENTE A LOS INPUTS-LABELS Y PARTE DEL LOGIN */
+.sidebar-container{
+    min-width: 200px; 
+    position:fixed; 
+    top: 0; 
+    bottom: 0; 
+    width: 10%; 
+    height: 100vh; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    border-radius: 10px; 
+    box-shadow: 2px 0px 8px 0px rgba(0,0,0,0.34);
+}
+.sidebar-elementos{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    list-style: none;
+    padding-left: 0;
+}
 
+.elemento-sidebar{
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    border: 1px solid #868484;
+    border-radius: 5px;
+    
+}
+
+.elemento-sidebar:hover{
+    background-color: #4c83d6;
+    border-radius: 5px;
+    
+}
+
+.item-sidebar{
+    width: 70%;
+    
+}
 
 /* CSS CORRESPONDIENTE A LAS VISTAS DE ESTUDIANTE */
 
