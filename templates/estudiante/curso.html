@@ -1,10 +1,26 @@
 {% extends 'estudiante/mainestudiante.html' %}
 {% block content %}
 
+<div class="container--evaluacion--curso">
+    
+    
+    
+    <div class="row w-100">
+        <div class="col-4  contenedor-back-bottom"><a href="{% url 'estudiante' %}" >
+            <span class="material-icons btn btn-primary back-bottom">arrow_back</span></a>
+        </div>
+        <div class="col">
+            <div class="contenedor-titulos">
+                <h3>Co-Evaluación</h3>
+                <h3><span style="font-weight: bold;">Asignatura: </span> {{ curso }}</h3>
+            </div>
+            
+        </div>
+        
+    </div>
 
-<h2>
-    AQUÍ VA EL CURSO
-    {{ curso }}
-</h2>
+    
+</div>
+
 
 {%endblock%}

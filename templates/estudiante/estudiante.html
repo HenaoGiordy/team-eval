@@ -2,9 +2,6 @@
 {% block content %}
 <h1 class="titulo-lista text-center">Lista de Cursos</h1>
 <div class="container--cursos">
-    
-    
-
         {%for curse in cursos%}
 
               <div class="card">
@@ -14,8 +11,6 @@
                 </div>
                  <a class="btn btn-primary boton-cursos" href="curso/{{ curse.nombre }}">Ir a curso</a>
               </div>            
-       
-        
         {% endfor %}
     
     
