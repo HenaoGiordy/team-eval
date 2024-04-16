@@ -6,14 +6,14 @@
     
 
         {%for curse in cursos%}
-        
-            <div class="card">
+
+              <div class="card">
                 <div class="card-body">
                   <p><span style="font-weight: bold;">Asignatura :</span> {{ curse }}</p>
-                  <p>{{ curse.profesor }}</p>
+                  <p><span style="font-weight: bold;">Profesor :</span> {{ curse.profesor }}</p>
                 </div>
-                
-              </div>
+                 <a class="btn btn-primary boton-cursos" href="curso/{{ curse.nombre }}">Ir a curso</a>
+              </div>            
        
         
         {% endfor %}

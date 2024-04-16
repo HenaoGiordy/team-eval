@@ -47,7 +47,7 @@ input:focus ~ label{
 
 /* CSS CORRESPONDIENTE A LAS VISTAS DE ESTUDIANTE */
 .sidebar-container{
-    min-width: 200px; 
+    min-width: 250px; 
     position:fixed; 
     top: 0; 
     bottom: 0; 
@@ -73,13 +73,12 @@ input:focus ~ label{
     cursor: pointer;
     display: flex;
     justify-content: center;
-    border: 1px solid #868484;
     border-radius: 5px;
     
 }
 
 .elemento-sidebar:hover{
-    background-color: #4c83d6;
+    background-color: #d8d8d8;
     border-radius: 5px;
     
 }
@@ -94,24 +93,46 @@ input:focus ~ label{
 /* CSS PARA LAS CARD DE LA LISTA DE CURSOS */
 
 .container--cursos{
-    margin-left: 250px;
+    margin-left: 300px;
     margin-right: 5%;
-    
     border-radius: 10px;
     padding: 20px 0px;
     min-height: 500px;
     box-shadow: 2px 0px 8px 0px rgba(0,0,0,0.34);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .titulo-lista{
     margin-top: 50px;
     margin-left: 250px;
     margin-right: 5%;
+    margin-bottom: 50px;
+    font-weight: bold;
 }
 .card{
-    margin: 0 2%;
-    width: 25%;
+    margin: 2% 2%;
+    width: 250px;
     box-shadow: 2px 0px 8px 0px rgba(0,0,0,0.34);
+    height: 250px;
+    align-items: center;
+
+}
+.card-body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+}
+
+a{
+    text-decoration: none;
+}
+
+.boton-cursos{
+    margin-bottom: 8px;
+    width: 70%;
 }
 
 /* END CSS PARA LAS CARD DE LA LISTA DE CURSOS */

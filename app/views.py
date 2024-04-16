@@ -30,11 +30,19 @@ def login_register(request):
             
     return render(request, 'login/login.html')
 
-
+#Vistas estudiante
 def estudiante(request):
     usuario = User.objects.get(username = request.user.username)
     perfil = PerfilEstudiante.objects.get(nombre = usuario.username)
     return render(request, 'estudiante/estudiante.html', {"cursos" : perfil.cursos.all()})
+
+#vista curso estudiante
+def estudiante_curso(request, cursoid):
+    usuario = User.objects.get(username = request.user.username)
+    perfil = PerfilEstudiante.objects.get(nombre = usuario.username)
+    curso = perfil.cursos.get(nombre = cursoid)
+    return render(request, 'estudiante/curso.html', {'curso': curso})
+
 
 def profesor(request):
     return render(request, 'profesor/profesor.html')
