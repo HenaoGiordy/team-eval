@@ -1,6 +1,8 @@
 *{
     font-family: 'Open Sans', 'sans-serif';
     font-weight: 400;
+    margin: 0;
+    box-sizing: border-box;
 }
 
 
@@ -42,6 +44,8 @@ input:focus ~ label{
 }
 
 /* END CSS CORRESPONDIENTE A LOS INPUTS-LABELS Y PARTE DEL LOGIN */
+
+/* CSS CORRESPONDIENTE A LAS VISTAS DE ESTUDIANTE */
 .sidebar-container{
     min-width: 200px; 
     position:fixed; 
@@ -85,6 +89,29 @@ input:focus ~ label{
     
 }
 
-/* CSS CORRESPONDIENTE A LAS VISTAS DE ESTUDIANTE */
-
 /* END CSS CORRESPONDIENTE A LAS VISTAS DE ESTUDIANTE */
+
+/* CSS PARA LAS CARD DE LA LISTA DE CURSOS */
+
+.container--cursos{
+    margin-left: 250px;
+    margin-right: 5%;
+    
+    border-radius: 10px;
+    padding: 20px 0px;
+    min-height: 500px;
+    box-shadow: 2px 0px 8px 0px rgba(0,0,0,0.34);
+}
+
+.titulo-lista{
+    margin-top: 50px;
+    margin-left: 250px;
+    margin-right: 5%;
+}
+.card{
+    margin: 0 2%;
+    width: 25%;
+    box-shadow: 2px 0px 8px 0px rgba(0,0,0,0.34);
+}
+
+/* END CSS PARA LAS CARD DE LA LISTA DE CURSOS */

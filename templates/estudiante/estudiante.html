@@ -1,6 +1,24 @@
 {% extends 'estudiante/mainestudiante.html' %}
 {% block content %}
-<div style="margin-left:15%; min">
-    <h1 class="text-center my-4 ">Lista de Cursos</h1>
+<h1 class="titulo-lista text-center">Lista de Cursos</h1>
+<div class="container--cursos">
+    
+    
+
+        {%for curse in cursos%}
+        
+            <div class="card">
+                <div class="card-body">
+                  <p><span style="font-weight: bold;">Asignatura :</span> {{ curse }}</p>
+                  <p>{{ curse.profesor }}</p>
+                </div>
+                
+              </div>
+       
+        
+        {% endfor %}
+    
+    
 </div>
+
 {% endblock%}

@@ -12,7 +12,7 @@
     <title>Document</title>
 </head>
 </head>
-<body class="bg-ligth vh-100">
+<body class="bg-ligth">
     {% if user.is_authenticated and user.role == "ESTUDIANTE" %}
     {% include "estudiante/components/sidebar.html" %}
     {% block content %}

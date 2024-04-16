@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from app.models import User
+from app.models import User, PerfilEstudiante
 
 # Create your views here.
 def login_register(request):
@@ -32,7 +32,9 @@ def login_register(request):
 
 
 def estudiante(request):
-    return render(request, 'estudiante/estudiante.html')
+    usuario = User.objects.get(username = request.user.username)
+    perfil = PerfilEstudiante.objects.get(nombre = usuario.username)
+    return render(request, 'estudiante/estudiante.html', {"cursos" : perfil.cursos.all()})
 
 def profesor(request):
     return render(request, 'profesor/profesor.html')
