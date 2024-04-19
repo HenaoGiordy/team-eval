@@ -1,0 +1,54 @@
+{% extends 'estudiante/mainestudiante.html' %}
+{% block content %}
+
+<div class="container--evaluacion--curso">
+    
+    <div class="row w-100">
+        <div class="col-4  contenedor-back-bottom"><a href="{% url 'estudiante'  %}" >
+            <span class="material-icons btn btn-primary back-bottom">arrow_back</span> </a>
+        </div>
+        <div class="col">
+            <div class="contenedor-titulos">
+                <h3>Co-Evaluación</h3>
+                <h3><span style="font-weight: bold;">Asignatura: </span> {{ curso }}</h3>
+            </div>
+            <div>
+                <h3><span style="font-weight: bold;">Grupo :</span> {{ grupo }} </h3>
+                <h3><span style="font-weight: bold;">Proyecto :</span> {{ grupo.proyecto_asignado }} </h3>
+                
+            </div>
+        </div>
+    </div>
+
+    {% comment %} FORM PARA REALIZAR EVALUACIÓN {% endcomment %}
+    <div class="w-50" style="margin-top: 100px">
+        <h2>{{ rubrica }}</h2>
+        <form method="POST" class="d-flex flex-column align-items-center" action="" >
+            {% csrf_token %} 
+            
+            {%for criterio in criterios%}
+            <div class="contenedor-input mb-4 w-75 mt-1">
+                <label for="username" id="username-label" class="form-label">{{ criterio.descripcion }}</label>
+                <select class="form-select" name="Escala">
+                    <option selected>Seleccione una Calificación</option>
+                    {%for calificacion in escalacalificacion%}
+                    <option >
+                        {{ calificacion }}
+                    </option>
+                    {% endfor %}
+                </select>     
+            </div>
+            {% endfor %}
+            <div class="contenedor-input mb-4 w-75 ">
+                <label for="username" id="username-label" class="form-label">Retroalimentación</label>
+                <textarea type="text" id="username" name="username" class="form-control" required ></textarea>      
+            </div>
+            <div class="d-grid w-75">
+                <button class="btn btn-primary" type="submit">Evaluar</button>
+            </div>
+                
+            
+        </form>
+    </div>
+
+{% endblock%}

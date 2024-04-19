@@ -54,7 +54,8 @@ input:focus ~ label{
     width: 10%; 
     height: 100vh; 
     display: flex; 
-    justify-content: center; 
+    flex-direction: column;
+    justify-content: space-between; 
     align-items: center; 
     border-radius: 10px; 
     box-shadow: 2px 0px 8px 0px rgba(0,0,0,0.34);
@@ -78,14 +79,15 @@ input:focus ~ label{
 }
 
 .elemento-sidebar:hover{
-    background-color: #d8d8d8;
+    background-color: #dddddd;
     border-radius: 5px;
     
 }
 
 .item-sidebar{
+    color: black;
     width: 70%;
-    
+    text-decoration: none;
 }
 
 /* END CSS CORRESPONDIENTE A LAS VISTAS DE ESTUDIANTE */
@@ -126,9 +128,6 @@ input:focus ~ label{
     
 }
 
-a{
-    text-decoration: none;
-}
 
 .boton-cursos{
     margin-bottom: 8px;
@@ -161,5 +160,20 @@ a{
 .contenedor-titulos{
     width: fit-content;
     text-align: center;
+}
+
+.container--estudiantes{
+margin-left: 300px;
+  margin-right: 5%;
+  margin-top: 50px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.item--logout{
+    display: flex;
+    align-items: center;
 }
 /* END CSS PARA LA VISTA DE CADA CURSO Y CALIFICAR ESTUDIANTES */

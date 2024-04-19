@@ -16,7 +16,7 @@
     </div>
     <div class="col mb-4">
 
-        <h1 class="fw-bold text-center my-5" >Team Eval</h1>
+        <h1 class="fw-bold text-center text-primary  my-5" >Iniciar Sesión</h1>
     
         <form method="POST" class="d-flex flex-column align-items-center" action="" >
             {% csrf_token %} 
@@ -29,12 +29,15 @@
                 </label>
             </div>
                 
-            <div class="contenedor-input mb-4 w-75 ">
+            <div class="contenedor-input  w-75 ">
                 <input type="password" id="password"  name="password" class="form-control" required >
                 <label  for="password" id="password-label" class="form-label label-modifi" >
                     <abbr>*</abbr>
                     Contraseña
                     </label>
+            </div>
+            <div class="mb-4">
+                <a class="fs-6 mb-4" href="">¿Has olvidado tu contraseña?</a>
             </div>
                 
             <div class="d-grid w-75">

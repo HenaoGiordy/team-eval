@@ -7,20 +7,39 @@
     
     <div class="row w-100">
         <div class="col-4  contenedor-back-bottom"><a href="{% url 'estudiante' %}" >
-            <span class="material-icons btn btn-primary back-bottom">arrow_back</span></a>
+            <span class="material-icons btn btn-primary back-bottom">arrow_back</span> </a>
         </div>
         <div class="col">
             <div class="contenedor-titulos">
                 <h3>Co-Evaluación</h3>
                 <h3><span style="font-weight: bold;">Asignatura: </span> {{ curso }}</h3>
             </div>
-            
+            <div>
+                <h3><span style="font-weight: bold;">Grupo :</span> {{ grupo }} </h3>
+                <h3><span style="font-weight: bold;">Proyecto :</span> {{ grupo.proyecto_asignado }} </h3>
+                
+            </div>
         </div>
-        
     </div>
 
-    
+    {% comment %} LISTA DE ESTUDIANTES {% endcomment %}
+
+
 </div>
+
+    
+<div class="container--estudiantes">
+    {%for estudiante in estudiantes%}
+          <div class="card">
+            <div class="card-body">
+              <p><span style="font-weight: bold;">Estudiante :</span> {{ estudiante.nombre }}</p>
+              
+            </div>
+             <a class="btn btn-primary boton-cursos" href="evaluar/{{ estudiante.id }}/{{ curso.id }}/{{ grupo.id }}">Evaluar</a>
+          </div>            
+    {% endfor %}
+</div>
+
 
 
 {%endblock%}

@@ -1,12 +1,26 @@
 <div class="sidebar-container">
-
-    <ul class="sidebar-elementos" style="">
+    <div class="w-100">
+        
+        <h3 class="text-center">Bienvenido</h3>
+        <h4 class="text-center"> {{ user }} </h4>
+    </div>
+    <ul class="sidebar-elementos">
+        
         <div class="elemento-sidebar ">
-            <li class="item-sidebar py-2">Evaluación</li>
+            <a class="item-sidebar py-2"  href="{% url 'estudiante' %}">Evaluación</a>
         </div>
         
         <div class="elemento-sidebar">
-            <li class="item-sidebar py-2">Retroalimentación</li>
+            <a class="item-sidebar py-2"  href="{% url 'estudiante' %}">Retroalimentación</a>
         </div>
         
+    </ul>
+    <div class="elemento-sidebar d-flex justify-content-space-between">
+        <span class="material-symbols-outlined item--logout">
+            logout
+            </span>
+        <a class="item-sidebar py-2"  href="{% url 'logout' %}">Salir</a>
+    </div>
+    </div>
+    
 </div>
