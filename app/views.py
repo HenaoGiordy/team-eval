@@ -11,7 +11,7 @@ def login_register(request):
         try:
             user = User.objects.get(username=username)
         except:
-            messages.error(request, "El usuario no fue encontrado")
+            messages.error(request, "Usuario/contraseña  incorrecto")
             return redirect('/')
         
         user = authenticate(request, username=username, password=password)
@@ -26,7 +26,7 @@ def login_register(request):
             if user.get_role() == 'PROFESOR':
                 return redirect('profesor/')
         else:
-            messages.error(request, "El usuario o contraseña no coinciden")
+            messages.error(request, "Usuario/contraseña  incorrecto")
             
     return render(request, 'login/login.html')
 

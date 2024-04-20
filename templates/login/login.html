@@ -1,12 +1,17 @@
+
 {% extends 'login/mainlogin.html' %}
 {%load static%}
 {% block content %}
+
 {% if messages %}
-    <div class="alert alert-danger  d-flex justify-content-center w-75">
+
+
         {% for message in messages %}
-        <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+        <div class="alert alert-danger alert-dismissible d-flex w-75 justify-content-center position-absolute alert-modificador"  role="alert">
+            <p>{{ message }}</p>
+        </div>
         {% endfor %}
-    </div>
+
 {% endif %}
 
 <div class="row bg-white rounded-4 shadow w-75">
@@ -51,4 +56,4 @@
     </div>
     </div>
 
-{% endblock %}
+{% endblock %} 

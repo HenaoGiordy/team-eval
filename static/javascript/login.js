@@ -1,26 +1,17 @@
-// let usernameInput = document.getElementById("username")
-// let passwordInput = document.getElementById("password")
+//Función que permite desaparecer la alerta de usuario o password incorrecto
+// Selecciona todos los elementos con la clase "alert"
+let alerts = document.querySelectorAll('.alert');
 
+// Itera sobre cada elemento seleccionado
+alerts.forEach(alert => {
+    // Después de la duración de la animación slideDown, añade la clase hide
+    setTimeout(() => {
+        alert.classList.add('hide');
+    }, 3000);
 
-// usernameInput.addEventListener("focus", (evento)=>{
-//     label = document.getElementById("username-label")
-//     label.style.color = "#0a58ca"
-// })
-
-// usernameInput.addEventListener("blur", (evento)=>{
-//     label = document.getElementById("username-label")
-//     label.style.color = "black"
-// })
-
-// passwordInput.addEventListener("focus", (evento)=>{
-    
-//     label = document.getElementById("password-label")
-//     label.style.color = "#0a58ca"
-// })
-
-// passwordInput.addEventListener("blur", (evento)=>{
-    
-//     label = document.getElementById("password-label")
-//     label.style.color = "black"
-// })
+    // Después de la duración de la animación de transición, elimina el elemento del DOM
+    setTimeout(() => {
+        alert.remove();
+    }, 4500); // El tiempo total sería 3000 (para la animación) + 1000 (espera extra)
+});
 

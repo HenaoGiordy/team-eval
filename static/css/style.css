@@ -9,6 +9,28 @@
 
 /*INICIO CSS CORRESPONDIENTE A LOS INPUTS-LABELS Y PARTE DEL LOGIN */
 
+.alert {
+    /* Establece la opacidad inicial */
+    opacity: 1;
+    /* Establece la duración de la transición */
+    transition: opacity 1s ease;
+}
+.alert.hide {
+    /* Cambia la opacidad a 0 */
+    opacity: 0;
+}
+
+.alert-modificador{
+    top: 140px;
+}
+
+@media (max-height: 800px) {
+    .alert-modificador{
+        top: 20px;
+    }
+}
+
+
 abbr{
     color: #f29900;
     font-size: 15px;
