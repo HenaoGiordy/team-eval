@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from app.models import User, PerfilEstudiante, Grupo
 
 # Create your views here.
+
 def login_register(request):
     if request.method == "POST":
         username = request.POST.get('username')
@@ -30,6 +32,7 @@ def login_register(request):
             
     return render(request, 'login/login.html')
 
+@login_required(redirect_field_name='login')
 def logout_usuario(request):
     logout(request)
     
@@ -37,12 +40,14 @@ def logout_usuario(request):
 
 
 #Vistas estudiante
+@login_required
 def estudiante(request):
     usuario = User.objects.get(username = request.user.username)
     perfil = PerfilEstudiante.objects.get(nombre = usuario.username)
     return render(request, 'estudiante/estudiante.html', {"cursos" : perfil.cursos.all()})
 
 #vista curso estudiante
+@login_required
 def estudiante_curso(request, cursoid):
     usuario = User.objects.get(username = request.user.username)
     
@@ -57,7 +62,7 @@ def estudiante_curso(request, cursoid):
     return render(request, 'estudiante/curso.html', {'curso': curso, 'grupo': grupo, 'estudiantes': estudiantes_grupo})
 
 
-
+@login_required
 def evaluar(request, estudianteid, cursoid, grupoid):
     
     usuario = User.objects.get(username = request.user.username)
@@ -82,5 +87,9 @@ def evaluar(request, estudianteid, cursoid, grupoid):
     return render(request, 'estudiante/evaluar.html', {'curso': curso, 'estudiante_evaluado': estudiante_evaluado, 'estudiante_evaluador' : perfil,  'grupo': grupo,
                                                        'rubrica' : rubrica, "criterios" : criterios, "escalacalificacion" : escalaCalificacion }  )
 
+
+
+#Vistas del profesor
+@login_required
 def profesor(request):
     return render(request, 'profesor/profesor.html')
