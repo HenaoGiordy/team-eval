@@ -198,4 +198,9 @@ margin-left: 300px;
     display: flex;
     align-items: center;
 }
+
+.alert-modificador-curso{
+    top: 50PX;
+}
 /* END CSS PARA LA VISTA DE CADA CURSO Y CALIFICAR ESTUDIANTES */
+

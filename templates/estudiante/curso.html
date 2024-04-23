@@ -32,7 +32,8 @@
     {%for estudiante in estudiantes%}
           <div class="card">
             <div class="card-body">
-              <p><span style="font-weight: bold;">Estudiante :</span> {{ estudiante.nombre }}</p>
+              <p><span style="font-weight: bold;">Estudiante :</span> {{ estudiante.user.first_name }}</p>
+              <p><span style="font-weight: bold;">Estudiante :</span> {{ estudiante.user.username }}</p>
               
             </div>
              <a class="btn btn-primary boton-cursos" href="evaluar/{{ estudiante.id }}/{{ curso.id }}/{{ grupo.id }}">Evaluar</a>

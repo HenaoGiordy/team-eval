@@ -1,6 +1,10 @@
-{% extends 'estudiante/mainestudiante.html' %} {% block content %}
+{% extends 'estudiante/mainestudiante.html' %} 
+{% load static %}
+{% block content %}
+
 <h1 class="titulo-lista text-center">Lista de Cursos</h1>
 <div class="container--cursos">
+  
   {% if cursos%} {%for curse in cursos%}
   <div class="card">
     <div class="card-body">
@@ -13,7 +17,18 @@
       >Ir a curso</a
     >
   </div>
+ 
   {% endfor %} {% else %} <h3>No tienes cursos</h3> {% endif %}
+
+  {% if messages %}
+
+  {% for message in messages %}
+  <div class="alert alert-danger alert-dismissible d-flex justify-content-center position-absolute alert-modificador-curso"  role="alert">
+      <p>{{ message }}</p>
+  </div>
+  {% endfor %}
+{% endif %}
 </div>
+
 
 {% endblock%}

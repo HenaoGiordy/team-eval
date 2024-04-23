@@ -1,6 +1,10 @@
+from django.apps import apps
+
+from django.contrib.auth.hashers import make_password
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 
 
@@ -11,11 +15,28 @@ class User(AbstractUser):
 
     role = models.CharField(max_length=50, choices=ROLES)
     
-    REQUIRED_FIELDS = ['role']
-
+    username = models.IntegerField(
+        _("Codigo"),
+        
+        unique=True,
+        help_text=_(
+            "El código de usuario es único y de debe ser un valor numérico."
+        ),
+        
+        error_messages={
+            "unique": _("Ya existe un usuario con ese código"),
+        },
+    )
+    first_name = models.CharField(_("first name"), max_length=150, blank=False)
+    email = models.EmailField(_("email address"), blank=False)
+    REQUIRED_FIELDS = ['first_name', 'email', 'role']
     
     def get_role(self):
         return self.role
+    
+    def __str__(self):
+        return f"{self.username}"
+
     
 
 class PerfilProfesor(models.Model):

@@ -43,21 +43,26 @@ def logout_usuario(request):
 @login_required
 def estudiante(request):
     usuario = User.objects.get(username = request.user.username)
-    perfil = PerfilEstudiante.objects.get(nombre = usuario.username)
-    return render(request, 'estudiante/estudiante.html', {"cursos" : perfil.cursos.all()})
+    perfil = PerfilEstudiante.objects.get(user = usuario)
+    return render(request, 'estudiante/estudiante.html', {"cursos" : perfil.cursos.all(), "perfil": perfil})
 
 #vista curso estudiante
 @login_required
 def estudiante_curso(request, cursoid):
     usuario = User.objects.get(username = request.user.username)
     
-    perfil = PerfilEstudiante.objects.get(nombre = usuario.username)
+    perfil = PerfilEstudiante.objects.get(user = usuario)
+    
     
     curso = perfil.cursos.get(id = cursoid)
+    try:
+        grupo = perfil.grupo_set.get(curso = cursoid)
+        estudiantes_grupo = grupo.estudiantes.all().exclude(user = perfil.user)
+    except:
+        messages.error(request, "Aún no estás en un grupo para este curso")
+        return redirect('/estudiante/')
     
-    grupo = perfil.grupo_set.get(curso = cursoid)
     
-    estudiantes_grupo = grupo.estudiantes.all().exclude(user = perfil.user)
     
     return render(request, 'estudiante/curso.html', {'curso': curso, 'grupo': grupo, 'estudiantes': estudiantes_grupo})
 
@@ -67,7 +72,7 @@ def evaluar(request, estudianteid, cursoid, grupoid):
     
     usuario = User.objects.get(username = request.user.username)
     
-    perfil = PerfilEstudiante.objects.get(nombre = usuario.username)
+    perfil = PerfilEstudiante.objects.get(user = usuario)
     
     curso = perfil.cursos.get(id = cursoid)
     

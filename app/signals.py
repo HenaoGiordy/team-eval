@@ -5,7 +5,7 @@ from django.db.models.signals import post_save
 
 @receiver(post_save, sender=User)
 def asignar_grupo_administrador(sender, instance, *args, **kwards):
-    if instance.role != "":
+    if sender.role != "":
         if  instance.role=='ADMIN':
             try:
                 grupo = Group.objects.get(name='Administradores')
@@ -16,7 +16,7 @@ def asignar_grupo_administrador(sender, instance, *args, **kwards):
 
 @receiver(post_save, sender=User)
 def asignar_grupo_estudiante(sender, instance, *args, **kwards):
-    if instance.role != "":
+    if sender.role != "":
         if instance.role=='ESTUDIANTE':
             try:
                 grupo = Group.objects.get(name='Estudiantes')
@@ -27,12 +27,12 @@ def asignar_grupo_estudiante(sender, instance, *args, **kwards):
             try:
                 estudiante = PerfilEstudiante.objects.get(user_id = instance.pk)
             except PerfilEstudiante.DoesNotExist:
-                PerfilEstudiante.objects.create(user=instance,nombre=instance.username)
+                PerfilEstudiante.objects.create(user=instance,nombre=instance.first_name)
             
 
 @receiver(post_save, sender=User)
 def asignar_grupo_profesor(sender, instance, *args, **kwards):
-    if instance.role != "":
+    if sender.role != "":
         if instance.role=='PROFESOR':
             try:
                 grupo = Group.objects.get(name='Profesores')
@@ -43,4 +43,4 @@ def asignar_grupo_profesor(sender, instance, *args, **kwards):
             try:
                 profesor = PerfilProfesor.objects.get(user_id = instance.pk)
             except PerfilProfesor.DoesNotExist:
-                PerfilProfesor.objects.create(user=instance,nombre=instance.username)    
+                PerfilProfesor.objects.create(user=instance,nombre=instance.first_name)
