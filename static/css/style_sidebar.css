@@ -1,28 +1,15 @@
 
 /* ON CSS PARA LA VISTA DE CADA CURSO Y TEMPLATES*/
 
-.menu-content {
-    margin-left: 250px; /* Ancho de la barra lateral */
-    padding: 20px;
-  }
+
+  .navbar {
+    background-color: #0da7fd;
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* Para que la navbar esté por encima del contenido*/ 
+}
   
-  @media (max-width: 768px) {
-    .menu-content {
-     margin-left: 0;
-    }
-  }
-  
-  .navbar{
-    background-color:#0D6EFD;
-  }
-  
-  .bd-placeholder-img {
-    font-size: 1.125rem;
-    text-anchor: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-  }
+
   
   @media (min-width: 768px) {
     .bd-placeholder-img-lg {

@@ -1,12 +1,26 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from app.models import User, PerfilEstudiante, Grupo
 
+
 # Create your views here.
 
 def login_register(request):
+    
+    user = request.user
+    
+    if user.is_authenticated:
+        
+        if user.get_role() == 'ADMIN':
+            return redirect('administrador/')
+        if user.get_role() == 'ESTUDIANTE':
+            return redirect('estudiante/')
+        if user.get_role() == 'PROFESOR':
+            return redirect('profesor/')
+    
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -22,7 +36,7 @@ def login_register(request):
         if user is not None:
             login(request, user)
             if user.get_role() == 'ADMIN':
-                return redirect('admin/')
+                return redirect('administrador/')
             if user.get_role() == 'ESTUDIANTE':
                 return redirect('estudiante/')
             if user.get_role() == 'PROFESOR':
@@ -95,6 +109,10 @@ def evaluar(request, estudianteid, cursoid, grupoid):
 
 
 #Vistas del profesor
-@login_required
+# @login_required
 def profesor(request):
     return render(request, 'profesor/profesor.html')
+
+@login_required
+def administrador(request):
+    return render(request, 'administrador/administrador.html')

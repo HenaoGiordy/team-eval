@@ -15,3 +15,9 @@ alerts.forEach(alert => {
     }, 4500); // El tiempo total sería 3000 (para la animación) + 1000 (espera extra)
 });
 
+
+//Bloquear el retroceso en lo página
+window.location.hash="";
+window.location.hash="Again-No-back-button";//esta linea es necesaria para chrome
+window.onhashchange=function(){window.location.hash="";}
+

@@ -71,7 +71,7 @@ input:focus ~ label{
 .sidebar-container{
     min-width: 250px; 
     position:fixed; 
-    top: 0; 
+    top: 54px; 
     bottom: 0; 
     width: 10%; 
     height: 100vh; 
@@ -79,7 +79,7 @@ input:focus ~ label{
     flex-direction: column;
     justify-content: space-between; 
     align-items: center; 
-    border-radius: 10px; 
+    border-radius: 5px; 
     box-shadow: 2px 0px 8px 0px rgba(0,0,0,0.34);
 }
 .sidebar-elementos{
