@@ -119,6 +119,59 @@ input:focus ~ label{
     text-decoration: none;
 }
 
+.dropdown__list{
+    list-style: none;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+  
+}
+
+.dropdown__link:hover{
+    background-color: #0da7fd;
+    border-radius: 5px;
+}
+
+.dropdown__link{
+    position: relative;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+.dropdown__check{
+    cursor: pointer;
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+}
+
+.dropdown__list:has(:checked){
+    --rows: 1fr;
+}
+
+.dropdown__content{
+    display: grid;
+    grid-template-rows: var(--rows, 0fr);
+    transition: .3s ;
+}
+.dropdown__anchor{
+    text-decoration: none;
+    color: black;
+    
+}
+.dropdown__sub{
+    overflow: hidden;
+}
+.dropdown__li{
+    list-style: none;
+}
+
+
 /* END CSS CORRESPONDIENTE A LAS VISTAS DE ESTUDIANTE */
 
 /* CSS PARA LAS CARD DE LA LISTA DE CURSOS */
