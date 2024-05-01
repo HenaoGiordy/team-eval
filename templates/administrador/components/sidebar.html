@@ -1,33 +1,33 @@
+<!-- Barra principal -->
+<nav class="navbar navbar-expand-lg navbar-dark d-flex justify-content-between" style="background-color: #0D6EFD;">
+  <a class="navbar-brand mx-5">Hola, name {{ user }}</a>
+  <a class="nav-link mx-5" href="{% url 'logout' %}" style="color: white">Salir</a>
 
-  <!-- Barra principal -->
-  <nav class="navbar navbar-expand-lg navbar-dark d-flex justify-content-between " style="background-color: #0D6EFD;">
-    <a class="navbar-brand mx-5">Hola, name {{ user }}</a>
-    <a class="nav-link mx-5" href="{% url 'logout' %}" style="color: white">Salir</a>
-  </nav> 
+</nav> 
 
-  <div class="sidebar-container">
-    {% comment %} Header del sidebar {% endcomment %}
-    <div class="w-100">
-        <h4 class="text-center">  </h4>
-    </div>
+<div class="sidebar-container">
+  {% comment %} Header del sidebar {% endcomment %}
+  <div class="w-100">
+      <h4 class="text-center">  </h4>
+  </div>
 
-    {% comment %} Links del sidebar {% endcomment %}
-    <ul class="sidebar-elementos">
-        
-        <div class="elemento-sidebar ">
-            <a class="item-sidebar py-2"  href="">Evaluación</a>
-        </div>
-        
-        <div class="elemento-sidebar">
-            <a class="item-sidebar py-2"  href="">Retroalimentación</a>
-        </div>
-        
-    </ul>
+  {% comment %} Links del sidebar {% endcomment %}
 
-    {% comment %} Footer del sidebar {% endcomment %}
-    <div class="elemento-sidebar d-flex justify-content-space-between">
-        
-    </div>
-    </div>
-    
+  <ul class="sidebar-elementos" id="sidebar-elementos">
+      <li class="elemento-sidebar" id="gestion-usuarios">
+          <a class="item-sidebar py-2" href="#" onclick="desplazar()">Gestión de usuarios</a>
+      </li>
+      <li class="elemento-sidebar" id="gestión-de-cursos">
+          <a class="item-sidebar py-2" href="#">Gestión de cursos</a>
+      </li>
+      <li class="elemento-sidebar" id="gestión-de-evaluación">
+          <a class="item-sidebar py-2" href="#">Gestión de evaluación</a>
+      </li>
+  </ul>
+
+  {% comment %} Footer del sidebar {% endcomment %}
+  <div class="elemento-sidebar d-flex justify-content-space-between">
+      
+  </div>
 </div>
+

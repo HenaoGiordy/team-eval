@@ -9,5 +9,6 @@ urlpatterns= [
     path('estudiante/curso/evaluar/<int:estudianteid>/<int:cursoid>/<int:grupoid>', views.evaluar, name="evaluar"),
     path('profesor/', views.profesor, name="profesor"),
     path('logout/', views.logout_usuario, name="logout"),
-    path('administrador/', views.administrador, name="administrador")
+    path('administrador/', views.administrador, name="administrador"),
+    path('administrador/docentes', views.administrador_docentes, name="administrador_docentes"),
 ]

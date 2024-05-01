@@ -3,10 +3,17 @@
     font-weight: 400;
     margin: 0;
     box-sizing: border-box;
+    
 }
 
-
-
+.fondo{
+    background-repeat: no-repeat;
+    background-image: url('/static/img/logoTeamEval.png');
+    background-color: rgba(255, 255, 255, 0.6);
+    background-blend-mode: overlay;
+    background-size: 30%;
+    background-position: 35em 9em;
+}
 /*INICIO CSS CORRESPONDIENTE A LOS INPUTS-LABELS Y PARTE DEL LOGIN */
 
 .alert {
@@ -71,7 +78,7 @@ input:focus ~ label{
 .sidebar-container{
     min-width: 250px; 
     position:fixed; 
-    top: 54px; 
+    top: 56px; 
     bottom: 0; 
     width: 10%; 
     height: 100vh; 
@@ -79,8 +86,8 @@ input:focus ~ label{
     flex-direction: column;
     justify-content: space-between; 
     align-items: center; 
-    border-radius: 5px; 
     box-shadow: 2px 0px 8px 0px rgba(0,0,0,0.34);
+    background-color: #EDF9FC;
 }
 .sidebar-elementos{
     display: flex;
@@ -101,7 +108,7 @@ input:focus ~ label{
 }
 
 .elemento-sidebar:hover{
-    background-color: #dddddd;
+    background-color: #0da7fd;
     border-radius: 5px;
     
 }

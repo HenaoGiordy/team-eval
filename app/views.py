@@ -116,3 +116,7 @@ def profesor(request):
 @login_required
 def administrador(request):
     return render(request, 'administrador/administrador.html')
+
+@login_required
+def administrador_docentes(request):
+    return render(request, 'administrador/docentes.html')
