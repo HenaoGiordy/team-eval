@@ -184,6 +184,8 @@ input:focus ~ label{
     list-style: none;
 }
 
+
+
 .bordes {
     border-top: 1px solid #0D6EFD;  
 }
@@ -279,3 +281,11 @@ margin-left: 300px;
     top: 50PX;
 }
 /* END CSS PARA LA VISTA DE CADA CURSO Y CALIFICAR ESTUDIANTES */
+
+
+/* VISTAS ADMINS --GESTION-ESTUDIANTES */
+
+.container__admin{
+    margin-left: 255px;
+}
+/* END GESTION-ESTUDIANTES */
