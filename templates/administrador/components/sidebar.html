@@ -1,21 +1,20 @@
 <!-- Barra principal -->
 <nav class="navbar navbar-expand-lg navbar-dark d-flex justify-content-between" style="background-color: #0D6EFD;">
-  <a class="navbar-brand mx-5">Hola, name {{ user }}</a>
+  <a class="navbar-brand mx-3">Hola, {{ user }}</a>
   <a class="nav-link mx-5" href="{% url 'logout' %}" style="color: white">Salir</a>
-
 </nav> 
 
 <div class="sidebar-container">
   {% comment %} Header del sidebar {% endcomment %}
-  <div class="w-100">
-      <h4 class="text-center">  </h4>
+  <div class="cuadro-con-sombra">
+    <div class="text-center"> Administrador</div>
   </div>
 
   {% comment %} Links del sidebar {% endcomment %}
 
   <ul class="sidebar-elementos" id="sidebar-elementos">
       <li class="dropdown__list" id="gestion-usuarios">
-          <a class="item-sidebar py-2 dropdown__link" href="#" >
+          <a class="item-sidebar py-2 dropdown__link bordes" href="#">
                 <span>Gestión de usuarios</span>
                 <input type="checkbox" name="links" class="dropdown__check">
           </a>
@@ -23,53 +22,29 @@
 
             <ul class="dropdown__sub">
                 <li class="dropdown__li">
-                    <a href="#" class="dropdown__anchor">Estudiantes </a>
+                    <a href="{% url 'administrador_estudiantes' %}" class="dropdown__anchor">Estudiantes </a>
                 </li>
                 <li class="dropdown__li">
-                    <a href="#" class="dropdown__anchor">Docentes </a>
+                    <a href="{% url 'administrador_docentes' %}" class="dropdown__anchor">Docentes </a>
                 </li>
             </ul>
 
           </div>
       </li>
-      <li class="dropdown__list" id="gestion-usuarios">
-          <a class="item-sidebar py-2 dropdown__link" href="#" >
-                <span>Gestión de profesores</span>
-                <input type="checkbox" name="links" class="dropdown__check">
-
-          </a>
-          <div class="dropdown__content">
-
-            <ul class="dropdown__sub">
-                <li class="dropdown__li">
-                    <a href="#" class="dropdown__anchor">Estudiantes </a>
-                </li>
-                <li class="dropdown__li">
-                    <a href="#" class="dropdown__anchor">Docentes </a>
-                </li>
-            </ul>
-
-          </div>
-      </li>
-      <li class="dropdown__list" id="gestion-usuarios">
-          <a class="item-sidebar py-2 dropdown__link" href="#" >
+      <li class="dropdown__list" id="gestion-cursos">
+          <a class="item-sidebar py-2 dropdown__link bordes" href="{% url 'administrador_gestion_de_cursos' %}" >
                 <span>Gestión de cursos</span>
                 <input type="checkbox" name="links" class="dropdown__check">
+
           </a>
-          <div class="dropdown__content">
-
-            <ul class="dropdown__sub">
-                <li class="dropdown__li">
-                    <a href="#" class="dropdown__anchor">Estudiantes </a>
-                </li>
-                <li class="dropdown__li">
-                    <a href="#" class="dropdown__anchor">Docentes </a>
-                </li>
-            </ul>
-
-          </div>
       </li>
-      
+
+      <li class="dropdown__list" id="gestion-evaluacion">
+          <a class="item-sidebar py-2 dropdown__link bordes" href="{% url 'administrador_gestion_de_evaluacion' %}" style="border-bottom:1px solid #0D6EFD">
+                <span>Gestión de evaluación</span>
+                <input type="checkbox" name="links" class="dropdown__check">
+          </a>
+      </li>
   </ul>
 
   {% comment %} Footer del sidebar {% endcomment %}

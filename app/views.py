@@ -120,3 +120,15 @@ def administrador(request):
 @login_required
 def administrador_docentes(request):
     return render(request, 'administrador/docentes.html')
+
+@login_required
+def administrador_estudiantes(request):
+    return render(request, 'administrador/estudiantes.html')
+
+@login_required
+def administrador_gestion_de_cursos(request):
+    return render(request, 'administrador/gestion_de_cursos.html')
+
+@login_required
+def administrador_gestion_de_evaluacion(request):
+    return render(request, 'administrador/gestion_de_evaluacion.html')
