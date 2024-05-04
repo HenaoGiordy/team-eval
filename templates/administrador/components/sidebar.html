@@ -13,37 +13,26 @@
   {% comment %} Links del sidebar {% endcomment %}
 
   <ul class="sidebar-elementos" id="sidebar-elementos">
-      <li class="dropdown__list" id="gestion-usuarios">
-          <a class="item-sidebar py-2 dropdown__link bordes" href="#">
-                <span>Gestión de usuarios</span>
-                <input type="checkbox" name="links" id="usuarios" class="dropdown__check" onclick="toggleRadio(this)">
-          </a>
-          <div class="dropdown__content">
-
-            <ul class="dropdown__sub">
-                <li class="dropdown__li">
-                    <a href="{% url 'administrador_estudiantes' %}"  class="dropdown__anchor">Estudiantes </a>
-                </li>
-                <li class="dropdown__li">
-                    <a href="{% url 'administrador_docentes' %}" class="dropdown__anchor">Docentes </a>
-                </li>
-            </ul>
-
-          </div>
-      </li>
-      <li class="dropdown__list" id="gestion-cursos">
-          <a class="item-sidebar py-2 dropdown__link bordes" href="{% url 'administrador_gestion_de_cursos' %}" >
-                <span>Gestión de cursos</span>
-                <input type="checkbox" name="links" id="usuarios" class="dropdown__check" onclick="toggleRadio(this)">
-          </a>
-      </li>
-
-      <li class="dropdown__list" id="gestion-evaluacion">
-          <a class="item-sidebar py-2 dropdown__link bordes" href="{% url 'administrador_gestion_de_evaluacion' %}" style="border-bottom:1px solid #0D6EFD">
-                <span>Gestión de evaluación</span>
-                <input type="checkbox" name="links" id="evaluacion" class="dropdown__check" onclick="toggleRadio(this)">
-          </a>
-      </li>
+    <li class="dropdown__list" id="gestion-de-docentes">
+      <a class="item-sidebar py-2 dropdown__link bordes" href="{% url 'administrador_gestion_de_docentes' %}" >
+        <span>Gestión de docentes</span>
+      </a>
+    </li>
+    <li class="dropdown__list" id="gestion-de-estudiantes">
+      <a class="item-sidebar py-2 dropdown__link bordes active" href="{% url 'administrador_gestion_de_estudiantes' %}" >
+        <span>Gestión de estudiantes</span>
+      </a>
+    </li>
+    <li class="dropdown__list" id="gestion-cursos">
+      <a class="item-sidebar py-2 dropdown__link bordes" href="{% url 'administrador_gestion_de_cursos' %}" >
+        <span>Gestión de cursos</span>
+      </a>
+    </li>
+    <li class="dropdown__list" id="gestion-evaluacion">
+      <a class="item-sidebar py-2 dropdown__link bordes" href="{% url 'administrador_gestion_de_evaluacion' %}" style="border-bottom:1px solid #0D6EFD">
+        <span>Gestión de evaluación</span>
+      </a>
+    </li>
   </ul>
 
   {% comment %} Footer del sidebar {% endcomment %}
