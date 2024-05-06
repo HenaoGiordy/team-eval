@@ -14,6 +14,7 @@
     background-size: 30%;
     background-position: 35em 9em;
 }
+
 /*INICIO CSS CORRESPONDIENTE A LOS INPUTS-LABELS Y PARTE DEL LOGIN */
 
 .alert {
@@ -126,6 +127,7 @@ input:focus ~ label{
 
 .dropdown__link:hover{
     background-color: #0da7fd;
+    text-decoration: none;
 }
 
 .dropdown__link{
@@ -243,3 +245,12 @@ margin-left: 300px;
     margin-left: 255px;
 }
 /* END GESTION-ESTUDIANTES */
+
+/* VISTA ADMINS GESTIÓN--DOCENTES*/
+.carda-docentes{
+    width: 100%; 
+    max-width: 800px; 
+    height: 20em; 
+    margin-left: 24em; 
+    padding-left:3em;
+}
