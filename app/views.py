@@ -133,11 +133,15 @@ def administrador_gestion_de_docentes(request):
         except IntegrityError:
             messages.error(request, "Ya existe un profesor con ese documento.")
         
+        except ValueError  as e:
+            messages.error(request, f"Error: debe proporcionar un código")
+            
         except ValidationError as e:
             messages.error(request, f"El código debe ser mayor a 0: {e}")
         
         except Exception as e:
             messages.error(request, f"Error al procesar la solicitud: {e}")
+            
     return render(request, 'administrador/gestion-de-docentes.html')
 
 @login_required

@@ -17,12 +17,13 @@ class User(AbstractUser):
     username = models.IntegerField(
         _("Codigo"),
         unique=True,
-
+        blank=False,
         help_text=_(
             "El código de usuario es único y de debe ser un valor numérico."
         ),
         error_messages={
             "unique": _("Ya existe un usuario con ese código"),
+            "blank": _("Este campo no puede estar vacío.")
         },
     )
     first_name = models.CharField(_("first name"), max_length=150, blank=False)
