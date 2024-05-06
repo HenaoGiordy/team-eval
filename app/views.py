@@ -1,9 +1,11 @@
+from django.db import IntegrityError
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from app.models import User, PerfilEstudiante, Grupo
+from django.core.exceptions import ValidationError
 
 
 # Create your views here.
@@ -119,6 +121,23 @@ def administrador(request):
 
 @login_required
 def administrador_gestion_de_docentes(request):
+    if request.method == "POST":
+        try:
+            first_name = request.POST.get('nombres')
+            last_name = request.POST.get('apellidos')
+            username = request.POST.get('documento')
+            email = request.POST.get('email')
+            
+            user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name,password=username, email=email, role="PROFESOR")
+            return redirect(reverse('administrador_gestion_de_docentes'))
+        except IntegrityError:
+            messages.error(request, "Ya existe un profesor con ese documento.")
+        
+        except ValidationError as e:
+            messages.error(request, f"El código debe ser mayor a 0: {e}")
+        
+        except Exception as e:
+            messages.error(request, f"Error al procesar la solicitud: {e}")
     return render(request, 'administrador/gestion-de-docentes.html')
 
 @login_required

@@ -1,5 +1,4 @@
 from django.apps import apps
-
 from django.contrib.auth.hashers import make_password
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -17,12 +16,11 @@ class User(AbstractUser):
     
     username = models.IntegerField(
         _("Codigo"),
-        
         unique=True,
+
         help_text=_(
             "El código de usuario es único y de debe ser un valor numérico."
         ),
-        
         error_messages={
             "unique": _("Ya existe un usuario con ese código"),
         },

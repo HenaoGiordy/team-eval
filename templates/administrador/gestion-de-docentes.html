@@ -4,16 +4,24 @@
 
 <h2 style="padding-left: 20em; padding-top: 15px"><b>Gestión de docentes</b></h2>
 <div class="container card carda-docentes" style="width: 100%; max-width: 800px; height: 22em; margin-left: 24em; padding-left:3em;">
-    <form>
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-danger alert-dismissible d-flex w-75 justify-content-center position-absolute alert-modificador"  role="alert">
+            <p>{{ message }}</p>
+        </div>
+        {% endfor %}
+{% endif %}
+    <form method="POST" action="">
+        {% csrf_token %} 
         <!-- Grupo de nombres y apellidos -->
         <div class="form-row" style="padding-top: 15px;">
             <div class="form-group col-md-6">
                 <label for="nombres">Nombre</label>
-                <input type="text" class="form-control" id="nombres" placeholder="Nombre">
+                <input type="text" name="nombres" class="form-control" id="nombres" placeholder="Nombre">
             </div>
             <div class="form-group col-md-6">
                 <label for="apellidos">Apellidos</label>
-                <input type="text" class="form-control" id="apellidos" placeholder="Apellidos">
+                <input type="text" name="apellidos" class="form-control" id="apellidos" placeholder="Apellidos">
             </div>
         </div>
         
@@ -21,33 +29,25 @@
         <!-- Grupo de tipo de documento e ID -->
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="tipoDocumento">Tipo de Documento</label>
-                <select class="form-control" id="tipoDocumento" placeholder="Tipo de documento">
-                    <option disabled selected style="display: none;">Tipo de documento</option>
-                    <option>Cédula de ciudadanía</option>
-                    <option>Cédula de Extranjería</option>
-                </select>
-            </div>
-            <div class="form-group col-md-6">
-                <label for="id">Documento</label>
-                <input type="text" class="form-control" id="id" placeholder="No. Documento">
+                <label for="documento">Documento</label>
+                <input type="number" name="documento" class="form-control" id="id" placeholder="No. Documento" min="1" >
             </div>
         </div>
 
         <!-- Grupo de correo y estado -->
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="correo">Correo</label>
-                <input type="email" class="form-control" id="correo" placeholder="ejemplo@correo.com">
+                <label for="email">Correo</label>
+                <input type="email" name="email" class="form-control" id="email" placeholder="ejemplo@correo.com">
             </div>
-            <div class="form-group col-md-6">
+            {% comment %} <div class="form-group col-md-6">
                 <label for="estado">Estado</label>
                 <select class="form-control" id="estado">
                     <option disabled selected style="display: none;">Estado</option>
                     <option>Activo</option>
                     <option>Inactivo</option>
                 </select>
-            </div>
+            </div> {% endcomment %}
         </div>
 
         <div style="padding-top: 16px; display: flex; justify-content: flex-end;">
