@@ -1,4 +1,4 @@
-  {%if docentes%}
+{%if docentes_lista%}
   <table class="table table-bordered  table-hover w-75 mt-5 table--docentes ">
     <thead>
       <tr>
@@ -10,14 +10,33 @@
       </tr>
     </thead>
     <tbody>
-      {%for docente in docentes%}
+      {%for docente in docentes_lista%}
       <tr>
         <th scope="row">{{ docente.user.username }}</th>
-        <td>{{ docente.nombre }}</td>
+        <td>{{ docente.user.first_name }}</td>
         <td>{{ docente.user.email }}</td>
-        <td>{{ docente.nombre }}</td>
+        <td>{{ docente.user.first_name }}</td>
       </tr>
       {%endfor%}
     </tbody>
   </table>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+  {% if docentes_lista.has_previous %}
+  
+  <li class="page-item"><a class="page-link" href="?page=1">Primer Página</a></li>
+  <li class="page-item"><a class="page-link" href="?page={{ docentes_lista.previous_page_number }}">&laquo Anterior</a></li>
+  
+  {%endif%}
+  
+  <li class="page-item disabled"><a class="page-link" href="#"> Pagina {{ docentes_lista.number }} de {{ docentes_lista.paginator.num_pages }}</a></li>
+
+  {%if docentes_lista.has_next%}
+  <li class="page-item"><a class="page-link" href="?page={{ docentes_lista.next_page_number }}">Siguiente</a></li>
+  <li class="page-item"><a class="page-link" href="?page={{ docentes_lista.paginator.num_pages }}">&raquo última Página</a></li>
+  {%endif%}
 {%endif%}
+  </ul>
+</nav>
+  </div>
+

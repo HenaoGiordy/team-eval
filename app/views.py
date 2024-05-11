@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from app.models import User, PerfilEstudiante, Grupo, PerfilProfesor
 from django.core.exceptions import ValidationError
-
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -141,10 +141,12 @@ def administrador_gestion_de_docentes(request):
         
         except Exception as e:
             messages.error(request, f"Error al procesar la solicitud: {e}")
-    
-    docentes = PerfilProfesor.objects.all()
+            
+    pagination = Paginator(PerfilProfesor.objects.all().order_by('-id'), 3)
+    page = request.GET.get('page')
+    docentes_lista = pagination.get_page(page)
           
-    return render(request, 'administrador/gestion-de-docentes.html', {'docentes':docentes})
+    return render(request, 'administrador/gestion-de-docentes.html', { 'docentes_lista': docentes_lista})
 
 @login_required
 def administrador_gestion_de_estudiantes(request):

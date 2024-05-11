@@ -302,7 +302,7 @@ a {
     text-decoration: none;
     border-radius: 5px;
     display: flex;
-    width: 20%; 
+    
 }
 
 a:hover {
@@ -354,7 +354,6 @@ input[type=number] {
     background-color: #0056b3;
 }
 
-.table--docentes{
-    
-    
+.paginacion{
+    display: flex;
 }
