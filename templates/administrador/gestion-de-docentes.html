@@ -51,21 +51,6 @@
                     <input type="email" name="email" class="form-control" id="email" placeholder="ejemplo@correo.com" required>
                 </div>
             </div>
-
-            <!-- Grupo de estado -->
-        <!--
-            <div class="form-row">
-                <div class="form-group col-md-4" style="margin-left: 14%">
-                    <label for="estado">Estado</label>
-                    <select class="form-control" id="estado">
-                        <option disabled selected style="display: none;">Estado</option>
-                        <option>Activo</option>
-                        <option>Inactivo</option>
-                    </select>
-                </div> 
-            </div>
-        -->
-
             <!--Botones e iconos/metáforas de "Guardar" y "Limpiar"-->
                 <div class="botones">
                     <button type="submit" class="btn btn-primary" style="border: none;">
@@ -84,6 +69,7 @@
                 </div>
             </form>
         </div>
+        {%  include "administrador/components/search.html"%}
         {%  include  "administrador/components/table.html"%}
     <div>
         

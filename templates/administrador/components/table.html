@@ -1,5 +1,5 @@
 {%if docentes_lista%}
-  <table class="table table-bordered  table-hover w-75 mt-5 table--docentes ">
+  <table class="table table-bordered  table-hover w-75 mt-2 table--docentes ">
     <thead>
       <tr>
         <th scope="col">Código</th>
@@ -20,23 +20,24 @@
       {%endfor%}
     </tbody>
   </table>
+  {% comment %} Paginacion {% endcomment %}
   <nav aria-label="Page navigation example">
     <ul class="pagination">
-  {% if docentes_lista.has_previous %}
-  
-  <li class="page-item"><a class="page-link" href="?page=1">Primer Página</a></li>
-  <li class="page-item"><a class="page-link" href="?page={{ docentes_lista.previous_page_number }}">&laquo Anterior</a></li>
-  
-  {%endif%}
-  
-  <li class="page-item disabled"><a class="page-link" href="#"> Pagina {{ docentes_lista.number }} de {{ docentes_lista.paginator.num_pages }}</a></li>
 
-  {%if docentes_lista.has_next%}
-  <li class="page-item"><a class="page-link" href="?page={{ docentes_lista.next_page_number }}">Siguiente</a></li>
-  <li class="page-item"><a class="page-link" href="?page={{ docentes_lista.paginator.num_pages }}">&raquo última Página</a></li>
-  {%endif%}
+      {% if docentes_lista.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page=1">Primer Página</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{ docentes_lista.previous_page_number }}">&laquo Anterior</a></li>
+      {%endif%}
+      
+      <li class="page-item disabled"><a class="page-link" href="#"> Página {{ docentes_lista.number }} de {{ docentes_lista.paginator.num_pages }}</a></li>
+
+      {%if docentes_lista.has_next%}
+      <li class="page-item"><a class="page-link" href="?page={{ docentes_lista.next_page_number }}">Siguiente</a></li>
+      <li class="page-item"><a class="page-link" href="?page={{ docentes_lista.paginator.num_pages }}">&raquo última Página</a></li>
+      {%endif%}
+    </ul>
 {%endif%}
-  </ul>
+
 </nav>
   </div>
 
