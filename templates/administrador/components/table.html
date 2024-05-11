@@ -1,0 +1,23 @@
+  {%if docentes%}
+  <table class="table table-bordered  table-hover w-75 mt-5 table--docentes ">
+    <thead>
+      <tr>
+        <th scope="col">Código</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Correo</th>
+        <th scope="col">Acción</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      {%for docente in docentes%}
+      <tr>
+        <th scope="row">{{ docente.user.username }}</th>
+        <td>{{ docente.nombre }}</td>
+        <td>{{ docente.user.email }}</td>
+        <td>{{ docente.nombre }}</td>
+      </tr>
+      {%endfor%}
+    </tbody>
+  </table>
+{%endif%}

@@ -16,7 +16,7 @@
 }
 
 .titulos {
-    padding-left: 47%;
+   
     padding-top: 2%;
 }
 
@@ -258,7 +258,11 @@ input:focus~label {
 /* VISTAS ADMINS --GESTION-ESTUDIANTES */
 
 .container__admin {
-    margin-left: 2px;
+    margin-left: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .card-estud {
@@ -311,7 +315,7 @@ a:hover {
 .carda-docentes {
     box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.34);
     width: 45%;
-    margin-left: 37%;
+    
     background-color: #ffffff;
     border-radius: 6px;
     padding-top: 2%;
@@ -348,4 +352,9 @@ input[type=number] {
 
 .btn-search:hover {
     background-color: #0056b3;
+}
+
+.table--docentes{
+    
+    
 }

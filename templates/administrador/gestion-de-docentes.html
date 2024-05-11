@@ -3,7 +3,7 @@
 {% block content %}
 <div class="container__admin">
     <h2 class="titulos"><b>Gestión de docentes</b></h2>
-    <div class="carda-docentes">
+    <div class="carda-docentes pb-4">
         {% if messages %}
             {% for message in messages %}
             <div class="alert alert-danger alert-dismissible d-flex w-75 justify-content-center position-absolute alert-modificador"  role="alert">
@@ -84,6 +84,11 @@
                 </div>
             </form>
         </div>
+        {%  include  "administrador/components/table.html"%}
     <div>
+        
 </div>
+
+
+
 {% endblock %}

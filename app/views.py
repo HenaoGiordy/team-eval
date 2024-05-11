@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from app.models import User, PerfilEstudiante, Grupo
+from app.models import User, PerfilEstudiante, Grupo, PerfilProfesor
 from django.core.exceptions import ValidationError
 
 
@@ -141,8 +141,10 @@ def administrador_gestion_de_docentes(request):
         
         except Exception as e:
             messages.error(request, f"Error al procesar la solicitud: {e}")
-            
-    return render(request, 'administrador/gestion-de-docentes.html')
+    
+    docentes = PerfilProfesor.objects.all()
+          
+    return render(request, 'administrador/gestion-de-docentes.html', {'docentes':docentes})
 
 @login_required
 def administrador_gestion_de_estudiantes(request):
