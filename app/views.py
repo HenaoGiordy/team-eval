@@ -121,15 +121,27 @@ def administrador(request):
 
 @login_required
 def administrador_gestion_de_docentes(request):
+    pagination = Paginator(PerfilProfesor.objects.all().order_by('-id'), 3)
+    page = request.GET.get('page')
+    docentes_lista = pagination.get_page(page)
     if request.method == "POST":
+        
         try:
-            first_name = request.POST.get('nombres')
-            last_name = request.POST.get('apellidos')
-            username = request.POST.get('documento')
-            email = request.POST.get('email')
             
-            user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name,password=username, email=email, role="PROFESOR")
-            return redirect(reverse('administrador_gestion_de_docentes'))
+            if "codigo_buscar" in request.POST:
+                try:
+                    usuario = User.objects.get(username = request.POST.get("codigo_buscar"))
+                    docentes_lista = PerfilProfesor.objects.filter(user = usuario)
+                except:
+                    messages.error(request, "No se encontró un docente con ese código")
+            else:
+                first_name = request.POST.get('nombres')
+                last_name = request.POST.get('apellidos')
+                username = request.POST.get('documento')
+                email = request.POST.get('email')
+                
+                user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name,password=username, email=email, role="PROFESOR")
+                return redirect(reverse('administrador_gestion_de_docentes'))
         except IntegrityError:
             messages.error(request, "Ya existe un profesor con ese documento.")
         
@@ -141,12 +153,11 @@ def administrador_gestion_de_docentes(request):
         
         except Exception as e:
             messages.error(request, f"Error al procesar la solicitud: {e}")
-            
-    pagination = Paginator(PerfilProfesor.objects.all().order_by('-id'), 3)
-    page = request.GET.get('page')
-    docentes_lista = pagination.get_page(page)
-          
+    
+
+    
     return render(request, 'administrador/gestion-de-docentes.html', { 'docentes_lista': docentes_lista})
+
 
 @login_required
 def administrador_gestion_de_estudiantes(request):

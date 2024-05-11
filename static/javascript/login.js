@@ -19,4 +19,3 @@ alerts.forEach(alert => {
 window.location.hash="";
 window.location.hash="Again-No-back-button";//esta linea es necesaria para chrome
 window.onhashchange=function(){window.location.hash="";}
-

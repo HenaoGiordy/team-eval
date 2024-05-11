@@ -4,6 +4,7 @@
 <div class="container__admin">
     <h2 class="titulos"><b>Gestión de docentes</b></h2>
     <div class="carda-docentes pb-4">
+        
         {% if messages %}
             {% for message in messages %}
             <div class="alert alert-danger alert-dismissible d-flex w-75 justify-content-center position-absolute alert-modificador"  role="alert">
@@ -11,9 +12,9 @@
             </div>
             {% endfor %}
     {% endif %}
+            
         <form method="POST" action="">
             {% csrf_token %} 
-            
             <!-- Grupo de nombres y apellidos -->
             <div class="form-row justify-content-center" style="padding-top: 5px;">
                 <div class="form-group col-md-4 mx-3">
@@ -69,7 +70,6 @@
                 </div>
             </form>
         </div>
-        {%  include "administrador/components/search.html"%}
         {%  include  "administrador/components/table.html"%}
     <div>
         

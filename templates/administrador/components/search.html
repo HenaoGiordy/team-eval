@@ -1,4 +1,6 @@
-<form class="d-flex mt-4">
-    <input class="form-control me-2" type="search" placeholder="Codigo" aria-label="Search">
-    <button class="btn btn-outline-primary" type="submit">Buscar</button>
+<form class="d-flex mt-4" method="POST">
+    {% csrf_token %}
+    <input class="form-control me-2" name="codigo_buscar" type="number" min="1" placeholder="Codigo" aria-label="Search" required>
+    <button class="btn btn-outline-primary" name="buscar" type="submit">Buscar</button>
+    <a class="refrescar btn btn-outline-secondary ml-1" href="{%url "administrador_gestion_de_docentes"%}"> Volver</a>    
 </form>
