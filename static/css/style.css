@@ -314,10 +314,10 @@ a:hover{
 /* END CSS VISTA ADMINS GESTIÓN-DE-ESTUDIANTES*/
 
 /* CSS VISTA ADMINS GESTIÓN-DE-DOCENTES*/
-.carda-docentes {
+.carda-docentes{
     box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.34);
     width: 45%;
-    
+    margin-top: 1%;
     background-color: #ffffff;
     border-radius: 6px;
     padding-top: 2%;
@@ -336,8 +336,8 @@ input[type=number] {
 /* CSS VISTA ADMINS GESTIÓN-DE-CURSOS*/
 .carda-cursos {
     box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.34);
-    width: 45%;
-    margin-left: 37%;
+    width: 50%;
+    margin-top:1%;
     background-color: #ffffff;
     border-radius: 6px;
     padding-top: 2%;
