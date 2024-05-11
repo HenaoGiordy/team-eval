@@ -121,7 +121,7 @@ def administrador(request):
 
 @login_required
 def administrador_gestion_de_docentes(request):
-    pagination = Paginator(PerfilProfesor.objects.all().order_by('-id'), 3)
+    pagination = Paginator(PerfilProfesor.objects.all().order_by('-id'), 10)
     page = request.GET.get('page')
     docentes_lista = pagination.get_page(page)
     if request.method == "POST":

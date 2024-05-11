@@ -93,6 +93,7 @@ input:focus~label {
     width: 100%;
 }
 
+
 .sidebar-container {
     min-width: 250px;
     position: fixed;
@@ -259,6 +260,7 @@ input:focus~label {
 
 .container__admin {
     margin-left: 250px;
+    margin-top: 57px;
     display: flex;
     flex-direction: column;
     justify-content: center;

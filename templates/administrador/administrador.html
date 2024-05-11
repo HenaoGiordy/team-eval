@@ -19,7 +19,6 @@
     {% if user.is_authenticated and user.role == "ADMIN" %}
     {% include "administrador/components/sidebar.html" %}
     {% block content %}
-
     {% endblock %}
     {% else %}
     <div class="d-flex justify-content-center align-items-center vh-100">
