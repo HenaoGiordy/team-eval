@@ -362,3 +362,8 @@ input[type=number] {
 .paginacion{
     display: flex;
 }
+
+.alert-docenter{
+    top:200px;
+    z-index: 100;
+}

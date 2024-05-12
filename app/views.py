@@ -1,4 +1,5 @@
 from django.db import IntegrityError
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
@@ -134,14 +135,26 @@ def administrador_gestion_de_docentes(request):
                     docentes_lista = PerfilProfesor.objects.filter(user = usuario)
                 except:
                     messages.error(request, "No se encontró un docente con ese código")
-            else:
+            elif "guardar" in request.POST:
                 first_name = request.POST.get('nombres')
                 last_name = request.POST.get('apellidos')
-                username = request.POST.get('documento')
+                username = request.POST.get('documento-docente')
                 email = request.POST.get('email')
                 
                 user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name,password=username, email=email, role="PROFESOR")
                 return redirect(reverse('administrador_gestion_de_docentes'))
+            
+            elif "edit-user" in request.POST:
+                user_id = request.POST.get('edit-user')
+                usuario = User.objects.get(id=user_id)
+                usuario.first_name = request.POST.get('edit-nombre')
+                usuario.last_name = request.POST.get('edit-apellidos')
+                usuario.username = request.POST.get('edit-documento')
+                usuario.email = request.POST.get('edit-email')
+                usuario.save()
+                messages.success(request, "Usuario actualizado correctamente")
+                return redirect(reverse('administrador_gestion_de_docentes'))
+            
         except IntegrityError:
             messages.error(request, "Ya existe un profesor con ese documento.")
         
@@ -154,9 +167,29 @@ def administrador_gestion_de_docentes(request):
         except Exception as e:
             messages.error(request, f"Error al procesar la solicitud: {e}")
     
-
-    
     return render(request, 'administrador/gestion-de-docentes.html', { 'docentes_lista': docentes_lista})
+
+
+def obtener_detalles_usuario(request, user_id):
+    try:
+        usuario = User.objects.get(id=user_id)
+        perfil_profesor = PerfilProfesor.objects.get(user=usuario)
+        detalles_usuario = {
+            'id':user_id,
+            'nombre': usuario.first_name,
+            'apellidos': usuario.last_name,
+            'documento': usuario.username,  # Suponiendo que el username es el documento
+            'email': usuario.email,
+            'estado': usuario.is_active
+            # Agrega otros campos que desees editar
+        }
+        return JsonResponse(detalles_usuario)
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'El usuario no existe'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
 
 
 @login_required

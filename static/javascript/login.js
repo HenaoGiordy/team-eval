@@ -19,3 +19,27 @@ alerts.forEach(alert => {
 window.location.hash="";
 window.location.hash="Again-No-back-button";//esta linea es necesaria para chrome
 window.onhashchange=function(){window.location.hash="";}
+
+//Ventana modal Docente
+document.querySelectorAll('.btn-edit').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const userId = btn.getAttribute('data-id');
+        fetch(`/obtener_detalles_usuario/${userId}/`)
+            .then(response => {
+                console.log(response)
+                if (!response.ok) {
+                    throw new Error('Hubo un problema al obtener los detalles del usuario');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('edit-user').value = data.id;
+                document.getElementById('edit-nombre').value = data.nombre;
+                document.getElementById('edit-apellidos').value = data.apellidos;
+                document.getElementById('edit-documento').value = data.documento;
+                document.getElementById('edit-email').value = data.email;
+                // Llena otros campos del formulario según sea necesario
+            })
+            .catch(error => console.error('Error:', error));
+    });
+});

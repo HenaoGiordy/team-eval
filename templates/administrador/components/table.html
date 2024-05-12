@@ -1,12 +1,12 @@
 {%if docentes_lista%}
 {%  include "administrador/components/search.html"%}
-  <table class="table table-bordered  table-hover w-75 mt-2 table--docentes ">
+  <table class="table table-bordered  table-hover w-100 mt-2">
     <thead>
       <tr>
-        <th scope="col">Código</th>
+        <th scope="col">No. Documento</th>
         <th scope="col">Nombre</th>
         <th scope="col">Correo</th>
-        <th scope="col">Acción</th>
+        <th class="text-center" scope="col">Editar</th>
         
       </tr>
     </thead>
@@ -16,7 +16,11 @@
         <th scope="row">{{ docente.user.username }}</th>
         <td>{{ docente.user.first_name }}</td>
         <td>{{ docente.user.email }}</td>
-        <td>{{ docente.user.first_name }}</td>
+        <td class="text-center" >
+          <button type="button" class="btn btn-primary btn-edit" data-id="{{ docente.user.id }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            <i class="bi bi-pen"></i>
+          </button>
+        </td>
       </tr>
       {%endfor%}
     </tbody>
@@ -42,3 +46,30 @@
 </nav>
   </div>
 
+  {% comment %} Modal {% endcomment %}
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form method="POST">
+            {% csrf_token %} 
+            <input type="text" name="edit-nombre" id="edit-nombre" class="form-control" value="{{ docente.user.first_name }}"  placeholder="nombre" required>
+            <input type="text" name="edit-apellidos" id="edit-apellidos" class="form-control" value="{{ docente.user.last_name }}"  placeholder="Apellidos" required>
+            <input type="number" name="edit-documento" id="edit-documento" class="form-control" value="{{ docente.user.username }}"  placeholder="No. Documento" min="1" required>
+            <input type="email" name="edit-email" id="edit-email" class="form-control" value="{{ docente.user.email }}"  placeholder="email"  required>
+            
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" name="edit-user" id="edit-user" value="{{ docente.user.id }}" class="btn btn-primary">Guardar</button>
+        </div>
+        <form>
+      </div>
+    </div>
+  </div>
+  

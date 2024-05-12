@@ -5,14 +5,14 @@
     <h2 class="titulos"><b>Gestión de docentes</b></h2>
     <div class="card-form">
         <h5 class="card-header">Crear un docente</h5>
-        <div class="card-body">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-danger alert-dismissible d-flex w-75 justify-content-center position-absolute alert-modificador"  role="alert">
+        <div class="card-body position-relative">
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert  {{ message.tags }}  position-absolute alert-docenter"  role="alert">
                     <p>{{ message }}</p>
                 </div>
-            {% endfor %}
-        {% endif %}
+                {% endfor %}
+            {% endif %}
 
             <form method="POST" action="">
                 {% csrf_token %} 
@@ -55,7 +55,7 @@
                 </div>
                 <!--Botones e iconos/metáforas de "Guardar" y "Limpiar"-->
                 <div class="botones">
-                    <button type="submit" class="btn btn-primary" style="border: none;">
+                    <button type="submit" name="guardar" class="btn btn-primary" style="border: none;">
                         <b>Guardar</b>
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-floppy" viewBox="0 0 16 16" style="vertical-align: -0.100em;">
                             <path d="M11 2H9v3h2z"/>
@@ -70,12 +70,10 @@
                     </button>
                 </div>
             </form>
-            </div>
-        {%  include  "administrador/components/table.html"%}
-    <div>
-        
-</div>
-
-
+        </div>
+    </div>
+<div class="w-75">
+    {%  include  "administrador/components/table.html"%} 
+</div>    
 
 {% endblock %}
