@@ -367,3 +367,10 @@ input[type=number] {
     top:200px;
     z-index: 100;
 }
+
+/* END CSS VISTA ADMINS GESTIÓN-DE-CURSOS*/
+
+/* CSS VISTA ADMINS GESTIÓN-DE-EVALUACION*/
+.boton-evaluacion{
+    margin-left: 50%;
+}
