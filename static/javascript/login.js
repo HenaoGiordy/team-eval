@@ -43,3 +43,11 @@ document.querySelectorAll('.btn-edit').forEach(btn => {
             .catch(error => console.error('Error:', error));
     });
 });
+
+//Muestra el archivo seleccionado al subirlo localmente
+document.getElementById('fileInput').addEventListener('change', function() {
+    var fileInput = document.getElementById('fileInput');
+    var filePreview = document.getElementById('filePreview');
+    var fileName = fileInput.files[0].name;
+    filePreview.innerHTML = '<p><b> Archivo seleccionado: ' + fileName + '</b></p>';
+});

@@ -1,75 +1,75 @@
 {%if docentes_lista%}
 {%  include "administrador/components/search.html"%}
-  <table class="table table-bordered  table-hover w-100 mt-2">
-    <thead>
-      <tr>
-        <th scope="col">No. Documento</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Correo</th>
-        <th class="text-center" scope="col">Editar</th>
-        
-      </tr>
-    </thead>
-    <tbody>
-      {%for docente in docentes_lista%}
-      <tr>
-        <th scope="row">{{ docente.user.username }}</th>
-        <td>{{ docente.user.first_name }}</td>
-        <td>{{ docente.user.email }}</td>
-        <td class="text-center" >
-          <button type="button" class="btn btn-primary btn-edit" data-id="{{ docente.user.id }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-            <i class="bi bi-pen"></i>
-          </button>
-        </td>
-      </tr>
-      {%endfor%}
-    </tbody>
-  </table>
-  {% comment %} Paginacion {% endcomment %}
-  <nav aria-label="Page navigation example">
-    <ul class="pagination">
-
-      {% if docentes_lista.has_previous %}
-      <li class="page-item"><a class="page-link" href="?page=1">Primer Página</a></li>
-      <li class="page-item"><a class="page-link" href="?page={{ docentes_lista.previous_page_number }}">&laquo Anterior</a></li>
-      {%endif%}
+<table class="table table-bordered  table-hover w-100 mt-2">
+  <h5 class="card-header mt-3">Lista de docentes</h5>
+  <thead>
+    <tr>
+      <th scope="col">No. Documento</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Correo</th>
+      <th class="text-center" scope="col">Editar</th>
       
-      <li class="page-item disabled"><a class="page-link" href="#"> Página {{ docentes_lista.number }} de {{ docentes_lista.paginator.num_pages }}</a></li>
+    </tr>
+  </thead>
+  <tbody>
+    {%for docente in docentes_lista%}
+    <tr>
+      <th scope="row">{{ docente.user.username }}</th>
+      <td>{{ docente.user.first_name }}</td>
+      <td>{{ docente.user.email }}</td>
+      <td class="text-center" >
+        <button type="button" class="btn btn-primary btn-edit" data-id="{{ docente.user.id }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop"style="border-radius: 50%">
+          <i class="bi bi-pen"></i>
+        </button>
+      </td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
+{% comment %} Paginacion {% endcomment %}
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
 
-      {%if docentes_lista.has_next%}
-      <li class="page-item"><a class="page-link" href="?page={{ docentes_lista.next_page_number }}">Siguiente</a></li>
-      <li class="page-item"><a class="page-link" href="?page={{ docentes_lista.paginator.num_pages }}">&raquo última Página</a></li>
-      {%endif%}
-    </ul>
+    {% if docentes_lista.has_previous %}
+    <li class="page-item"><a class="page-link" href="?page=1">Primer Página</a></li>
+    <li class="page-item"><a class="page-link" href="?page={{ docentes_lista.previous_page_number }}">&laquo Anterior</a></li>
+    {%endif%}
+    
+    <li class="page-item disabled"><a class="page-link" href="#"> Página {{ docentes_lista.number }} de {{ docentes_lista.paginator.num_pages }}</a></li>
+
+    {%if docentes_lista.has_next%}
+    <li class="page-item"><a class="page-link" href="?page={{ docentes_lista.next_page_number }}">Siguiente</a></li>
+    <li class="page-item"><a class="page-link" href="?page={{ docentes_lista.paginator.num_pages }}">&raquo última Página</a></li>
+    {%endif%}
+  </ul>
 {%endif%}
 
 </nav>
-  </div>
+</div>
 
-  {% comment %} Modal {% endcomment %}
-  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form method="POST">
-            {% csrf_token %} 
-            <input type="text" name="edit-nombre" id="edit-nombre" class="form-control" value="{{ docente.user.first_name }}"  placeholder="nombre" required>
-            <input type="text" name="edit-apellidos" id="edit-apellidos" class="form-control" value="{{ docente.user.last_name }}"  placeholder="Apellidos" required>
-            <input type="number" name="edit-documento" id="edit-documento" class="form-control" value="{{ docente.user.username }}"  placeholder="No. Documento" min="1" required>
-            <input type="email" name="edit-email" id="edit-email" class="form-control" value="{{ docente.user.email }}"  placeholder="email"  required>
-            
-          
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" name="edit-user" id="edit-user" value="{{ docente.user.id }}" class="btn btn-primary">Guardar</button>
-        </div>
-        <form>
+{% comment %} Modal {% endcomment %}
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+      <div class="modal-body">
+        <form method="POST">
+          {% csrf_token %} 
+          <input type="text" name="edit-nombre" id="edit-nombre" class="form-control" value="{{ docente.user.first_name }}"  placeholder="nombre" required>
+          <input type="text" name="edit-apellidos" id="edit-apellidos" class="form-control" value="{{ docente.user.last_name }}"  placeholder="Apellidos" required>
+          <input type="number" name="edit-documento" id="edit-documento" class="form-control" value="{{ docente.user.username }}"  placeholder="No. Documento" min="1" required>
+          <input type="email" name="edit-email" id="edit-email" class="form-control" value="{{ docente.user.email }}"  placeholder="email"  required>
+          
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" name="edit-user" id="edit-user" value="{{ docente.user.id }}" class="btn btn-primary">Guardar</button>
+      </div>
+      <form>
     </div>
   </div>
-  
+</div>

@@ -1,9 +1,10 @@
+/* INICIO CSS GENERALES */
+
 * {
     font-family: 'Open Sans', 'sans-serif';
     font-weight: 400;
     margin: 0;
     box-sizing: border-box;
-
 }
 
 .fondo {
@@ -19,18 +20,43 @@
     padding-top: 2%;
 }
 
+.container__admin {
+    margin-left: 250px;
+    margin-top: 57px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/*Caja de formularios*/
+.card-form {
+    margin: 1% 35%;
+    width: 50%;
+    box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.34);
+    align-items: center;
+    border-radius: 6px;
+    background-color: #ffffff;
+}
+
+.botones {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 0.5%;
+    margin-right: 6%;
+}
+
+/* FIN CSS GENERALES */
+
 /*INICIO CSS CORRESPONDIENTE A LOS INPUTS-LABELS Y PARTE DEL LOGIN */
 
 .alert {
-    /* Establece la opacidad inicial */
-    opacity: 1;
-    /* Establece la duración de la transición */
-    transition: opacity 1s ease;
+    opacity: 1; /* Establece la opacidad inicial */
+    transition: opacity 1s ease; /* Establece la duración de la transición */
 }
 
 .alert.hide {
-    /* Cambia la opacidad a 0 */
-    opacity: 0;
+    opacity: 0; /* Cambia la opacidad*/
 }
 
 .alert-modificador {
@@ -82,16 +108,13 @@ input:focus~label {
 
 .cuadro-con-sombra {
     position: relative;
-    /* Para posicionar de forma relativa */
     padding: 10px;
     background-color: #ffffff;
     border: 1px solid #ced4da;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 900;
-    /* Ajusta el valor según sea necesario para que esté por encima de otros elementos */
+    z-index: 900; /* Ajusta el valor para que esté por encima de otros elementos */
     width: 100%;
 }
-
 
 .sidebar-container {
     min-width: 250px;
@@ -131,7 +154,6 @@ input:focus~label {
     align-content: center;
     justify-content: center;
     align-items: center;
-
 }
 
 .dropdown__link:hover {
@@ -156,7 +178,6 @@ input:focus~label {
     background-color: #0da7fd;
     color: white;
 }
-
 
 /* END CSS CORRESPONDIENTE A LAS VISTAS DE ESTUDIANTE */
 
@@ -204,6 +225,7 @@ input:focus~label {
 /* END CSS PARA LAS CARD DE LA LISTA DE CURSOS */
 
 /* CSS PARA LA VISTA DE CADA CURSO Y CALIFICAR ESTUDIANTES */
+
 .container--evaluacion--curso {
     margin-left: 300px;
     margin-right: 5%;
@@ -254,51 +276,7 @@ input:focus~label {
 /* END CSS PARA LA VISTA DE CADA CURSO Y CALIFICAR ESTUDIANTES */
 
 
-/* VISTAS ADMINS --GESTION-ESTUDIANTES */
-
-.container__admin {
-    margin-left: 250px;
-    margin-top: 57px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.card-form {
-    margin: 1% 35%;
-    width: 50%;
-    box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.34);
-    align-items: center;
-    border-radius: 6px;
-    background-color: #ffffff;
-}
-
-.botones {
-    display: flex;
-    justify-content: flex-end;
-    padding-top: 0.5%;
-    margin-right: 6%;
-}
-
-.area-seleccionar {
-    display: flex-end; 
-    justify-content: center; 
-    align-items: center; 
-    background-color: white; 
-    color: black; 
-    padding: 10px; 
-    border-radius: 6px; 
-    box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.34);
-    max-width: 45%; 
-    margin-left: 37%;
-    margin-top: 5%;
-}
-
-.card-body-2 {
-    display: flex;
-    align-items: center;
-}
+/* INICIO CSS GESTION-ESTUDIANTES (ADMIN)*/
 
 .subir-archivo {
     display: flex;
@@ -310,10 +288,6 @@ input:focus~label {
     display: none;
 }
 
-.file-info {
-    position: relative;
-}
-
 .filePreview {
     position: absolute;
     left: 0;
@@ -321,9 +295,9 @@ input:focus~label {
     font-size: 14px;
 }
 
-/* END CSS VISTA ADMINS GESTIÓN-DE-ESTUDIANTES*/
+/* END CSS GESTION-ESTUDIANTES (ADMIN)*/
 
-/* CSS VISTA ADMINS GESTIÓN-DE-DOCENTES*/
+/* INICIO CSS GESTIÓN-DOCENTES (ADMIN)*/
 
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
@@ -335,19 +309,13 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-/* CSS VISTA ADMINS GESTIÓN-DE-CURSOS*/
-.carda-cursos {
-    box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.34);
-    width: 50%;
-    margin-top:1%;
-    background-color: #ffffff;
-    border-radius: 6px;
-    padding-top: 2%;
-}
+/* END CSS GESTIÓN-DOCENTES (ADMIN)*/
+
+/* INICIO CSS GESTIÓN-DE-CURSOS (ADMIN)*/
 
 .btn-search {
-    width: 30px;
-    height: 30px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     background-color: #0D6EFD;
     border: none;
@@ -368,9 +336,12 @@ input[type=number] {
     z-index: 100;
 }
 
-/* END CSS VISTA ADMINS GESTIÓN-DE-CURSOS*/
+/* END CSS GESTIÓN-DE-CURSOS (ADMIN)*/
 
-/* CSS VISTA ADMINS GESTIÓN-DE-EVALUACION*/
+/* INICIO CSS GESTIÓN-DE-EVALUACION (ADMIN)*/
+
 .boton-evaluacion{
     margin-left: 50%;
 }
+
+/* END CSS GESTIÓN-DE-EVALUACION (ADMIN)*/
