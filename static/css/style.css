@@ -31,7 +31,7 @@
 
 /*Caja de formularios*/
 .card-form {
-    margin: 1% 35%;
+    /* margin: 1% 35%; */
     width: 50%;
     box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.34);
     align-items: center;
