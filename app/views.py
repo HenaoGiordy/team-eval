@@ -302,10 +302,12 @@ def administrador_gestion_de_cursos(request):
         
         try:
             if "codigo_buscar" in request.POST:
-                try:
-                    cursos_lista = Curso.objects.filter(codigo = request.POST.get("codigo_buscar"))
-                except:
-                    messages.error(request, "No se encontró un estudiante con ese código")
+                
+                curso = Curso.objects.filter(codigo = request.POST.get("codigo_buscar"))
+                if not curso:
+                    raise ValueError("No se encontró el curso")
+                cursos_lista = curso
+
             
             if "guardar-curso" in request.POST:
                 codigo = request.POST.get("codigo-curso")
