@@ -157,7 +157,7 @@ def administrador_gestion_de_docentes(request):
                 return redirect(reverse('administrador_gestion_de_docentes'))
             
         except IntegrityError:
-            messages.error(request, "Ya existe un profesor con ese documento.")
+            messages.error(request, "Ya existe un usuario con ese documento.")
         
         except ValueError  as e:
             messages.error(request, f"Error: debe proporcionar un código")
@@ -246,7 +246,7 @@ def administrador_gestion_de_estudiantes(request):
                 usuario.email = request.POST.get('edit-email-estudiante')
                 usuario.is_active = request.POST.get('edit-estado-estudiante')
                 usuario.save()
-                messages.success(request, "Usuario actualizado correctamente")
+                messages.success(request, "Estudiante actualizado correctamente")
                 return redirect(reverse('administrador_gestion_de_estudiantes'))
             
         except IntegrityError:
