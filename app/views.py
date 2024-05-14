@@ -321,11 +321,21 @@ def administrador_gestion_de_cursos(request):
                 fecha_actual = datetime.now()
                 curso = Curso.objects.create(profesor=docente, nombre=nombre, codigo=codigo, periodo = periodo, fecha_curso = fecha_actual)
                 return redirect(reverse("administrador_gestion_de_cursos"))
-            elif "editar-curso" in request.POST:
-                pass
-            
-            
-            
+    
+            if "edit-curso" in request.POST:
+                
+                curso_id = request.POST.get("edit-curso")
+                curso = Curso.objects.get(id=curso_id)
+                curso.codigo = request.POST.get("edit-codigo-curso")
+                curso.nombre = request.POST.get("edit-nombre-curso")
+                codigo_profesor = User.objects.get(username= request.POST.get("edit-codigo-docente"))
+                profesor = PerfilProfesor.objects.get(user=codigo_profesor)
+                curso.profesor = profesor
+                curso.periodo = request.POST.get("edit-periodo-curso")
+                curso.save()
+                messages.success(request, "Curso modificado con éxito")
+                
+
         except IntegrityError:
             messages.error(request, "Ya hay un curso con ese código")
         except PerfilProfesor.DoesNotExist:

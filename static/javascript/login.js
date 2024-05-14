@@ -33,7 +33,7 @@ document.querySelectorAll('.btn-edit').forEach(btn => {
                 return response.json();
             })
             .then(data => {
-                document.getElementById('edit-user').value = data.id; //eliminar
+                document.getElementById('edit-user').value = data.id;
                 document.getElementById('edit-nombre').value = data.nombre;
                 document.getElementById('edit-apellidos').value = data.apellidos;
                 document.getElementById('edit-documento').value = data.documento;
@@ -60,7 +60,6 @@ document.querySelectorAll('.btn-edit-estudiante').forEach(btn => {
                 return response.json();
             })
             .then(data => {
-                console.log(data)
                 document.getElementById('edit-user').value = data.id;
                 document.getElementById('edit-nombre-estudiante').value = data.nombre;
                 document.getElementById('edit-apellidos-estudiante').value = data.apellidos;
@@ -87,8 +86,7 @@ document.querySelectorAll('.btn-edit-curso').forEach(btn => {
                 return response.json();
             })
             .then(data => {
-                console.log(data)
-                document.getElementById('edit-user').value = data.id;
+                document.getElementById('edit-curso').value = data.id;
                 document.getElementById('edit-codigo-curso').value = data.codigo;
                 document.getElementById('edit-nombre-curso').value = data.nombre;
                 document.getElementById('edit-codigo-docente').value = data.profesor_codigo; // Asegúrate de que data.profesor sea el código del docente
