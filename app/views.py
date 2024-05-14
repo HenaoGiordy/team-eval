@@ -189,13 +189,80 @@ def obtener_detalles_usuario(request, user_id):
         return JsonResponse({'error': 'El usuario no existe'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+    
+def obtener_detalles_estudiante(request, user_id):
+    try:
+        usuario = User.objects.get(id=user_id)
+        perfil_estudiante = PerfilEstudiante.objects.get(user=usuario)
+        detalles_usuario = {
+            'id':user_id,
+            'nombre': usuario.first_name,
+            'apellidos': usuario.last_name,
+            'documento': usuario.username,  # Suponiendo que el username es el documento
+            'email': usuario.email,
+            'estado': usuario.is_active
+            # Agrega otros campos que desees editar
+        }
+        return JsonResponse(detalles_usuario)
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'El usuario no existe'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
 
 
 
 
 @login_required
 def administrador_gestion_de_estudiantes(request):
-    return render(request, 'administrador/gestion-de-estudiantes.html')
+    pagination = Paginator(PerfilEstudiante.objects.all().order_by('-id'), 10)
+    page = request.GET.get('page')
+    estudiantes_lista = pagination.get_page(page)
+    if request.method == "POST":
+        
+        try:
+            
+            if "codigo_buscar" in request.POST:
+                try:
+                    usuario = User.objects.get(username = request.POST.get("codigo_buscar"))
+                    estudiantes_lista = PerfilEstudiante.objects.filter(user = usuario)
+                except:
+                    messages.error(request, "No se encontró un estudiante con ese código")
+            if "guardar-estudiante" in request.POST:
+                first_name = request.POST.get('nombres-estudiante')
+                last_name = request.POST.get('apellidos-estudiante')
+                username = request.POST.get('codigo-estudiante')
+                email = request.POST.get('email-estudiante')
+                
+                user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name,password=username, email=email, role="ESTUDIANTE")
+                return redirect(reverse('administrador_gestion_de_estudiantes'))
+            
+            elif "edit-user" in request.POST:
+                user_id = request.POST.get('edit-user')
+                usuario = User.objects.get(id=user_id)
+                usuario.first_name = request.POST.get('edit-nombre-estudiante')
+                usuario.last_name = request.POST.get('edit-apellidos-estudiante')
+                usuario.username = request.POST.get('edit-documento-estudiante')
+                usuario.email = request.POST.get('edit-email-estudiante')
+                usuario.is_active = request.POST.get('edit-estado-estudiante')
+                usuario.save()
+                messages.success(request, "Usuario actualizado correctamente")
+                return redirect(reverse('administrador_gestion_de_estudiantes'))
+            
+        except IntegrityError:
+            messages.error(request, "Ya existe un usuario con ese documento.")
+        
+        except ValueError  as e:
+            messages.error(request, f"Error: debe proporcionar un código")
+            
+        except ValidationError as e:
+            messages.error(request, f"El código debe ser mayor a 0: {e}")
+        
+        except Exception as e:
+            messages.error(request, f"Error al procesar la solicitud: {e}")
+    
+    
+    return render(request, 'administrador/gestion-de-estudiantes.html', {'estudiantes_lista': estudiantes_lista})
 
 @login_required
 def administrador_gestion_de_cursos(request):

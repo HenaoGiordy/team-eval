@@ -15,4 +15,5 @@ urlpatterns= [
     path('administrador/gestion_de_cursos', views.administrador_gestion_de_cursos, name="administrador_gestion_de_cursos"),
     path('administrador/gestion_de_evaluacion', views.administrador_gestion_de_evaluacion, name="administrador_gestion_de_evaluacion"),
     path('obtener_detalles_usuario/<int:user_id>/', views.obtener_detalles_usuario, name='obtener_detalles_usuario'),
+    path('obtener_detalles_estudiante/<int:user_id>/', views.obtener_detalles_estudiante, name='obtener_detalles_estudiante'),
 ]

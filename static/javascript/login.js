@@ -33,7 +33,7 @@ document.querySelectorAll('.btn-edit').forEach(btn => {
                 return response.json();
             })
             .then(data => {
-                document.getElementById('edit-user').value = data.id;
+                document.getElementById('edit-user').value = data.id; //eliminar
                 document.getElementById('edit-nombre').value = data.nombre;
                 document.getElementById('edit-apellidos').value = data.apellidos;
                 document.getElementById('edit-documento').value = data.documento;
@@ -46,3 +46,28 @@ document.querySelectorAll('.btn-edit').forEach(btn => {
 });
 
 //Muestra el archivo seleccionado al subirlo localmente
+
+document.querySelectorAll('.btn-edit-estudiante').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const userId = btn.getAttribute('data-id');
+        fetch(`/obtener_detalles_estudiante/${userId}/`)
+            .then(response => {
+                
+                if (!response.ok) {
+                    throw new Error('Hubo un problema al obtener los detalles del usuario');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data)
+                document.getElementById('edit-user').value = data.id;
+                document.getElementById('edit-nombre-estudiante').value = data.nombre;
+                document.getElementById('edit-apellidos-estudiante').value = data.apellidos;
+                document.getElementById('edit-documento-estudiante').value = data.documento;
+                document.getElementById('edit-email-estudiante').value = data.email;
+                document.getElementById('edit-estado-estudiante').value = data.estado == true ? "True" : "False"
+                // Llena otros campos del formulario según sea necesario
+            })
+            .catch(error => console.error('Error:', error));
+    });
+});

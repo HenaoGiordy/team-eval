@@ -1,0 +1,84 @@
+{%if estudiantes_lista%}
+{%  include "administrador/components/search.html"%}
+<table class="table table-bordered  table-hover w-100 mt-2">
+  <h5 class="card-header mt-3">Lista de Estudiantes</h5>
+  <thead>
+    <tr>
+      <th scope="col">Código Estudiante</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Correo</th>
+      <th scope="col">Activo</th>
+      <th class="text-center" scope="col">Editar</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    {%for estudiante in estudiantes_lista%}
+    <tr>
+      <th scope="row">{{ estudiante.user.username }}</th>
+      <td>{{ estudiante.user.first_name }}</td>
+      <td>{{ estudiante.user.email }}</td>
+      <td>{{ estudiante.user.is_active }}</td>
+      <td class="text-center" >
+        <button type="button" class="btn btn-primary btn-edit-estudiante" data-id="{{ estudiante.user.id }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop"style="border-radius: 50%">
+          <i class="bi bi-pen"></i>
+        </button>
+      </td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
+{% comment %} Paginacion {% endcomment %}
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    {% if docentes_lista.has_previous %}
+    <li class="page-item"><a class="page-link" href="?page=1">Primer Página</a></li>
+    <li class="page-item"><a class="page-link" href="?page={{ estudiantes_lista.previous_page_number }}">&laquo Anterior</a></li>
+    {%endif%}
+    
+    <li class="page-item disabled"><a class="page-link" href="#"> Página {{ estudiantes_lista.number }} de {{ estudiantes_lista.paginator.num_pages }}</a></li>
+
+    {%if docentes_lista.has_next%}
+    <li class="page-item"><a class="page-link" href="?page={{ estudiantes_lista.next_page_number }}">Siguiente</a></li>
+    <li class="page-item"><a class="page-link" href="?page={{ estudiantes_lista.paginator.num_pages }}">&raquo última Página</a></li>
+    {%endif%}
+  </ul>
+{%endif%}
+
+</nav>
+</div>
+
+{% comment %} Modal {% endcomment %}
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST">
+          {% csrf_token %}
+          <label for="edit-nombre-estudiante">Nombre</label> 
+          <input type="text" name="edit-nombre-estudiante" id="edit-nombre-estudiante" class="form-control" placeholder="nombre" required>
+          <label for="edit-apellidos-estudiante">Apellidos</label> 
+          <input type="text" name="edit-apellidos-estudiante" id="edit-apellidos-estudiante" class="form-control" placeholder="Apellidos" required>
+          <label for="edit-documento-estudiante">Documento</label> 
+          <input type="number" name="edit-documento-estudiante" id="edit-documento-estudiante" class="form-control" placeholder="Código" min="1" required>
+          <label for="edit-email-estudiante">Email</label> 
+          <input type="email" name="edit-email-estudiante" id="edit-email-estudiante" class="form-control" placeholder="email"  required>
+          <label for="edit-estado-estudiante">Estado Estudiante</label>
+          <select class="form-control" name="edit-estado-estudiante" id="edit-estado-estudiante">
+            <option value="True">Activo</option>
+            <option value="False">Inactivo</option>
+        </select>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" name="edit-user" id="edit-user" value="{{ estudiante.user.id }}" class="btn btn-primary">Guardar</button>
+      </div>
+      <form>
+    </div>
+  </div>
+</div>
