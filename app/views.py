@@ -141,6 +141,9 @@ def administrador_gestion_de_docentes(request):
                 username = request.POST.get('documento-docente')
                 email = request.POST.get('email')
                 
+                if int(username) <0 :
+                    raise ValidationError(username)
+                
                 user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name,password=username, email=email, role="PROFESOR")
                 return redirect(reverse('administrador_gestion_de_docentes'))
             
@@ -234,7 +237,11 @@ def administrador_gestion_de_estudiantes(request):
                 username = request.POST.get('codigo-estudiante')
                 email = request.POST.get('email-estudiante')
                 
+                if int(username) <0 :
+                    raise ValidationError(username)
+                
                 user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name,password=username, email=email, role="ESTUDIANTE")
+                messages.success(request, "Estudiante guardado correctamente")
                 return redirect(reverse('administrador_gestion_de_estudiantes'))
             
             elif "edit-user" in request.POST:

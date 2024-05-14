@@ -31,14 +31,14 @@
 {% comment %} Paginacion {% endcomment %}
 <nav aria-label="Page navigation example">
   <ul class="pagination">
-    {% if docentes_lista.has_previous %}
+    {% if estudiantes_lista.has_previous %}
     <li class="page-item"><a class="page-link" href="?page=1">Primer Página</a></li>
     <li class="page-item"><a class="page-link" href="?page={{ estudiantes_lista.previous_page_number }}">&laquo Anterior</a></li>
     {%endif%}
     
     <li class="page-item disabled"><a class="page-link" href="#"> Página {{ estudiantes_lista.number }} de {{ estudiantes_lista.paginator.num_pages }}</a></li>
 
-    {%if docentes_lista.has_next%}
+    {%if estudiantes_lista.has_next%}
     <li class="page-item"><a class="page-link" href="?page={{ estudiantes_lista.next_page_number }}">Siguiente</a></li>
     <li class="page-item"><a class="page-link" href="?page={{ estudiantes_lista.paginator.num_pages }}">&raquo última Página</a></li>
     {%endif%}
