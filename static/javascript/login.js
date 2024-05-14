@@ -47,6 +47,7 @@ document.querySelectorAll('.btn-edit').forEach(btn => {
 
 //Muestra el archivo seleccionado al subirlo localmente
 
+//Ventana modal Estudiante
 document.querySelectorAll('.btn-edit-estudiante').forEach(btn => {
     btn.addEventListener('click', () => {
         const userId = btn.getAttribute('data-id');
@@ -54,7 +55,7 @@ document.querySelectorAll('.btn-edit-estudiante').forEach(btn => {
             .then(response => {
                 
                 if (!response.ok) {
-                    throw new Error('Hubo un problema al obtener los detalles del usuario');
+                    throw new Error('Hubo un problema al obtener los detalles del estudiante');
                 }
                 return response.json();
             })
@@ -66,6 +67,32 @@ document.querySelectorAll('.btn-edit-estudiante').forEach(btn => {
                 document.getElementById('edit-documento-estudiante').value = data.documento;
                 document.getElementById('edit-email-estudiante').value = data.email;
                 document.getElementById('edit-estado-estudiante').value = data.estado == true ? "True" : "False"
+                // Llena otros campos del formulario según sea necesario
+            })
+            .catch(error => console.error('Error:', error));
+    });
+});
+
+//Ventana modal Curso
+document.querySelectorAll('.btn-edit-curso').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const cursoId = btn.getAttribute('data-id');
+        fetch(`/obtener_detalles_curso/${cursoId}/`)
+        
+            .then(response => {
+                console.log(response)
+                if (!response.ok) {
+                    throw new Error('Hubo un problema al obtener los detalles del curso');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data)
+                document.getElementById('edit-user').value = data.id;
+                document.getElementById('edit-codigo-curso').value = data.codigo;
+                document.getElementById('edit-nombre-curso').value = data.nombre;
+                document.getElementById('edit-codigo-docente').value = data.profesor_codigo; // Asegúrate de que data.profesor sea el código del docente
+                document.getElementById('edit-periodo-curso').value = data.periodo;
                 // Llena otros campos del formulario según sea necesario
             })
             .catch(error => console.error('Error:', error));

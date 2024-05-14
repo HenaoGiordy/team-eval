@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -5,7 +6,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from app.models import User, PerfilEstudiante, Grupo, PerfilProfesor
+from app.models import  User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 
@@ -173,7 +174,7 @@ def administrador_gestion_de_docentes(request):
     
     return render(request, 'administrador/gestion-de-docentes.html', { 'docentes_lista': docentes_lista})
 
-
+@login_required
 def obtener_detalles_usuario(request, user_id):
     try:
         usuario = User.objects.get(id=user_id)
@@ -192,7 +193,8 @@ def obtener_detalles_usuario(request, user_id):
         return JsonResponse({'error': 'El usuario no existe'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
-    
+
+@login_required
 def obtener_detalles_estudiante(request, user_id):
     try:
         usuario = User.objects.get(id=user_id)
@@ -271,9 +273,72 @@ def administrador_gestion_de_estudiantes(request):
     
     return render(request, 'administrador/gestion-de-estudiantes.html', {'estudiantes_lista': estudiantes_lista})
 
+
+@login_required
+def obtener_detalles_curso(request, curso_id):
+    try:
+        curso = Curso.objects.get(id=curso_id)
+        detalles_curso= {
+            'id':curso_id,
+            'nombre': curso.nombre,
+            'profesor_codigo': curso.profesor.user.username,
+            'codigo': curso.codigo,  
+            'periodo': curso.periodo,
+            # Agrega otros campos que desees editar
+        }
+        return JsonResponse(detalles_curso)
+    except Curso.DoesNotExist:
+        return JsonResponse({'error': 'El usuario no existe'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
 @login_required
 def administrador_gestion_de_cursos(request):
-    return render(request, 'administrador/gestion_de_cursos.html')
+    pagination = Paginator(Curso.objects.all().order_by('-id'), 10)
+    page = request.GET.get('page')
+    cursos_lista = pagination.get_page(page)
+    
+    if request.method == "POST":
+        
+        try:
+            if "codigo_buscar" in request.POST:
+                try:
+                    cursos_lista = Curso.objects.filter(codigo = request.POST.get("codigo_buscar"))
+                except:
+                    messages.error(request, "No se encontró un estudiante con ese código")
+            
+            if "guardar-curso" in request.POST:
+                codigo = request.POST.get("codigo-curso")
+                codigo_docente = request.POST.get("codigo-docente")
+                nombre = request.POST.get("nombre-curso")
+                periodo = request.POST.get("periodo-curso")
+                
+                usuario = User.objects.get(username = codigo_docente)
+                docente = PerfilProfesor.objects.get(user = usuario)
+                if periodo not in ["I", "II"]:
+                    raise ValueError("Ingrese un periodo correctamente")
+                
+                fecha_actual = datetime.now()
+                curso = Curso.objects.create(profesor=docente, nombre=nombre, codigo=codigo, periodo = periodo, fecha_curso = fecha_actual)
+                return redirect(reverse("administrador_gestion_de_cursos"))
+            elif "editar-curso" in request.POST:
+                pass
+            
+            
+            
+        except IntegrityError:
+            messages.error(request, "Ya hay un curso con ese código")
+        except PerfilProfesor.DoesNotExist:
+            messages.error(request, "No hay un profesor con ese código")
+        except User.DoesNotExist:
+            messages.error(request, "No hay un profesor con ese código")
+        except ValueError as e:
+            messages.error(request, e )
+        except:
+            messages.error(request, "Por favor digite el formulario correctamente")
+ 
+    return render(request, 'administrador/gestion_de_cursos.html', {'cursos_lista': cursos_lista})
+
 
 @login_required
 def administrador_gestion_de_evaluacion(request):

@@ -76,13 +76,19 @@ class Puntuacion(models.Model):
         return self.criterio_evaluado + "Nota: "+ self.nota + ", Retroalimentación: " + self.retroalimentacion
 
 class Curso(models.Model):
-    profesor = models.ForeignKey(PerfilProfesor, on_delete=models.CASCADE)
-    nombre = models.TextField(max_length=50)
-    codigo = models.TextField(max_length=20)
-    rubrica = models.ForeignKey(Rubrica, on_delete=models.CASCADE)
+    PERIODOS = {"I" : "I", "II" : "II"}
+    profesor = models.ForeignKey(PerfilProfesor, on_delete=models.CASCADE, blank=False)
+    nombre = models.TextField(max_length=50, blank=False)
+    codigo = models.TextField(max_length=20, unique=True, blank=False)
+    fecha_curso = models.DateField()
+    periodo = models.TextField(choices=PERIODOS)
+    rubrica = models.ForeignKey(Rubrica, on_delete=models.CASCADE, blank=True, null=True)
     def __str__(self):
         return self.nombre
-    
+    @property
+    def get_periodo_academico(self):
+        return f"{self.fecha_curso.strftime('%Y')} - {self.periodo}"
+
 class PerfilEstudiante(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     nombre = models.TextField()

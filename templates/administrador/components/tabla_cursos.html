@@ -1,12 +1,14 @@
 {%if cursos_lista%}
-{%  include "administrador/components/search.html"%}
+{%  include "administrador/components/search_cursos.html"%}
 <table class="table table-bordered  table-hover w-100 mt-2">
-  <h5 class="card-header mt-3">Lista de docentes</h5>
+  <h5 class="card-header mt-3">Lista de Cursos</h5>
   <thead>
     <tr>
-      <th scope="col">Nombre Curso</th>
-      <th scope="col">Código</th>
-      <th scope="col">Profesor</th>
+      <th scope="col" class="fw-bold">Nombre Curso</th>
+      <th scope="col" class="fw-bold">Código Curso</th>
+      <th scope="col" class="text-center fw-bold">Profesor</th>
+      <th scope="col" class="fw-bold">Periodo</th>
+      <th scope="col" class="fw-bold">Editar</th>
     </tr>
   </thead>
   <tbody>
@@ -14,7 +16,13 @@
     <tr>
       <th scope="row">{{ curso.nombre }}</th>
       <td>{{ curso.codigo }}</td>
-      <td>{{ curso.profesor }}</td>
+      <td class="text-center"><span class="fw-bold">Nombre: </span>{{ curso.profesor }} <span class="fw-bold"> Codigo:</span> {{ curso.profesor.user.username }}</td>
+      <td>{{ curso.get_periodo_academico }}</td>
+      <td class="text-center" >
+        <button type="button" class="btn btn-primary btn-edit-curso" data-id="{{ curso.id }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop"style="border-radius: 50%">
+          <i class="bi bi-pen"></i>
+        </button>
+      </td>
     </tr>
     {%endfor%}
   </tbody>
@@ -38,4 +46,39 @@
 {%endif%}
 
 </nav>
+</div>
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST">
+          {% csrf_token %}
+
+          <label for="edit-codigo-curso">Código curso</label>
+          <input type="text" class="form-control" name="edit-codigo-curso" id="edit-codigo-curso" placeholder="Código curso" required>
+
+          <label for="edit-nombre-curso">Nombre curso</label>
+          <input type="text" class="form-control" name="edit-nombre-curso" id="edit-nombre-curso" placeholder="Nombre curso" required>
+
+          <label for="edit-codigo-docente">Código Docente</label>
+          <input type="number" class="form-control" id="edit-codigo-docente" name="edit-codigo-docente" placeholder="Código docente" required>
+
+          <label for="edit-periodo-curso">Periodo Académico</label>
+          <select class="form-control" name="edit-periodo-curso" id="edit-periodo-curso">
+              <option value="I">I - Primer Semestre</option>
+              <option value="II">II - Segundo Semestre</option>
+          </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" name="edit-user" id="edit-user" value="{{ curso.id }}" class="btn btn-primary">Guardar</button>
+      </div>
+      <form>
+    </div>
+  </div>
 </div>

@@ -3,72 +3,56 @@
 {% block content %}
 <div  class="container__admin">
     <h2 class="titulos"><b>Gestión de cursos</b></h2>
-    <div class="card-form">
+    <div class="card-form pb-3">
         <h5 class="card-header">Crear un curso</h5>
-        <div class="card-body">
-            <form method="POST">
+        
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert  {{ message.tags }}  position-absolute alert-docenter"  role="alert">
+                    <p>{{ message }}</p>
+                </div>
+                {% endfor %}
+            {% endif %}
+            <form method="POST" class="d-flex flex-column">
                 {% csrf_token %} 
                 <!-- Grupo y nombre del curso -->
                 <div class="form-row justify-content-center">
-                    <div class="form-group col-md-5 mx-3">
+                    <div class="form-group col-md-10 mx-3">
                         <i class="bi bi-journal-text"></i>
                         <label for="codigo-curso">Código curso</label>
-                        <input type="text" class="form-control" name="codigo-curso" id="codigo-curso" placeholder="Código curso">
-                    </div>
-
-                    {% comment %} <div class="mt-4 mx-1">
-                    <button class="btn-search" style="margin: 20%; color: white">
-                        <i class="bi bi-search"></i>
-                    </button>
-                    </div> {% endcomment %}
-
-                    <div class="form-group col-md-5 mx-2">
-                        <i class="bi bi-journal-text"></i>
-                        <label for="grupo-curso">Grupo curso</label>
-                        <input type="text" class="form-control" name="grupo-curso" id="grupo-curso" placeholder="Grupo curso">
+                        <input type="text" class="form-control" name="codigo-curso" id="codigo-curso" placeholder="Código curso" required>
                     </div>
                 </div>
                 
                 <!-- Nombre y estado del curso -->
                 <div class="form-row justify-content-center">
-                    <div class="form-group col-md-5 mx-3">
+                    <div class="form-group col-md-10 mx-3">
                         <i class="bi bi-pencil"></i>
                         <label for="nombre-curso">Nombre curso</label>
-                        <input type="text" class="form-control" name="nombre-curso" id="nombre-curso" placeholder="Nombre curso">
+                        <input type="text" class="form-control" name="nombre-curso" id="nombre-curso" placeholder="Nombre curso" required>
                     </div>
-                    <div class="mt-5 mx-3"></div>
-                    <div class="form-group col-md-5 mx-2" style="display: flex-end;">
-                        <i class="bi bi-patch-check"></i>
-                        <label for="estado-curso">Estado curso</label>
-                            <select class="form-control" name="estado-curso" id="estado-curso">
-                                <option>Activo</option>
-                                <option>Inactivo</option>
-                            </select>
-                    </div> 
-                </div>
+                
+                    
 
                 <!-- Código y nombre del docente -->
-                <div class="form-row justify-content-center">
-                    <div class="form-group col-md-5 mx-2">
+                <div class="form-row justify-content-center w-100">
+                    <div class="form-group col-md-10 mx-2">
                         <i class="bi bi-person-lines-fill"></i>
-                        <label for="codigo-docente">Código curso</label>
-                        <input type="number" class="form-control" id="codigo-docente" placeholder="Código docente">
+                        <label for="codigo-docente">Código Docente</label>
+                        <input type="number" class="form-control" id="codigo-docente" name="codigo-docente" placeholder="Código docente" required>
                     </div>
-                    <div class="mt-4 mx-1">
-                        <button class="btn-search" style="margin: 20%; color: white">
-                            <i class="bi bi-search"></i>
-                        </button>
+                    <div class="form-group col-md-10 mx-2">
+                        <i class="bi bi-calendar3"></i>
+                        <label for="periodo-curso">Periodo Académico</label>
+                        <select class="form-control" name="periodo-curso" id="periodo-curso">
+                            <option value="I">I - Primer Semestre</option>
+                            <option value="II">II - Segundo Semestre</option>
+                        </select>
                     </div>
-                    <div class="form-group col-md-5 mx-2">
-                        <i class="bi bi-pencil"></i>
-                        <label for="nombre-docente">Nombre docente</label>
-                        <input type="text" class="form-control" id="nombre-docente" placeholder="Nombre docente">
-                    </div>
-                </div>
 
                 <!--Botones e iconos/metáforas de "Guardar" y "Limpiar"-->
                 <div class="botones">
-                    <button type="submit" class="btn btn-primary" style="border: none;">
+                    <button type="submit" class="btn btn-primary" name="guardar-curso" style="border: none;">
                         <b>Guardar</b>
                         <i class="bi bi-floppy"></i>
                     </button>
@@ -80,5 +64,11 @@
             </form>
         </div>
     </div>
+    </div>
+    <div class="w-75">
+        {%include "administrador/components/tabla_cursos.html" %}
+    </div>
 </div>
+
+
 {% endblock %}
