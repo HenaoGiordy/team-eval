@@ -151,6 +151,7 @@ def administrador_gestion_de_docentes(request):
                 usuario.last_name = request.POST.get('edit-apellidos')
                 usuario.username = request.POST.get('edit-documento')
                 usuario.email = request.POST.get('edit-email')
+                usuario.is_active = request.POST.get('edit-estado')
                 usuario.save()
                 messages.success(request, "Usuario actualizado correctamente")
                 return redirect(reverse('administrador_gestion_de_docentes'))

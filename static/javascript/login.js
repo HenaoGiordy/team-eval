@@ -26,7 +26,7 @@ document.querySelectorAll('.btn-edit').forEach(btn => {
         const userId = btn.getAttribute('data-id');
         fetch(`/obtener_detalles_usuario/${userId}/`)
             .then(response => {
-                console.log(response)
+                
                 if (!response.ok) {
                     throw new Error('Hubo un problema al obtener los detalles del usuario');
                 }
@@ -38,6 +38,7 @@ document.querySelectorAll('.btn-edit').forEach(btn => {
                 document.getElementById('edit-apellidos').value = data.apellidos;
                 document.getElementById('edit-documento').value = data.documento;
                 document.getElementById('edit-email').value = data.email;
+                document.getElementById('edit-estado').value = data.estado == true ? "True" : "False"
                 // Llena otros campos del formulario según sea necesario
             })
             .catch(error => console.error('Error:', error));
@@ -45,9 +46,3 @@ document.querySelectorAll('.btn-edit').forEach(btn => {
 });
 
 //Muestra el archivo seleccionado al subirlo localmente
-document.getElementById('fileInput').addEventListener('change', function() {
-    var fileInput = document.getElementById('fileInput');
-    var filePreview = document.getElementById('filePreview');
-    var fileName = fileInput.files[0].name;
-    filePreview.innerHTML = '<p><b> Archivo seleccionado: ' + fileName + '</b></p>';
-});

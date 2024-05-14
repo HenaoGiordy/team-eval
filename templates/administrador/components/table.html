@@ -7,6 +7,7 @@
       <th scope="col">No. Documento</th>
       <th scope="col">Nombre</th>
       <th scope="col">Correo</th>
+      <th scope="col">Activo</th>
       <th class="text-center" scope="col">Editar</th>
       
     </tr>
@@ -17,6 +18,7 @@
       <th scope="row">{{ docente.user.username }}</th>
       <td>{{ docente.user.first_name }}</td>
       <td>{{ docente.user.email }}</td>
+      <td>{{ docente.user.is_active }}</td>
       <td class="text-center" >
         <button type="button" class="btn btn-primary btn-edit" data-id="{{ docente.user.id }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop"style="border-radius: 50%">
           <i class="bi bi-pen"></i>
@@ -57,12 +59,20 @@
       </div>
       <div class="modal-body">
         <form method="POST">
-          {% csrf_token %} 
-          <input type="text" name="edit-nombre" id="edit-nombre" class="form-control" value="{{ docente.user.first_name }}"  placeholder="nombre" required>
-          <input type="text" name="edit-apellidos" id="edit-apellidos" class="form-control" value="{{ docente.user.last_name }}"  placeholder="Apellidos" required>
-          <input type="number" name="edit-documento" id="edit-documento" class="form-control" value="{{ docente.user.username }}"  placeholder="No. Documento" min="1" required>
-          <input type="email" name="edit-email" id="edit-email" class="form-control" value="{{ docente.user.email }}"  placeholder="email"  required>
-          
+          {% csrf_token %}
+          <label for="edit-nombre">Nombre</label> 
+          <input type="text" name="edit-nombre" id="edit-nombre" class="form-control" placeholder="nombre" required>
+          <label for="edit-apellidos">Apellidos</label> 
+          <input type="text" name="edit-apellidos" id="edit-apellidos" class="form-control" placeholder="Apellidos" required>
+          <label for="edit-documento">Documento</label> 
+          <input type="number" name="edit-documento" id="edit-documento" class="form-control" placeholder="No. Documento" min="1" required>
+          <label for="edit-email">Email</label> 
+          <input type="email" name="edit-email" id="edit-email" class="form-control" placeholder="email"  required>
+          <label for="estado-curso">Estado Docente</label>
+          <select class="form-control" name="edit-estado" id="edit-estado">
+            <option value="True">Activo</option>
+            <option value="False">Inactivo</option>
+        </select>
         
       </div>
       <div class="modal-footer">
