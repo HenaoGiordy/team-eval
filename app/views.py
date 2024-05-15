@@ -56,6 +56,11 @@ def logout_usuario(request):
     
     return redirect('login')
 
+# Vista recuperar contraseña (Login)
+
+def login_recuperar_contraseña(request):
+    return render(request, 'login/recuperar_contraseña.html')
+
 
 #Vistas estudiante
 @login_required
@@ -64,7 +69,7 @@ def estudiante(request):
     perfil = PerfilEstudiante.objects.get(user = usuario)
     return render(request, 'estudiante/estudiante.html', {"cursos" : perfil.cursos.all(), "perfil": perfil})
 
-#vista curso estudiante
+#Vista curso estudiante
 @login_required
 def estudiante_curso(request, cursoid):
     usuario = User.objects.get(username = request.user.username)
@@ -111,8 +116,55 @@ def evaluar(request, estudianteid, cursoid, grupoid):
                                                        'rubrica' : rubrica, "criterios" : criterios, "escalacalificacion" : escalaCalificacion }  )
 
 
-
 #Vistas del profesor
+
+#Inicio de vistas (sidebar)
+
+#Gestión de cursos: 
+
+#Lista de cursos
+
+#Información del curso
+@login_required
+def profesor_curso(request):
+    return render(request, 'profesor/curso.html')
+
+#Lista de estudiantes del curso
+@login_required
+def profesor_estudiantes_curso(request):
+    return render(request, 'profesor/estudiantes_curso.html')
+
+#Importar estudiantes al curso
+@login_required
+def profesor_gestion_de_estudiantes(request):
+    return render(request, 'profesor/gestion_de_estudiantes.html')
+
+#Configuración de evaluación del curso
+@login_required
+def profesor_evaluacion_curso(request):
+    return render(request, 'profesor/evaluacion_curso.html')
+
+#Definir rúbrica del curso
+@login_required
+def profesor_rubrica_curso(request):
+    return render(request, 'profesor/rubrica_curso.html')
+
+#Lista de grupos del curso
+@login_required
+def profesor_grupos_curso(request):
+    return render(request, 'profesor/grupos_curso.html')
+
+#Crear un grupo 
+@login_required
+def profesor_grupo(request):
+    return render(request, 'profesor/grupo.html')
+    
+#Informes
+@login_required
+def profesor_informes(request):
+    return render(request, 'profesor/informes.html')
+
+
 # @login_required
 def profesor(request):
     return render(request, 'profesor/profesor.html')
@@ -348,7 +400,7 @@ def administrador_gestion_de_cursos(request):
             messages.error(request, e )
         except:
             messages.error(request, "Por favor digite el formulario correctamente")
- 
+
     return render(request, 'administrador/gestion_de_cursos.html', {'cursos_lista': cursos_lista})
 
 
