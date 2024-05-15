@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from app.models import  User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
+from app.models import  Calificacion, Criterio, User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 
@@ -354,4 +354,6 @@ def administrador_gestion_de_cursos(request):
 
 @login_required
 def administrador_gestion_de_evaluacion(request):
-    return render(request, 'administrador/gestion_de_evaluacion.html')
+    criterios = Criterio.objects.all()
+    escalas = Calificacion.objects.all()
+    return render(request, 'administrador/gestion_de_evaluacion.html', {"criterios" : criterios, "escalas": escalas})

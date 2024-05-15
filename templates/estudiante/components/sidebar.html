@@ -1,3 +1,11 @@
+<nav class="navbar navbar-expand-lg navbar-dark d-flex justify-content-between" style="background-color: #0D6EFD; position: fixed;right: 0;left: 0; top:0;z-index: 100;">
+    <a class="navbar-brand mx-3" style="color: #ffffff">Hola, {{ user.first_name }}
+    </a>
+    <a class="nav-link mx-2" href="{% url 'logout' %}" style="color: white">
+      <!--Icono/metáfora de "Salir"-->
+      <i class="bi bi-box-arrow-left"></i> Salir
+    </a>
+  </nav> 
 <div class="sidebar-container">
     <div class="w-100">
         
