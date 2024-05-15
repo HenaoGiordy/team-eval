@@ -29,9 +29,11 @@
     align-items: center;
 }
 
+
 /*Caja de formularios*/
+
 .card-form {
-    /* margin: 1% 35%; */
+    margin: 0;
     width: 50%;
     box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.34);
     align-items: center;
@@ -320,7 +322,6 @@ input[type=number] {
     background-color: #0D6EFD;
     border: none;
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
-
 }
 
 .btn-search:hover {
@@ -340,8 +341,13 @@ input[type=number] {
 
 /* INICIO CSS GESTIÓN-DE-EVALUACION (ADMIN)*/
 
-.boton-evaluacion{
-    margin-left: 50%;
+.card-rubrica{
+    margin: 0;
+    width: 90%;
+    box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.34);
+    align-items: center;
+    border-radius: 6px;
+    background-color: #ffffff;
 }
 
 /* END CSS GESTIÓN-DE-EVALUACION (ADMIN)*/
