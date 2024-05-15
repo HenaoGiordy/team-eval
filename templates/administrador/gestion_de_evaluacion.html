@@ -3,7 +3,7 @@
 {% block content %}
     <div class="container__admin">
         <h2 class="titulos"><b>Gestión de evaluación</b></h2>
-        <div class="card-rubrica mt-2">
+        <div class="card-rubrica mt-2 pb-4">
             <h5 class="card-header">Creación de una rúbrica</h5>
             <div class="card-body">
                 <form>
@@ -18,89 +18,20 @@
                     </div>
                 </form>
             </div>
-
+            <div class="d-flex gap-3 mt-4">
             <!--Criterios-->
-            <div class="d-flex gap-3 justify-content-center" style="margin-right: 1%;  margin-left: 1%;">
-                <div class="table-container">
-                    <table class="table table-bordered mt-n4">
-                        <thead class="thead-light">
-                            <tr>
-                                <th scope="col" colspan="3"><b>Lista de criterios</b></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row col" class="col-8"><b>Descripción</b></th>
-                                <th scope="row col" class="col-1"><b>Peso</b></th>
-                                <th scope="row col" class="col-1"><b>Añadir</b></th>
-                            </tr>
-                            
-                                {% for criterio in criterios %}
-                                <tr>
-                                <th  class="col-8">
-                                    {{ criterio.descripcion }}                        
-                                </th>
-                                <th  class="col-1">
-                                    {{ criterio.peso }}
-                                </th>
-                                <th class="col-1">
-                                    <div class="d-flex justify-content-center">
-                                        <input type="checkbox"></input>
-                                    </div>
-                                </th>
-                            </tr>
-                                {%endfor%}
-                            
-                            <tr>
-                                <td colspan="3">
-                                    <a href="">
-                                        <div class="form-row justify-content">
-                                            <i class="bi bi-plus-circle mr-2 ml-2"></i>
-                                            <label for="nombre-rubrica">Añadir criterio</label>
-                                        </div>
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!--Escalas y descripción-->
-                <div class="table-container"  style="border-radius: 6px;">
-                    <table class="table table-bordered mt-n4">
-                        <thead class="thead-light">
-                            <tr>
-                                <th scope="col" colspan="3"><b>Lista de escalas</b></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th><b>Escala</b></th>
-                                <td colspan="3"><b>Descripción</b></td>
-                            </tr>
-                            {% for escala in escalas%}
-                            <tr>
-                                <th scope="row col"class="col-1">{{ escala.calificacion }}</th>
-                                <th colspan="2">
-                                    {{ escala.descripcion }}
-                                </th>
-                            </tr>
-                            {%endfor%}
-                            <tr>
-                                <td colspan="3">
-                                    <a href="" >
-                                        <div class="form-row justify-content">
-                                            <i class="bi bi-plus-circle mr-2 ml-2"></i>
-                                            <label for="nombre-rubrica">Añadir escala</label>
-                                        </div>
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <!--Botones e iconos/metáforas de "Guardar" y "Limpiar"-->
-                    <div class="botones" style="margin-bottom: 5%; margin-right: 0.5%">
+            <div class="w-50">
+            <h4 class="text-center">Lista Criterios</h4>
+            {% include "administrador/components/lst_criterios.html"%}
+            </div>
+            <!--Escalas y descripción-->
+            <div class="w-50">
+            <h4 class="text-center">Escala</h4>
+            {% include "administrador/components/lst_escalas.html"%}
+            </div>
+            <!--Botones e iconos/metáforas de "Guardar" y "Limpiar"-->
+            </div>
+                    <div class="botones justify-content-center" >
                         <button type="submit" class="btn btn-primary" style="border: none;">
                             <b>Guardar</b>
                             <i class="bi bi-floppy"></i>

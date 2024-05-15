@@ -44,30 +44,26 @@ class PerfilProfesor(models.Model):
     def __str__(self):
         return self.nombre
 
+
+class Rubrica(models.Model):
+    nombre = models.TextField(max_length=50)
+    def __str__(self):
+        return f"{self.nombre}"
+
 class Calificacion(models.Model):
-    
     NUMEROS_ESCALA = {1 : 1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 9:9, 10 : 10}
     calificacion = models.IntegerField(choices=NUMEROS_ESCALA)
     descripcion = models.TextField(max_length=100)
-    
-    def __str__(self):
-        return f"Calificación {self.calificacion}" + " Descripción: " + self.descripcion
+    rubrica = models.ForeignKey(Rubrica, on_delete=models.CASCADE)
 
 class Criterio(models.Model):
     descripcion = models.TextField(max_length=200)
     peso = models.DecimalField(max_digits=3, decimal_places=3)
+    rubrica = models.ForeignKey(Rubrica, on_delete=models.CASCADE)
     def __str__(self):
         return self.descripcion + f" Peso: {self.peso}" 
-
-class Rubrica(models.Model):
-    nombre = models.TextField(max_length=50)
-    escalaCalificacion = models.ManyToManyField(Calificacion)
-    criterios = models.ManyToManyField(Criterio)
     
-    def __str__(self):
-        return f"{self.nombre}"
- 
- 
+
 class Puntuacion(models.Model):
     nota = models.SmallIntegerField()
     retroalimentacion = models.TextField(max_length=200)

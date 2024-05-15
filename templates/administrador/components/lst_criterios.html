@@ -1,0 +1,70 @@
+
+    <table class="table table-bordered mt-4">
+        <thead class="thead-light">
+            <tr>
+                <th  class="col-7"><b>Descripción</b></th>
+                <th  class="col-3"><b>Peso</b></th>
+                <th ><b>Eliminar</b></th>
+            </tr>
+        </thead>
+        <tbody id="criterios-tbody">
+            
+            
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">
+                    <button class="btn btn-primary" href="javascript:void(0);" id="add-criterio-btn">
+                        <i class="bi bi-plus-circle"></i>
+                        Añadir criterio
+                    </button>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <script>
+        document.getElementById('add-criterio-btn').addEventListener('click', function() {
+            var tbody = document.getElementById('criterios-tbody');
+            var rows = tbody.getElementsByTagName('tr');
+            
+            // Verificar si la última fila está completamente llena antes de agregar una nueva fila
+            if (rows.length > 0) {
+                var lastRow = rows[rows.length - 1];
+                var inputs = lastRow.querySelectorAll('input[type="text"]');
+                for (var i = 0; i < inputs.length; i++) {
+                    if (!inputs[i].value) {
+                        return; // Detener la función si algún campo está vacío
+                    }
+                }
+            }
+    
+            var newRow = document.createElement('tr');
+    
+            var descripcionCell = document.createElement('td');
+            descripcionCell.className = 'col-7';
+            descripcionCell.innerHTML = '<input type="text" class="form-control" name="descripcion[]">';
+    
+            var pesoCell = document.createElement('td');
+            pesoCell.className = 'col-3';
+            pesoCell.innerHTML = '<input type="number" class="form-control" name="peso[]" min="0">';
+    
+            var eliminarCell = document.createElement('td');
+            eliminarCell.className += "text-center"
+            eliminarCell.innerHTML = '<button class="btn btn-danger" onclick="eliminarCriterio(this)"><i class="bi bi-trash"></i></button>';
+    
+            newRow.appendChild(descripcionCell);
+            newRow.appendChild(pesoCell);
+            newRow.appendChild(eliminarCell);
+    
+            tbody.appendChild(newRow);
+        });
+    
+        // Función para eliminar un criterio
+        function eliminarCriterio(button) {
+            var row = button.closest('tr');
+            row.parentNode.removeChild(row);
+        }
+    </script>
+    
+
