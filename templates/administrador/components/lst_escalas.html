@@ -14,7 +14,7 @@
     <tfoot>
         <tr>
             <td colspan="3">
-                <button class="btn btn-primary" href="javascript:void(0);" id="add-escala-btn">
+                <button class="btn btn-primary" type="button" href="javascript:void(0);" id="add-escala-btn">
                         <i class="bi bi-plus-circle"></i>
                         Añadir escala
                 </button>
@@ -43,11 +43,11 @@
 
         var escalaCell = document.createElement('td');
         escalaCell.className = 'text-center col-3';
-        escalaCell.innerHTML = '<input type="number" class="form-control" name="escala[]" min="0" max="1">';
+        escalaCell.innerHTML = '<input type="number" class="form-control" name="escala[]" min="0" max="10">';
 
         var descripcionCell = document.createElement('td');
         descripcionCell.className = 'text-center col-7';
-        descripcionCell.innerHTML = '<input type="text" class="form-control" name="descripcion[]">';
+        descripcionCell.innerHTML = '<input type="text" class="form-control" name="descripcion_escala[]">';
 
         var eliminarCell = document.createElement('td');
         eliminarCell.className = 'text-center';

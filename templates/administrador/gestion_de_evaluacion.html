@@ -2,49 +2,85 @@
 {%load static%}
 {% block content %}
     <div class="container__admin">
+        {% if messages %}
+                {% for message in messages %}
+                <div class="alert  {{ message.tags }}  position-absolute alert-docenter"  role="alert">
+                    <p>{{ message }}</p>
+                </div>
+                {% endfor %}
+            {% endif %}
         <h2 class="titulos"><b>Gestión de evaluación</b></h2>
         <div class="card-rubrica mt-2 pb-4">
             <h5 class="card-header">Creación de una rúbrica</h5>
             <div class="card-body">
-                <form>
+                <form method="POST">
+                    {% csrf_token %} 
                     <div class="form-row justify-content">
                         <div class="form-group col mt-2">
                             <i class="bi bi-pencil mr-2 ml-2"></i>
                             <label for="nombre-rubrica">Nombre de la rúbrica</label>
                         </div>
                         <div class="form-row col-lg-9 mr-2">
-                            <input type="text" class="form-control" id="nombre-rubrica" placeholder="Nombre rúbrica">
+                            <input type="text" class="form-control" name="nombre_rubrica" id="nombre-rubrica" placeholder="Nombre rúbrica">
                         </div>
+                        <div class="w-50 form-group">
+                            <h4 class="text-center">Lista Criterios</h4>
+                            {% include "administrador/components/lst_criterios.html"%}
+                            </div>
+                            <div class="w-50">
+                                <h4 class="text-center">Escala</h4>
+                                {% include "administrador/components/lst_escalas.html"%}
+                                </div>
+                                <div class="botones justify-content-center w-100" >
+                                    <button type="submit" class="btn btn-primary" id="submit-btn-rubrica" style="border: none;">
+                                        <b>Guardar</b>
+                                        <i class="bi bi-floppy"></i>
+                                    </button>
+                                    <button type="reset" class="btn btn-secondary ml-2" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
+                                        <b>Limpiar</b>
+                                        <i class="bi bi-eraser"></i>
+                                    </button>
+                                </div>
                     </div>
-                </form>
+                </div>
             </div>
-            <div class="d-flex gap-3 mt-4">
-            <!--Criterios-->
-            <div class="w-50">
-            <h4 class="text-center">Lista Criterios</h4>
-            {% include "administrador/components/lst_criterios.html"%}
-            </div>
-            <!--Escalas y descripción-->
-            <div class="w-50">
-            <h4 class="text-center">Escala</h4>
-            {% include "administrador/components/lst_escalas.html"%}
-            </div>
-            <!--Botones e iconos/metáforas de "Guardar" y "Limpiar"-->
-            </div>
-                    <div class="botones justify-content-center" >
-                        <button type="submit" class="btn btn-primary" style="border: none;">
-                            <b>Guardar</b>
-                            <i class="bi bi-floppy"></i>
-                        </button>
-                        <button type="reset" class="btn btn-secondary ml-2" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
-                            <b>Limpiar</b>
-                            <i class="bi bi-eraser"></i>
-                        </button>
-                    </div>
-
+            
+                    
+                
                 </div>
             </div>
         </div>
     </div>
+
+    
+    <script>
+        document.getElementById('submit-btn-rubrica').addEventListener('click', function(event) {
+            var inputs = document.querySelectorAll('input[name="peso_criterio[]"]');
+            var total = 0;
+            
+            // Sumar todos los pesos
+            for (var i = 0; i < inputs.length; i++) {
+                total += parseFloat(inputs[i].value);
+            }
+    
+            // Verificar si la suma es igual a 1
+            if (total !== 1) {
+                event.preventDefault(); // Evitar que se envíe el formulario
+                mostrarMensaje();
+            }
+        });
+        function mostrarMensaje(mensaje) {
+            // Crear el elemento del mensaje modal si no existe
+            var alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-danger fade show fixed-top w-50 mx-auto';
+            alertDiv.setAttribute('role', 'alert');
+            alertDiv.innerHTML = 'La suma de los pesos debe ser igual a 1. <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+    
+            // Agregar el elemento de alerta al cuerpo del documento
+            document.body.appendChild(alertDiv);
+        }
+        
+        
+    </script>
     
 {% endblock %}

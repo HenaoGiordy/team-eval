@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from app.models import  Calificacion, Criterio, User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
+from app.models import  Calificacion, Criterio, Rubrica, User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 
@@ -406,6 +406,30 @@ def administrador_gestion_de_cursos(request):
 
 @login_required
 def administrador_gestion_de_evaluacion(request):
-    criterios = Criterio.objects.all()
-    escalas = Calificacion.objects.all()
-    return render(request, 'administrador/gestion_de_evaluacion.html', {"criterios" : criterios, "escalas": escalas})
+    if request.method == 'POST':
+        nombre_rubrica = request.POST.get('nombre_rubrica')
+        descripciones_criterios = request.POST.getlist('descripcion_criterio[]')
+        pesos_criterios = request.POST.getlist('peso_criterio[]')
+        escalas = request.POST.getlist('escala[]')
+        descripciones_escalas = request.POST.getlist('descripcion_escala[]')
+        print(nombre_rubrica)
+        print(descripciones_criterios)
+        
+        if  not descripciones_escalas or not descripciones_criterios:
+            messages.error(request, "No pueden estar vacíos")
+            return redirect('administrador_gestion_de_evaluacion')
+        # Crear la rúbrica
+        rubrica = Rubrica.objects.create(nombre=nombre_rubrica)
+
+        # Crear los criterios
+        for descripcion, peso in zip(descripciones_criterios, pesos_criterios):
+            Criterio.objects.create(descripcion=descripcion, peso=peso, rubrica=rubrica)
+
+        # Crear las calificaciones (escalas)
+        for escala, descripcion in zip(escalas, descripciones_escalas):
+            Calificacion.objects.create(calificacion=escala, descripcion=descripcion, rubrica=rubrica)
+
+        messages.success(request, 'Rúbrica creada exitosamente.')
+        return redirect('administrador_gestion_de_evaluacion')
+
+    return render(request, 'administrador/gestion_de_evaluacion.html')
