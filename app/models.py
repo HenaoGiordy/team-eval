@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
+from django.db.models import UniqueConstraint
 
 
 
@@ -72,13 +73,18 @@ class Puntuacion(models.Model):
         return self.criterio_evaluado + "Nota: "+ self.nota + ", Retroalimentación: " + self.retroalimentacion
 
 class Curso(models.Model):
-    PERIODOS = {"I" : "I", "II" : "II"}
+    PERIODOS = [("I", "I"), ("II", "II")]
     profesor = models.ForeignKey(PerfilProfesor, on_delete=models.CASCADE, blank=False)
     nombre = models.TextField(max_length=50, blank=False)
-    codigo = models.TextField(max_length=20, unique=True, blank=False)
+    codigo = models.TextField(max_length=20)
     fecha_curso = models.DateField()
     periodo = models.TextField(choices=PERIODOS)
     rubrica = models.ForeignKey(Rubrica, on_delete=models.CASCADE, blank=True, null=True)
+    
+    class Meta:
+        constraints = [
+            UniqueConstraint(fields=['codigo', 'periodo'], name='unique_codigo_periodo')
+        ]
     def __str__(self):
         return self.nombre
     @property
