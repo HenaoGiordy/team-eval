@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from app.exeptions import PeriodoIncorrecto, ProfesorInactivo
 from app.models import  Calificacion, Criterio, Rubrica, User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
@@ -369,8 +370,12 @@ def administrador_gestion_de_cursos(request):
                 
                 usuario = User.objects.get(username = codigo_docente)
                 docente = PerfilProfesor.objects.get(user = usuario)
+                
+                if not docente.user.is_active:
+                    raise ProfesorInactivo("El profesor se encuentra inactivo")
+                
                 if periodo not in ["I", "II"]:
-                    raise ValueError("Ingrese un periodo correctamente")
+                    raise PeriodoIncorrecto("Ingrese un periodo correctamente")
                 
                 fecha_actual = datetime.now()
                 curso = Curso.objects.create(profesor=docente, nombre=nombre, codigo=codigo, periodo = periodo, fecha_curso = fecha_actual)
@@ -389,9 +394,12 @@ def administrador_gestion_de_cursos(request):
                 curso.save()
                 messages.success(request, "Curso modificado con éxito")
                 
-
+        except ProfesorInactivo as e:
+            messages.error(request, e)
         except IntegrityError:
             messages.error(request, "Ya hay un curso con ese código")
+        except PeriodoIncorrecto as e:
+            messages.error(request, e)
         except PerfilProfesor.DoesNotExist:
             messages.error(request, "No hay un profesor con ese código")
         except User.DoesNotExist:
@@ -412,35 +420,46 @@ def administrador_gestion_de_evaluacion(request):
     rubrica_lista = pagination.get_page(page)
     
     if request.method == 'POST':
-        nombre_rubrica = request.POST.get('nombre_rubrica')
-        descripciones_criterios = request.POST.getlist('descripcion_criterio[]')
-        pesos_criterios = request.POST.getlist('peso_criterio[]')
-        escalas = request.POST.getlist('escala[]')
-        descripciones_escalas = request.POST.getlist('descripcion_escala[]')
-        
-        
-        if not nombre_rubrica or not nombre_rubrica.strip():
-            messages.error(request,"No puede estar vacío el campó de la rúbrica")
-            return redirect('administrador_gestion_de_evaluacion')
-        
-        if  not descripciones_escalas or not descripciones_criterios:
-            messages.error(request, "No pueden estar vacíos")
-            return redirect('administrador_gestion_de_evaluacion')
-        
-        nombre_rubrica = nombre_rubrica.lower()
-        
-        # Crear la rúbrica
-        rubrica = Rubrica.objects.create(nombre=nombre_rubrica)
+        try:
+            if "guardar" in request.POST:
+                nombre_rubrica = request.POST.get('nombre_rubrica')
+                descripciones_criterios = request.POST.getlist('descripcion_criterio[]')
+                pesos_criterios = request.POST.getlist('peso_criterio[]')
+                escalas = request.POST.getlist('escala[]')
+                descripciones_escalas = request.POST.getlist('descripcion_escala[]')
+                
+                
+                if not nombre_rubrica or not nombre_rubrica.strip():
+                    messages.error(request,"No puede estar vacío el campó de la rúbrica")
+                    return redirect('administrador_gestion_de_evaluacion')
+                
+                if  not descripciones_escalas or not descripciones_criterios:
+                    messages.error(request, "No pueden estar vacíos")
+                    return redirect('administrador_gestion_de_evaluacion')
+                
+                nombre_rubrica = nombre_rubrica.lower()
+                
+                # Crear la rúbrica
+                rubrica = Rubrica.objects.create(nombre=nombre_rubrica)
 
-        # Crear los criterios
-        for descripcion, peso in zip(descripciones_criterios, pesos_criterios):
-            Criterio.objects.create(descripcion=descripcion, peso=peso, rubrica=rubrica)
+                # Crear los criterios
+                for descripcion, peso in zip(descripciones_criterios, pesos_criterios):
+                    Criterio.objects.create(descripcion=descripcion, peso=peso, rubrica=rubrica)
 
-        # Crear las calificaciones (escalas)
-        for escala, descripcion in zip(escalas, descripciones_escalas):
-            Calificacion.objects.create(calificacion=escala, descripcion=descripcion, rubrica=rubrica)
+                # Crear las calificaciones (escalas)
+                for escala, descripcion in zip(escalas, descripciones_escalas):
+                    Calificacion.objects.create(calificacion=escala, descripcion=descripcion, rubrica=rubrica)
 
-        messages.success(request, 'Rúbrica creada exitosamente.')
-        return redirect('administrador_gestion_de_evaluacion')
+                messages.success(request, 'Rúbrica creada exitosamente.')
+                return redirect('administrador_gestion_de_evaluacion')
 
+            if "buscar" in request.POST:
+                
+                nombre_rubrica = request.POST.get("nombre_rubrica")
+                nombre_rubrica = nombre_rubrica.lower()
+                rubrica_lista = Rubrica.objects.filter(nombre = nombre_rubrica)
+        
+        except Rubrica.DoesNotExist:
+            messages.error(request, "No se encontró la rúbrica")
+        
     return render(request, 'administrador/gestion_de_evaluacion.html', {'rubrica_lista' : rubrica_lista})
