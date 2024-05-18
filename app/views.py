@@ -406,18 +406,29 @@ def administrador_gestion_de_cursos(request):
 
 @login_required
 def administrador_gestion_de_evaluacion(request):
+    
+    pagination = Paginator(Rubrica.objects.all().order_by('-id'), 5)
+    page = request.GET.get('page')
+    rubrica_lista = pagination.get_page(page)
+    
     if request.method == 'POST':
         nombre_rubrica = request.POST.get('nombre_rubrica')
         descripciones_criterios = request.POST.getlist('descripcion_criterio[]')
         pesos_criterios = request.POST.getlist('peso_criterio[]')
         escalas = request.POST.getlist('escala[]')
         descripciones_escalas = request.POST.getlist('descripcion_escala[]')
-        print(nombre_rubrica)
-        print(descripciones_criterios)
+        
+        
+        if not nombre_rubrica or not nombre_rubrica.strip():
+            messages.error(request,"No puede estar vacío el campó de la rúbrica")
+            return redirect('administrador_gestion_de_evaluacion')
         
         if  not descripciones_escalas or not descripciones_criterios:
             messages.error(request, "No pueden estar vacíos")
             return redirect('administrador_gestion_de_evaluacion')
+        
+        nombre_rubrica = nombre_rubrica.lower()
+        
         # Crear la rúbrica
         rubrica = Rubrica.objects.create(nombre=nombre_rubrica)
 
@@ -432,4 +443,4 @@ def administrador_gestion_de_evaluacion(request):
         messages.success(request, 'Rúbrica creada exitosamente.')
         return redirect('administrador_gestion_de_evaluacion')
 
-    return render(request, 'administrador/gestion_de_evaluacion.html')
+    return render(request, 'administrador/gestion_de_evaluacion.html', {'rubrica_lista' : rubrica_lista})
