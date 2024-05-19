@@ -130,8 +130,8 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'app.User'
 
-LOGIN_URL = 'login'
-LOGOUT_REDIRECT_URL= 'login'
+LOGIN_REDIRECT_URL = 'login_register'
+LOGOUT_REDIRECT_URL = 'login_register'
 
 MESSAGE_TAGS = {
         messages.DEBUG: 'alert-secondary',

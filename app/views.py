@@ -14,42 +14,31 @@ from django.core.paginator import Paginator
 # Create your views here.
 
 def login_register(request):
-    
-    user = request.user
-    
-    if user.is_authenticated:
-        
-        if user.get_role() == 'ADMIN':
-            return redirect('administrador/')
-        if user.get_role() == 'ESTUDIANTE':
-            return redirect('estudiante/')
-        if user.get_role() == 'PROFESOR':
-            return redirect('profesor/')
-    
+    if request.user.is_authenticated:
+        return redirect_user_by_role(request.user)
+
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
-        try:
-            user = User.objects.get(username=username)
-        except:
-            messages.error(request, "Usuario/contraseña  incorrecto")
-            return redirect('/')
-        
         user = authenticate(request, username=username, password=password)
-        
-        
+
         if user is not None:
             login(request, user)
-            if user.get_role() == 'ADMIN':
-                return redirect('administrador/')
-            if user.get_role() == 'ESTUDIANTE':
-                return redirect('estudiante/')
-            if user.get_role() == 'PROFESOR':
-                return redirect('profesor/')
+            return redirect_user_by_role(user)
         else:
-            messages.error(request, "Usuario/contraseña  incorrecto")
-            
+            messages.error(request, "Usuario/contraseña incorrectos")
+    
     return render(request, 'login/login.html')
+
+def redirect_user_by_role(user):
+    if user.get_role() == 'ADMIN':
+        return redirect('administrador')
+    elif user.get_role() == 'ESTUDIANTE':
+        return redirect('estudiante')
+    elif user.get_role() == 'PROFESOR':
+        return redirect('profesor')
+    else:
+        return redirect('login_register')
 
 @login_required(redirect_field_name='login')
 def logout_usuario(request):
