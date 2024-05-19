@@ -127,9 +127,25 @@ def profesor_cursos(request):
 @login_required
 def detalle_curso(request, curso_id):
     curso = get_object_or_404(Curso, id=curso_id)
-    return render(request, 'profesor/detalle_curso.html', {"curso": curso})
+    estudiante = None  # Inicializa la variable estudiante
+    
+    if request.method == "POST":
+        if "buscar-estudiante" in request.POST:
+            codigo = request.POST.get("codigo_estudiante")
+            try:
+                user = User.objects.get(username=codigo)
+                estudiante = PerfilEstudiante.objects.get(user=user)
+            except User.DoesNotExist:
+                # Manejar el caso donde el usuario no existe
+                messages.error(request, "No se encontró el estudiante")
+                estudiante = None
+            except PerfilEstudiante.DoesNotExist:
+                # Manejar el caso donde el perfil del estudiante no existe
+                messages.error(request, "No se encontró el estudiante")
+                estudiante = None
+    
+    return render(request, 'profesor/detalle_curso.html', {"curso": curso, "estudiante": estudiante})
 
-#Importar estudiantes al curso
 @login_required
 def profesor_gestion_de_estudiantes(request):
     return render(request, 'profesor/gestion_de_estudiantes.html')
