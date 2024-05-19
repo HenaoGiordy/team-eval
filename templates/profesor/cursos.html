@@ -1,0 +1,28 @@
+{% extends "profesor/mainprofesor.html" %}
+{%block content%}
+<h1 class="titulo-lista text-center" style="margin-top:70px">Lista de Cursos</h1>
+<div class="container--cursos">
+    {% if cursos%} {%for curse in cursos%}
+  <div class="card pb-3">
+    <div class="card-body">
+      <p>
+        <span style="font-weight: bold">Asignatura :</span> {{ curse }}
+      </p>
+      <p>
+        <span style="font-weight: bold">Código :</span> {{ curse.codigo }}
+      </p>
+      <p>
+        <span style="font-weight: bold">Número Estudiantes :</span> {{ curse.numero_estudiantes }}
+      </p>
+      <p>
+        <span style="font-weight: bold">Número Grupos :</span> {{ curse.numero_grupos }}
+      </p>
+    </div>
+    <a class="btn btn-primary " href="{% url "detalle_curso" curse.id %}"
+      >Ir a curso</a
+    >
+  </div>
+ 
+  {% endfor %} {% else %} <h3>No tienes cursos</h3> {% endif %}
+</div>
+{%endblock%}

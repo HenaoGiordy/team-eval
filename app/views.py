@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.db import IntegrityError
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -127,13 +127,18 @@ def evaluar(request, estudianteid, cursoid, grupoid):
 
 #Información del curso
 @login_required
-def profesor_curso(request):
-    return render(request, 'profesor/curso.html')
+def profesor_cursos(request):
+    user = request.user.id
+    profesor = PerfilProfesor.objects.get(user = user)
+    cursos = profesor.curso_set.all()
+    
+    return render(request, 'profesor/cursos.html', {"cursos": cursos})
 
 #Lista de estudiantes del curso
 @login_required
-def profesor_estudiantes_curso(request):
-    return render(request, 'profesor/estudiantes_curso.html')
+def detalle_curso(request, curso_id):
+    curso = get_object_or_404(Curso, id=curso_id)
+    return render(request, 'profesor/detalle_curso.html', {"curso": curso})
 
 #Importar estudiantes al curso
 @login_required
@@ -385,12 +390,20 @@ def administrador_gestion_de_cursos(request):
                 
                 curso_id = request.POST.get("edit-curso")
                 curso = Curso.objects.get(id=curso_id)
+                periodo = request.POST.get("edit-periodo-curso")
                 curso.codigo = request.POST.get("edit-codigo-curso")
                 curso.nombre = request.POST.get("edit-nombre-curso")
                 codigo_profesor = User.objects.get(username= request.POST.get("edit-codigo-docente"))
                 profesor = PerfilProfesor.objects.get(user=codigo_profesor)
+                
+                if not profesor.user.is_active:
+                    raise ProfesorInactivo("El profesor se encuentra inactivo")
+                
+                if periodo not in ["I", "II"]:
+                    raise PeriodoIncorrecto("Ingrese un periodo correctamente")
                 curso.profesor = profesor
-                curso.periodo = request.POST.get("edit-periodo-curso")
+                
+                curso.periodo = periodo
                 curso.save()
                 messages.success(request, "Curso modificado con éxito")
                 

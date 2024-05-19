@@ -36,9 +36,7 @@ class User(AbstractUser):
     
     def __str__(self):
         return f"{self.username}"
-
     
-
 class PerfilProfesor(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     nombre = models.TextField()
@@ -48,6 +46,7 @@ class PerfilProfesor(models.Model):
 
 class Rubrica(models.Model):
     nombre = models.TextField(max_length=50)
+    is_used = models.BooleanField(default=False)
     def __str__(self):
         return f"{self.nombre}"
 
@@ -79,7 +78,6 @@ class Curso(models.Model):
     codigo = models.TextField(max_length=20)
     fecha_curso = models.DateField()
     periodo = models.TextField(choices=PERIODOS)
-    rubrica = models.ForeignKey(Rubrica, on_delete=models.CASCADE, blank=True, null=True)
     
     class Meta:
         constraints = [
@@ -87,9 +85,18 @@ class Curso(models.Model):
         ]
     def __str__(self):
         return self.nombre
+    
     @property
     def get_periodo_academico(self):
         return f"{self.fecha_curso.strftime('%Y')} - {self.periodo}"
+    
+    @property
+    def numero_estudiantes(self):
+        return self.perfilestudiante_set.count()
+    
+    @property
+    def numero_grupos(self):
+        return self.grupo_set.count()
 
 class PerfilEstudiante(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -107,8 +114,9 @@ class Grupo(models.Model):
         return self.nombre 
     
 class Evaluacion(models.Model):
-    fecha = models.DateField()
-    estudiante_evaluado = models.ForeignKey(PerfilEstudiante, related_name='estudiante_evaluado', on_delete=models.CASCADE)
-    estudiante_evaluador = models.ForeignKey(PerfilEstudiante, related_name='estudiante_evaluador', on_delete=models.CASCADE)
-    grupo = models.ForeignKey(Grupo, on_delete=models.CASCADE)
-    
+    fecha_inicio = models.DateField(blank=False, null=False)
+    fecha_fin = models.DateField()
+    estudiante_evaluado = models.ForeignKey(PerfilEstudiante, related_name='evaluado', on_delete=models.CASCADE, blank=False, null=False)
+    estudiante_evaluador = models.ForeignKey(PerfilEstudiante, related_name='evaluador', on_delete=models.CASCADE, blank=False, null=False)
+    rubrica = models.ForeignKey(Rubrica, on_delete=models.PROTECT, null=False, blank=False)
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE, null=False, blank=False)
