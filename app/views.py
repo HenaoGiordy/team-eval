@@ -1,4 +1,5 @@
 from datetime import datetime
+from decimal import InvalidOperation
 from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
@@ -488,7 +489,7 @@ def administrador_gestion_de_evaluacion(request):
                     return redirect('administrador_gestion_de_evaluacion')
                 
                 if  not descripciones_escalas or not descripciones_criterios:
-                    messages.error(request, "No pueden estar vacíos")
+                    messages.error(request, "No pueden estar vacíos los campos de criterios ni escalas")
                     return redirect('administrador_gestion_de_evaluacion')
                 
                 nombre_rubrica = nombre_rubrica.lower()
@@ -508,12 +509,17 @@ def administrador_gestion_de_evaluacion(request):
                 return redirect('administrador_gestion_de_evaluacion')
 
             if "buscar" in request.POST:
-                
                 nombre_rubrica = request.POST.get("nombre_rubrica")
                 nombre_rubrica = nombre_rubrica.lower()
                 rubrica_lista = Rubrica.objects.filter(nombre = nombre_rubrica)
-        
+                if not rubrica_lista:
+                    messages.error(request, "No se encontraron rúbricas con ese nombre")
+                    return redirect("administrador_gestion_de_evaluacion")
+                
         except Rubrica.DoesNotExist:
             messages.error(request, "No se encontró la rúbrica")
+            
+        except InvalidOperation:
+            messages.error(request, "debe ingresar un valor decimal")
         
     return render(request, 'administrador/gestion_de_evaluacion.html', {'rubrica_lista' : rubrica_lista})
