@@ -59,6 +59,11 @@ def estudiante(request):
     perfil = PerfilEstudiante.objects.get(user = usuario)
     return render(request, 'estudiante/estudiante.html', {"cursos" : perfil.cursos.all(), "perfil": perfil})
 
+#Retroalimentación estudiante
+@login_required
+def estudiante_retroalimentacion(request):
+    return render(request, 'estudiante/retroalimentacion.html')
+
 #Vista curso estudiante
 @login_required
 def estudiante_curso(request, cursoid):
@@ -174,6 +179,11 @@ def profesor_grupo(request):
 @login_required
 def profesor_informes(request):
     return render(request, 'profesor/informes.html')
+
+#Gestión de rúbricas
+@login_required
+def profesor_gestion_rubricas(request):
+    return render(request, 'profesor/gestion_rubricas.html')
 
 
 # @login_required

@@ -1,0 +1,44 @@
+{%if rubrica_lista%}
+{%  include "profesor/components/search_rubricas.html"%}
+<table class="table table-bordered w-100 mt-2">
+    <h5 class="card-header mt-3">Lista de Rúbricas</h5>
+    <thead>
+        <tr>
+        <th scope="col" class="fw-bold">Nombre</th>
+        <th class="text-center fw-bold" scope="col">Acción</th>
+        
+        </tr>
+    </thead>
+    <tbody>
+        {%for rubrica in rubrica_lista%}
+        <tr>
+        <th scope="row">{{ rubrica.nombre | capfirst }}</th>
+        <td class="text-center" >
+            <button type="button" class="btn btn-primary btn-ver-rubrica" name="edit-rubrica" data-id="{{ rubrica.id }}" data-bs-toggle="modal-edit" data-bs-target="#staticBackdrop" >
+            <i class="bi bi-pen"></i>
+            </button>
+            <button class="btn btn-danger" data-id="{{ rubrica.id }}" name="delete-rubrica" data-bs-toggle="modal-delete" data-bs-target="#staticBackdrop"><i class="bi bi-trash"></i></button>
+        </td>
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
+{% comment %} Paginacion {% endcomment %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if rubrica_lista.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page=1">Primer Página</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ rubrica_lista.previous_page_number }}">&laquo Anterior</a></li>
+            {%endif%}
+            
+            <li class="page-item disabled"><a class="page-link" href="#"> Página {{ rubrica_lista.number }} de {{ rubrica_lista.paginator.num_pages }}</a></li>
+
+            {%if rubrica_lista.has_next%}
+            <li class="page-item"><a class="page-link" href="?page={{ rubrica_lista.next_page_number }}">Siguiente</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ rubrica_lista.paginator.num_pages }}">&raquo última Página</a></li>
+            {%endif%}
+        </ul>
+    {%endif%}
+
+    </nav>
+</div>

@@ -1,26 +1,33 @@
 {% extends "profesor/mainprofesor.html" %}
 {%block content%}
-<h1 class="titulo-lista text-center" style="margin-top:70px">Detalle de Curso</h1>
-<div class="container--evaluacion--curso">
-    {% if messages %}
-                {% for message in messages %}
-                <div class="alert  {{ message.tags }}  position-absolute alert-docenter"  role="alert">
-                    <p>{{ message }}</p>
+<div  class="container__admin">
+    <h2 class="titulos"><b>Información del curso</b></h2>
+    <div class="card-form">
+        <div class="card-body">
+            {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert  {{ message.tags }}  position-absolute alert-docenter"  role="alert">
+                            <p>{{ message }}</p>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="col-4  contenedor-back-bottom"><a href="{% url "profesor_cursos" %}" >
+                        <span class="material-icons btn btn-primary back-bottom">arrow_back</span> </a>
+                    </div>
+            <div class="row w-100">
+                
+                <div class="col">
+                    <div class="contenedor-titulos">
+                        <h3><span style="font-weight: bold;">Asignatura: </span> {{ curso }}</h3>
+                        <h3><span style="font-weight: bold;">Código: </span> {{ curso.codigo }}</h3>
+                        <h3><span style="font-weight: bold;">Periodo: </span> {{ curso.get_periodo_academico }}</h3>
+                    </div>
                 </div>
-                {% endfor %}
-            {% endif %}
-    <div class="row w-100">
-        <div class="col-4  contenedor-back-bottom"><a href="{% url "profesor_cursos" %}" >
-            <span class="material-icons btn btn-primary back-bottom">arrow_back</span> </a>
-        </div>
-        <div class="col">
-            <div class="contenedor-titulos">
-                <h3><span style="font-weight: bold;">Asignatura: </span> {{ curso }}</h3>
-                <h3><span style="font-weight: bold;">Código: </span> {{ curso.codigo }}</h3>
-                <h3><span style="font-weight: bold;">Periodo: </span> {{ curso.get_periodo_academico }}</h3>
             </div>
-        </div>
+            
+        </div>    
     </div>
+
     <!-- formulario para ingresar estudiante a un curso -->
     <form method="POST" class="row w-50 mt-5 d-flex flex-column align-items-center justify-content-center">
         {% csrf_token %} 
@@ -44,5 +51,5 @@
         </div>
         {% endif%}
     </form>
-</div>
-{% endblock %}
+</div>    
+    {% endblock %}

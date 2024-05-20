@@ -130,8 +130,9 @@ input:focus~label {
     justify-content: space-between;
     align-items: center;
     box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.20);
-    background-color: #EDF9FC;
+    background-color: #EAEAEA;
 }
+
 
 .sidebar-elementos {
     display: flex;
@@ -159,7 +160,7 @@ input:focus~label {
 }
 
 .dropdown__link:hover {
-    background-color: #0da7fd;
+    background-color: #0D6EFD;
     color: #ffffff;
     text-decoration: none;
 }
@@ -170,16 +171,18 @@ input:focus~label {
     width: 100%;
     justify-content: center;
     padding: 7px;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .bordes {
     border-top: 1px solid #0D6EFD;
 }
 
-.dropdown__link:active {
-    background-color: #0da7fd;
-    color: white;
+.dropdown__link.active {
+    background-color: #0D6EFD;
+    color: white !important;
 }
+
 
 /* END CSS CORRESPONDIENTE A LAS VISTAS DE ESTUDIANTE */
 

@@ -1,5 +1,5 @@
 <!-- Barra principal -->
-<nav class="navbar navbar-expand-lg navbar-dark d-flex justify-content-between" style="background-color: #0D6EFD; position: fixed;right: 0;left: 0; top:0;z-index: 100;">
+<nav class="navbar d-flex justify-content-between" style="background-color: #0D6EFD; position: fixed;right: 0;left: 0; top:0;z-index: 100;">
   <a class="navbar-brand mx-3" style="color: #ffffff">Hola, {{ user.first_name }}
   </a>
   <a class="nav-link mx-2" href="{% url 'logout' %}" style="color: white">
@@ -17,20 +17,26 @@
   {% comment %} Links del sidebar {% endcomment %}
 
   <ul class="sidebar-elementos" id="sidebar-cursps">
+
+    {% url 'profesor_cursos' as profesor_cursos_url %}
     <li class="dropdown__list" id="gestion-de-docentes">
-      <a class="item-sidebar py-2 dropdown__link bordes" href="{% url 'profesor_cursos' %}" >
+      <a class="item-sidebar py-2 dropdown__link bordes {% if request.path == profesor_cursos_url %}active{% endif %}" href="{{ profesor_cursos_url }}">
         <i class="bi bi-person mr-1"></i>
         <span>Gestión de cursos</span>
     </a>    
     </li> 
+
+    {% url 'profesor_gestion_rubricas' as profesor_gestion_rubricas_url %}
     <li class="dropdown__list" id="gestion-evaluacion">
-      <a class="item-sidebar py-2 dropdown__link bordes" href="{% url 'profesor_evaluacion_curso' %}" >
+      <a class="item-sidebar py-2 dropdown__link bordes {% if request.path == profesor_gestion_rubricas_url %}active{% endif %}" href="{{ profesor_gestion_rubricas_url }}">
         <i class="bi bi-book mr-1"></i>
-        <span>Gestión de Rúbricas</span>
+        <span>Gestión de rúbricas</span>
       </a>
     </li>
+
+    {% url 'profesor_informes' as profesor_informes_url %}
     <li class="dropdown__list" id="gestion-informes">
-      <a class="item-sidebar py-2 dropdown__link bordes" href="{% url 'profesor_informes' %}" style="border-bottom:1px solid #0D6EFD">
+      <a class="item-sidebar py-2 dropdown__link bordes {% if request.path == profesor_informes_url %}active{% endif %}" href="{{ profesor_informes_url }}" style="border-bottom:1px solid #0D6EFD">
         <i class="bi bi-file-earmark-check mr-1"></i>
         <span>Informes</span>
       </a>

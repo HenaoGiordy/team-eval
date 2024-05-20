@@ -1,5 +1,5 @@
 <!-- Barra principal -->
-<nav class="navbar navbar-expand-lg navbar-dark d-flex justify-content-between" style="background-color: #0D6EFD; position: fixed;right: 0;left: 0; top:0;z-index: 100;">
+<nav class="navbar d-flex justify-content-between" style="background-color: #0D6EFD; position: fixed;right: 0;left: 0; top:0;z-index: 100;">
   <a class="navbar-brand mx-3" style="color: #ffffff">Hola, {{ user.first_name }}
   </a>
   <a class="nav-link mx-2" href="{% url 'logout' %}" style="color: white">
@@ -17,26 +17,34 @@
   {% comment %} Links del sidebar {% endcomment %}
 
   <ul class="sidebar-elementos" id="sidebar-elementos">
+
+    {% url 'administrador_gestion_de_docentes' as administrador_gestion_de_docentes_url %}
     <li class="dropdown__list" id="gestion-de-docentes">
-      <a class="item-sidebar py-2 dropdown__link bordes" href="{% url 'administrador_gestion_de_docentes' %}" >
+      <a class="item-sidebar py-2 dropdown__link bordes {% if request.path == administrador_gestion_de_docentes_url %}active{% endif %}" href="{{ administrador_gestion_de_docentes_url }}">
         <i class="bi bi-person mr-1"></i>
         <span>Gestión de docentes</span>
     </a>    
     </li>
+
+    {% url 'administrador_gestion_de_estudiantes' as administrador_gestion_de_estudiantes_url %}
     <li class="dropdown__list" id="gestion-de-estudiantes">
-      <a class="item-sidebar py-2 dropdown__link bordes" href="{% url 'administrador_gestion_de_estudiantes' %}" >
+      <a class="item-sidebar py-2 dropdown__link bordes {% if request.path == administrador_gestion_de_estudiantes_url %}active{% endif %}" href="{{ administrador_gestion_de_estudiantes_url }}">
         <i class="bi bi-mortarboard mr-1"></i>
         <span>Gestión de estudiantes</span>
       </a>
     </li>  
+
+    {% url 'administrador_gestion_de_cursos' as administrador_gestion_de_cursos_url %}
     <li class="dropdown__list" id="gestion-cursos">
-      <a class="item-sidebar py-2 dropdown__link bordes" href="{% url 'administrador_gestion_de_cursos' %}" >
+      <a class="item-sidebar py-2 dropdown__link bordes {% if request.path == administrador_gestion_de_cursos_url %}active{% endif %}" href="{{ administrador_gestion_de_cursos_url }}">
         <i class="bi bi-book mr-1"></i>
         <span>Gestión de cursos</span>
       </a>
     </li>
+
+    {% url 'administrador_gestion_de_evaluacion' as administrador_gestion_de_evaluacion_url %}
     <li class="dropdown__list" id="gestion-evaluacion">
-      <a class="item-sidebar py-2 dropdown__link bordes" href="{% url 'administrador_gestion_de_evaluacion' %}" style="border-bottom:1px solid #0D6EFD">
+      <a class="item-sidebar py-2 dropdown__link bordes {% if request.path == administrador_gestion_de_evaluacion_url %}active{% endif %}" href="{{ administrador_gestion_de_evaluacion_url }}" style="border-bottom:1px solid #0D6EFD">
         <i class="bi bi-file-earmark-check mr-1"></i>
         <span>Gestión de evaluación</span>
       </a>

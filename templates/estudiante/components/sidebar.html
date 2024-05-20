@@ -1,34 +1,41 @@
-<nav class="navbar navbar-expand-lg navbar-dark d-flex justify-content-between" style="background-color: #0D6EFD; position: fixed;right: 0;left: 0; top:0;z-index: 100;">
+<!-- Barra principal funcional -->
+<nav class="navbar d-flex justify-content-between" style="background-color: #0D6EFD; position: fixed;right: 0;left: 0; top:0;z-index: 100;">
     <a class="navbar-brand mx-3" style="color: #ffffff">Hola, {{ user.first_name }}
     </a>
     <a class="nav-link mx-2" href="{% url 'logout' %}" style="color: white">
-      <!--Icono/metáfora de "Salir"-->
-      <i class="bi bi-box-arrow-left"></i> Salir
+    <!--Icono/metáfora de "Salir"-->
+    <i class="bi bi-box-arrow-left"></i> Salir
     </a>
-  </nav> 
+</nav> 
+
 <div class="sidebar-container">
-    <div class="w-100">
-        
-        <h3 class="text-center">Bienvenido</h3>
-        <h4 class="text-center"> {{ perfil }} </h4>
+{% comment %} Header del sidebar {% endcomment %}
+    <div class="cuadro-con-sombra">
+        <div class="text-center">Estudiante</div>
     </div>
-    <ul class="sidebar-elementos">
-        
-        <div class="elemento-sidebar ">
-            <a class="item-sidebar py-2"  href="{% url 'estudiante' %}">Evaluación</a>
-        </div>
-        
-        <div class="elemento-sidebar">
-            <a class="item-sidebar py-2"  href="{% url 'estudiante' %}">Retroalimentación</a>
-        </div>
-        
+
+{% comment %} Links del sidebar {% endcomment %}
+
+    <ul class="sidebar-elementos" id="sidebar-cursps">
+
+        {% url 'profesor_evaluacion_curso' as profesor_evaluacion_curso_url %}
+        <li class="dropdown__list" id="evaluacion">
+            <a class="item-sidebar py-2 dropdown__link bordes {% if request.path == profesor_evaluacion_curso_url %}active{% endif %}" href="{{ profesor_evaluacion_curso_url }}">
+            <i class="bi bi-file-earmark-check mr-1"></i>
+            <span>Evaluación</span>
+            </a>
+        </li>
+
+        {% url 'estudiante_grupos_curso' as profesor_grupos_curso_url %}
+        <li class="dropdown__list" id="retroalimentacion">
+            <a class="item-sidebar py-2 dropdown__link bordes {% if request.path == profesor_grupos_curso_url %}active{% endif %}" href="{{ profesor_grupos_curso_url }}" style="border-bottom:1px solid #0D6EFD">
+                <i class="bi bi-file-earmark-person mr-1"></i>
+            <span>Retroalimentación</span>
+            </a>
+        </li> 
+
     </ul>
-    <div class="elemento-sidebar d-flex justify-content-space-between">
-        <span class="material-symbols-outlined item--logout">
-            logout
-            </span>
-        <a class="item-sidebar py-2"  href="{% url 'logout' %}">Salir</a>
-    </div>
-    </div>
-    
+
+    {% comment %} Footer del sidebar {% endcomment %}
+    <div class="elemento-sidebar d-flex justify-content-space-between"></div>
 </div>
