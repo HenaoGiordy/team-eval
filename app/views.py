@@ -132,6 +132,7 @@ def profesor_cursos(request):
 @login_required
 def detalle_curso(request, curso_id):
     curso = get_object_or_404(Curso, id=curso_id)
+    estudiantes_lista = curso.perfilestudiante_set.all()
     estudiante = None  # Inicializa la variable estudiante
     
     if request.method == "POST":
@@ -148,8 +149,33 @@ def detalle_curso(request, curso_id):
                 # Manejar el caso donde el perfil del estudiante no existe
                 messages.error(request, "No se encontró el estudiante")
                 estudiante = None
+        
+        if "agregar-estudiante" in request.POST:
+            estudiante_id = request.POST.get("agregar-estudiante")
+            estudiante = PerfilEstudiante.objects.get(id = estudiante_id)
+            
+            if estudiante:
+                if curso in estudiante.cursos.all():
+                    messages.warning(request, "El estudiante ya está inscrito en este curso")
+                else:
+                    estudiante.cursos.add(curso)
+                    messages.success(request, "Estudiante agregado al curso exitosamente")
+                    # Actualiza la lista de estudiantes
+                    estudiantes_lista = curso.perfilestudiante_set.all()
+            else:
+                messages.error(request, "Debe buscar un estudiante antes de agregar")
+            estudiante = None
+        if "eliminar-estudiante" in request.POST:
+            estudiante_id = request.POST.get("eliminar-estudiante")
+            try:
+                estudiante_a_eliminar = PerfilEstudiante.objects.get(user__id=estudiante_id)
+                estudiante_a_eliminar.cursos.remove(curso)
+                messages.success(request, "Estudiante eliminado del curso exitosamente")
+                estudiantes_lista = curso.perfilestudiante_set.all()
+            except PerfilEstudiante.DoesNotExist:
+                messages.error(request, "No se encontró el estudiante para eliminar")
     
-    return render(request, 'profesor/detalle_curso.html', {"curso": curso, "estudiante": estudiante})
+    return render(request, 'profesor/detalle_curso.html', {"curso": curso, "estudiante": estudiante, "estudiantes_lista" : estudiantes_lista})
 
 @login_required
 def profesor_gestion_de_estudiantes(request):

@@ -1,0 +1,56 @@
+<table class="table table-bordered  table-hover w-100 mt-2">
+  <h5 class="card-header mt-3">
+    Lista de Estudiantes
+  </h5>
+  <thead>
+    <tr>
+      <th scope="col" class="fw-bold">Código</th>
+      <th scope="col" class="fw-bold">Nombre</th>
+      <th scope="col" class="fw-bold">Correo</th>
+      <th class="text-center fw-bold" scope="col">Eliminar</th>  
+      </tr>
+  </thead>
+  <tbody>
+    {%if estudiantes_lista%}
+      {%for estudiante in estudiantes_lista%}
+        <tr>
+            <td >{{ estudiante.user.username }}</th>
+            <td>{{ estudiante.user.first_name }}</td>
+            <td>{{ estudiante.user.email }}</td>
+            <td class="text-center" >
+            <form method="POST">
+            {% csrf_token %} 
+            <button type="button" class="btn btn-danger btn-eliminar"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                <i class="bi bi-trash"></i>
+            </button>
+            <!--Modal para confirmar la eliminación-->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" class="text-center" id="staticBackdropLabel">Eliminar</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>¿Seguro que deseas eliminar a <span class="fw-bold">{{ estudiante.user.first_name }}</span> ?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <!--Botón para eliminar el estudiante-->
+                    <button type="submit" class="btn btn-danger btn-eliminar" name="eliminar-estudiante"  value="{{ estudiante.user.id }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+            </td>
+        </tr>
+      {%endfor%}
+    {%endif%}
+  </tbody>
+</table>
+
+
+
