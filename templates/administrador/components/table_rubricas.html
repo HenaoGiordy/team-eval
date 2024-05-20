@@ -14,10 +14,16 @@
     <tr>
       <th scope="row">{{ rubrica.nombre | capfirst }}</th>
       <td class="text-center" >
-        <button type="button" {% if rubrica.is_used%} disabled {%endif%} class="btn btn-primary btn-ver-rubrica" name="edit-rubrica" data-id="{{ rubrica.id }}" data-bs-toggle="modal-edit" data-bs-target="#staticBackdrop" >
+        {% if rubrica.is_used %}
+        <button class="btn btn-primary" data-id="{{ rubrica.id }}" name="ver" data-bs-toggle="modal" data-bs-target="#ver"><i class="bi bi-eye"></i></button>
+        {%endif%}
+        <button type="button" {% if rubrica.is_used%} disabled {%endif%} class="btn btn-primary btn-ver-rubrica" name="edit-rubrica" data-id="{{ rubrica.id }}" data-bs-toggle="modal" data-bs-target="#edit-rubrica" >
           <i class="bi bi-pen"></i>
         </button>
-        <button class="btn btn-danger" {% if rubrica.is_used%} disabled {%endif%} data-id="{{ rubrica.id }}" name="delete-rubrica" data-bs-toggle="modal-delete" data-bs-target="#staticBackdrop"><i class="bi bi-trash"></i></button>
+        {%include "administrador/components/modal_edit_rubrica.html"%}
+        {%include "administrador/components/modal_delete_rubrica.html"%}
+        {%include "administrador/components/modal_ver.html"%}
+        <button class="btn btn-danger" {% if rubrica.is_used%} disabled {%endif%} data-id="{{ rubrica.id }}" name="delete-rubrica" data-bs-toggle="modal" data-bs-target="#eliminar-rubrica"><i class="bi bi-trash"></i></button>
       </td>
     </tr>
     {%endfor%}
@@ -42,3 +48,4 @@
 
 </nav>
 </div>
+
