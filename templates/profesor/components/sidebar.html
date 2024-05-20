@@ -26,6 +26,13 @@
     </a>    
     </li> 
 
+    <li class="dropdown__list" id="gestion-de-grupos">
+        <a class="item-sidebar py-2 dropdown__link bordes" href="{% url 'profesor_grupo' %}" >
+          <i class="bi bi-person mr-1"></i>
+          <span>Gestión de grupos</span>
+        </a>
+    </li>
+
     {% url 'profesor_gestion_rubricas' as profesor_gestion_rubricas_url %}
     <li class="dropdown__list" id="gestion-evaluacion">
       <a class="item-sidebar py-2 dropdown__link bordes {% if request.path == profesor_gestion_rubricas_url %}active{% endif %}" href="{{ profesor_gestion_rubricas_url }}">

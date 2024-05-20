@@ -1,0 +1,126 @@
+{% extends "profesor/mainprofesor.html" %}
+{%block content%}
+<div class="container__admin">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert  {{ message.tags }}  position-absolute alert-docenter"  role="alert">
+                <p>{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <h2 class="titulos"><b>Gestión de Grupos</b></h2>
+    <div class="card-rubrica mt-2 pb-4">
+        <h5 class="card-header">Creación de un grupo</h5>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %} 
+                <div class="form-row justify-content">
+                    <div class="form-group col mt-2">
+                        <i class="bi bi-pencil mr-2 ml-2"></i>
+                        <label for="nombre-rubrica">Nombre del grupo</label>
+                    </div>
+                    <div class="form-row col-lg-9 mr-2">
+                        <input type="text" class="form-control" name="nombre_grupo" id="nombre-grupo" placeholder="Nombre del grupo" required>
+                        <p id="mensaje"></p>
+                    </div>
+                    <div>
+                        <button class="btn-search" name="buscar" type="submit" style="border-radius: 50%; color: white">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content">
+                    <div class="form-group col mt-2">
+                        <i class="bi bi-pencil mr-2  ml-2"></i>
+                        <label for="nombre-rubrica">Proyecto</label>
+                    </div>
+                    <div class="form-row col-lg-9 mr-4">
+                        <input type="text" class="form-control" name="nombre_proyecto" id="nombre-proyecto" placeholder="Nombre del proyecto" required>
+                        <p id="mensaje"></p>
+                    </div>
+                </div>
+
+                <div class="form-row justify-content">
+                    <div class="form-group col mt-2">
+                        <i class="bi bi-pencil mr-2 ml-2"></i>
+                        <label for="nombre-rubrica">Codigo del curso</label>
+                    </div>
+                    <div class="form-row col-lg-4 mr-2 ml-2">
+                        <input type="text" class="form-control" name="codigo_curso" id="codigo_curso" placeholder="Codigo del curso" required>
+                        <p id="mensaje"></p>
+                    </div>
+                    <div>
+                        <button class="btn-search" name="buscar" type="submit" style="border-radius: 50%; color: white">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                    <div class="form-group col-auto mt-2">
+                        <i class="bi bi-pencil mr-2 ml-2"></i>
+                        <label for="nombre-rubrica">curso</label>
+                    </div>
+                    <div class="form-row  col-lg-4">
+                        <input type="text" class="form-control" name="codigo_curso" id="codigo_curso" placeholder="Nombre del curso" required>
+                        <p id="mensaje"></p>
+                    </div>
+                </div>
+
+                <h5 class="card-header">Asignar estudiantes</h5>
+
+                <div class="form-row justify-content mt-3">
+                    <div class="form-group col-auto mt-2 mr-5">
+                        <i class="bi bi-pencil mr-2 ml-2"></i>
+                        <label for="nombre-rubrica">Codigo del estudiante</label>
+                    </div>
+                    <div class="form-row col-lg-3 mr-2">
+                        <input type="text" class="form-control" name="codigo_curso" id="codigo_curso" placeholder="Codigo del estudiante" required>
+                        <p id="mensaje"></p>
+                    </div>
+                    <div>
+                        <button class="btn-search" name="buscar" type="submit" style="border-radius: 50%; color: white">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                    <div class="form-group col-auto mt-2">
+                        <i class="bi bi-pencil mr-2 ml-2"></i>
+                        <label for="nombre-rubrica">Estudiante</label>
+                    </div>
+                    <div class="form-row  col-lg-4 mr-2">
+                        <input type="text" class="form-control" name="codigo_curso" id="codigo_curso" placeholder="Nombre del estudiante" required>
+                        <p id="mensaje"></p>
+                    </div>
+                    
+                    <div>
+                        <button class="btn-search" name="buscar" type="submit" style="border-radius: 50%; color: white">
+                            <i>+</i>
+                        </button>
+                    </div>
+                </div>
+
+                <h5 class="card-header">Estudiantes agregados al grupo</h5>
+
+                
+
+                <div class="botones justify-content-center w-100" >
+                    <button type="submit" class="btn btn-primary" name="guardar" id="submit-btn-rubrica" style="border: none;">
+                        <b>Guardar</b>
+                        <i class="bi bi-floppy"></i>
+                    </button>
+                    <button type="reset" class="btn btn-secondary ml-2" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
+                        <b>Limpiar</b>
+                        <i class="bi bi-eraser"></i>
+                    </button>
+                </div>   
+                
+
+            </form>
+        </div>
+    </div>
+
+
+    <div class="w-75">
+        {%include "administrador/components/table_rubricas.html"%}
+    </div>
+</div>
+{%endblock%}
