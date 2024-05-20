@@ -1,0 +1,25 @@
+<table class="table table-bordered  table-hover w-100 mt-2">
+    <h5 class="card-header mt-3">
+      Evaluaciones
+    </h5>
+    <thead>
+      <tr>
+        <th scope="col" class="fw-bold">Rúbrica</th>
+        <th scope="col" class="fw-bold">Fecha Inicio</th>
+        <th scope="col" class="fw-bold">Fecha Fin</th>
+        <th scope="col" class="fw-bold">Estudiantes Evaluados</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if evaluaciones%}
+        {%for evaluacion in evaluaciones%}
+        <tr>
+          <td>{{ evaluacion.rubrica }}</td>
+          <td>{{ evaluacion.fecha_inicio }} </td>
+          <td>{{ evaluacion.fecha_fin }}</td>
+          <td>{{ evaluacion.numero_estudiantes_evaluados }}</td>
+        </tr>
+        {%endfor%}
+      {% endif%}
+    </tbody>
+  </table>

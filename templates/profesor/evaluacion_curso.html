@@ -1,43 +1,51 @@
-{% extends 'profesor/profesor.html'%}
-{%load static%}
+{% extends 'profesor/profesor.html' %}
+{% load static %}
 {% block content %}
-<div  class="container__admin">
+<div class="container__admin">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert  {{ message.tags }}  position-absolute alert-docenter"  role="alert">
+                <p>{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
     <h2 class="titulos"><b>Gestión de evaluación</b></h2>
+    <div class="col-4 contenedor-back-bottom">
+        <a href="{% url 'detalle_curso' curso.id %}">
+            <span class="material-icons btn btn-primary back-bottom">arrow_back</span>
+        </a>
+    </div>
     <div class="card-form">
-        <h5 class="card-header">Limite de la evaluación</h5>
+        <h5 class="card-header">Límite de la evaluación</h5>
         <div class="card-body">
-            <form>
+            <form method="POST">
+                {% csrf_token %} 
+                <!-- Campo de búsqueda y resultados -->
+                <div class="form-row justify-content-center mt-1 position-relative">
+                    <div class="form-group col-md-5 mx-3">
+                        <i class="bi bi-calendar4-week"></i>
+                        <label for="busqueda">Rúbrica</label>
+                        <input type="text" name="rubrica" id="busqueda" class="form-control" autocomplete="off">
+                        <div id="resultados" class="list-group position-absolute w-100" style="max-height: 200px; overflow-y: auto; z-index: 1000;"></div>
+                        <input type="hidden" name="rubrica_id" id="rubrica-id">
+                    </div>
+                </div>
                 <!-- Fecha de inicio y fin -->
                 <div class="form-row justify-content-center mt-1">
                     <div class="form-group col-md-5 mx-3">
                         <i class="bi bi-calendar4-week"></i>
                         <label for="fecha-inicio">Fecha inicio</label>
-                        <input type="date" class="form-control" id="fecha-inicio">
+                        <input type="date" name="fecha-inicio" class="form-control" id="fecha-inicio">
                     </div>
                     <div class="form-group col-md-5 mx-3">
                         <i class="bi bi-calendar4-week"></i>
                         <label for="fecha-fin">Fecha fin</label>
-                        <input type="date" class="form-control" id="fecha-fin">
+                        <input type="date" name="fecha-fin" class="form-control" id="fecha-fin">
                     </div>
                 </div>
-                
-                <!-- Hora de inicio y fin-->
-                <div class="form-row justify-content-center">
-                    <div class="form-group col-md-5 mx-3">
-                        <i class="bi bi-clock"></i>
-                        <label for="hora-inicio">Hora inicio</label>
-                        <input type="time" class="form-control" id="hora-inicio">
-                    </div>
-                    <div class="form-group col-md-5 mx-3">
-                        <i class="bi bi-clock"></i>
-                        <label for="hora-fin">Hora fin</label>
-                        <input type="time" class="form-control" id="hora-fin">
-                    </div>
-                </div>
-
-                <!--Botones e iconos/metáforas de "Guardar" y "Limpiar"-->
+                <!-- Botones de guardar y limpiar -->
                 <div class="botones">
-                    <button type="submit" class="btn btn-primary" name="guardar-evaluacion" style="border: none;">
+                    <button type="submit" class="btn btn-primary" id="guardar-evaluacion" name="guardar-evaluacion" style="border: none;">
                         <b>Guardar</b>
                         <i class="bi bi-floppy"></i>
                     </button>
@@ -50,9 +58,41 @@
         </div>
     </div>
     <div class="w-75">
-        {%include "profesor/components/table_rubricas.html"%}
+        {% include "profesor/components/table_rubricas.html" %}
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var busqueda = document.getElementById('busqueda');
+        var rubricaId = document.getElementById('rubrica-id');
+        var resultados = document.getElementById('resultados');
+        var botonGuardar = document.getElementById("guardar-evaluacion")
 
+        busqueda.addEventListener('keyup', function() {
+            var query = busqueda.value;
+            if (query) {
+                fetch(`/filtrar/?q=${query}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        resultados.innerHTML = '';
+                        data.forEach(item => {
+                            var p = document.createElement('button');
+                            p.textContent = item.nombre;
+                            p.className = 'list-group-item list-group-item-action';
+                            p.style.cursor = 'pointer';
+                            p.addEventListener('click', function() {
+                                busqueda.value = item.nombre;
+                                rubricaId.value = item.id;  // Ajusta según el campo de tu modelo
+                                botonGuardar.value= item.id
+                                resultados.innerHTML = '';  // Limpiar resultados después de la selección
+                            });
+                            resultados.appendChild(p);
+                        });
+                    });
+            } else {
+                resultados.innerHTML = '';
+            }
+        });
+    });
+</script>
 {% endblock %}
-

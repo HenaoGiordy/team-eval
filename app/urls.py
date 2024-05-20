@@ -13,7 +13,7 @@ urlpatterns= [
     path('profesor/gestion_cursos', views.profesor_cursos, name="profesor_cursos"),
     path('profesor/detalle_curso/<int:curso_id>', views.detalle_curso, name="detalle_curso"),
     path('profesor/gestion_de_estudiantes', views.profesor_gestion_de_estudiantes, name="profesor_gestion_de_estudiantes"),
-    path('profesor/evaluacion_curso', views.profesor_evaluacion_curso, name="profesor_evaluacion_curso"),
+    path('profesor/crear_evaluacion/<int:curso_id>', views.profesor_evaluacion_curso, name="crear_evaluacion"),
     path('profesor/rubrica_curso', views.profesor_rubrica_curso, name="profesor_rubrica_curso"),
     path('profesor/grupos_curso', views.profesor_grupos_curso, name="profesor_grupos_curso"),
     path('profesor/gestion_rubricas', views.profesor_gestion_rubricas, name="profesor_gestion_rubricas"),
@@ -27,4 +27,5 @@ urlpatterns= [
     path('obtener_detalles_usuario/<int:user_id>/', views.obtener_detalles_usuario, name='obtener_detalles_usuario'),
     path('obtener_detalles_estudiante/<int:user_id>/', views.obtener_detalles_estudiante, name='obtener_detalles_estudiante'),
     path('obtener_detalles_curso/<int:curso_id>/', views.obtener_detalles_curso, name='obtener_detalles_curso'),
+    path('filtrar/', views.filtrar_datos, name='filtrar_datos')
 ]

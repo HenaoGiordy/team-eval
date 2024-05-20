@@ -98,12 +98,25 @@ class Curso(models.Model):
     def numero_grupos(self):
         return self.grupo_set.count()
 
+
 class PerfilEstudiante(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     nombre = models.TextField()
     cursos = models.ManyToManyField(Curso)
     def __str__(self):
         return self.nombre
+
+class Evaluacion(models.Model):
+    fecha_inicio = models.DateField(blank=False, null=False)
+    fecha_fin = models.DateField(blank=False, null=False)
+    rubrica = models.ForeignKey(Rubrica, on_delete=models.PROTECT, null=False, blank=False)
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE, null=False, blank=False)
+    evaluadores = models.ManyToManyField(PerfilEstudiante, related_name='evaluaciones_hechas')
+    evaluados = models.ManyToManyField(PerfilEstudiante, related_name='evaluaciones_recibidas')
+    
+    @property
+    def numero_estudiantes_evaluados(self):
+        return self.evaluados.count()
 
 class Grupo(models.Model):
     nombre = models.TextField(max_length=50)
@@ -113,10 +126,3 @@ class Grupo(models.Model):
     def __str__(self):
         return self.nombre 
     
-class Evaluacion(models.Model):
-    fecha_inicio = models.DateField(blank=False, null=False)
-    fecha_fin = models.DateField()
-    estudiante_evaluado = models.ForeignKey(PerfilEstudiante, related_name='evaluado', on_delete=models.CASCADE, blank=False, null=False)
-    estudiante_evaluador = models.ForeignKey(PerfilEstudiante, related_name='evaluador', on_delete=models.CASCADE, blank=False, null=False)
-    rubrica = models.ForeignKey(Rubrica, on_delete=models.PROTECT, null=False, blank=False)
-    curso = models.ForeignKey(Curso, on_delete=models.CASCADE, null=False, blank=False)

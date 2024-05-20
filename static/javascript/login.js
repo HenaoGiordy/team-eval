@@ -39,7 +39,6 @@ document.querySelectorAll('.btn-edit').forEach(btn => {
                 document.getElementById('edit-documento').value = data.documento;
                 document.getElementById('edit-email').value = data.email;
                 document.getElementById('edit-estado').value = data.estado == true ? "True" : "False"
-                // Llena otros campos del formulario según sea necesario
             })
             .catch(error => console.error('Error:', error));
     });
@@ -66,7 +65,6 @@ document.querySelectorAll('.btn-edit-estudiante').forEach(btn => {
                 document.getElementById('edit-documento-estudiante').value = data.documento;
                 document.getElementById('edit-email-estudiante').value = data.email;
                 document.getElementById('edit-estado-estudiante').value = data.estado == true ? "True" : "False"
-                // Llena otros campos del formulario según sea necesario
             })
             .catch(error => console.error('Error:', error));
     });
@@ -89,9 +87,8 @@ document.querySelectorAll('.btn-edit-curso').forEach(btn => {
                 document.getElementById('edit-curso').value = data.id;
                 document.getElementById('edit-codigo-curso').value = data.codigo;
                 document.getElementById('edit-nombre-curso').value = data.nombre;
-                document.getElementById('edit-codigo-docente').value = data.profesor_codigo; // Asegúrate de que data.profesor sea el código del docente
+                document.getElementById('edit-codigo-docente').value = data.profesor_codigo;
                 document.getElementById('edit-periodo-curso').value = data.periodo;
-                // Llena otros campos del formulario según sea necesario
             })
             .catch(error => console.error('Error:', error));
     });

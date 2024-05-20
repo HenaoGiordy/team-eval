@@ -14,10 +14,10 @@
     <tr>
       <th scope="row">{{ rubrica.nombre | capfirst }}</th>
       <td class="text-center" >
-        <button type="button" class="btn btn-primary btn-ver-rubrica" name="edit-rubrica" data-id="{{ rubrica.id }}" data-bs-toggle="modal-edit" data-bs-target="#staticBackdrop" >
+        <button type="button" {% if rubrica.is_used%} disabled {%endif%} class="btn btn-primary btn-ver-rubrica" name="edit-rubrica" data-id="{{ rubrica.id }}" data-bs-toggle="modal-edit" data-bs-target="#staticBackdrop" >
           <i class="bi bi-pen"></i>
         </button>
-        <button class="btn btn-danger" data-id="{{ rubrica.id }}" name="delete-rubrica" data-bs-toggle="modal-delete" data-bs-target="#staticBackdrop"><i class="bi bi-trash"></i></button>
+        <button class="btn btn-danger" {% if rubrica.is_used%} disabled {%endif%} data-id="{{ rubrica.id }}" name="delete-rubrica" data-bs-toggle="modal-delete" data-bs-target="#staticBackdrop"><i class="bi bi-trash"></i></button>
       </td>
     </tr>
     {%endfor%}

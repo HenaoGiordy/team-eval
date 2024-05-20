@@ -25,36 +25,50 @@
             </div>
         </div>    
     
+        <!--TABLAS DE ESTUDIANTES Y DE EVALUACIONES-->
+    <div class="d-flex w-75 gap-3 mx-2">
+        <!-- formulario para ingresar estudiante a un curso -->
+        <div class="d-flex flex-column w-100 align-items-center justify-content-center">
+            <form method="POST" class="row w-50 mt-5 d-flex flex-column align-items-center justify-content-center">
+                {% csrf_token %} 
 
-    <!-- formulario para ingresar estudiante a un curso -->
-    <form method="POST" class="row w-50 mt-5 d-flex flex-column align-items-center justify-content-center">
-        {% csrf_token %} 
-
-        <h3 class="text-center">Añadir estudiante</h3>
-        <div class="d-flex w-75 gap-3">
-            <input type="number" id="codigo_estudiante" name="codigo_estudiante" class="form-control" placeholder="Código del estudiante" required>
-            <button type="submit" name="buscar-estudiante" class="btn btn-primary"><i class="bi bi-search"></i></button>
-        </div>
-    </form>
-    <!-- Card que aparece cuando se busca el estudiante para agregarlo-->
-    {% if estudiante %}
-        <form method="POST">
-            {% csrf_token %} 
-            <div class="d-flex flex-column  mt-3 bg-body-secondary rounded p-3">
-                <p>Información del estudiante: </p>
-                <p>Nombre: <span class="fw-bold">{{estudiante.user.first_name}}<span></p>
-                <p>Código Estudiante: <span class="fw-bold">{{estudiante.user.username}}<span></p>
-                <div class="w-100 d-flex justify-content-center gap-2">
-                    <button type="submit" name="agregar-estudiante" value="{{ estudiante.id }}" class="btn btn-primary d-flex gap-2 w-50"><i class="bi bi-plus-square"></i>Agregar</button>
-                    <button type="submit" class="btn btn-secondary d-flex gap-2 w-50"><i class="bi bi-eraser"></i></i>Limpiar</button>   
+                <h3 class="text-center">Añadir estudiante</h3>
+                <div class="d-flex w-75 gap-3">
+                    <input type="number" id="codigo_estudiante" name="codigo_estudiante" class="form-control" placeholder="Código del estudiante" required>
+                    <button type="submit" name="buscar-estudiante" class="btn btn-primary"><i class="bi bi-search"></i></button>
                 </div>
+            </form>
+
+            <!-- Formilario para crear una evaluación-->
+            
+            <!-- Card que aparece cuando se busca el estudiante para agregarlo-->
+            {% if estudiante %}
+                <form method="POST">
+                    {% csrf_token %} 
+                    <div class="d-flex flex-column  mt-3 bg-body-secondary rounded p-3">
+                        <p>Información del estudiante: </p>
+                        <p>Nombre: <span class="fw-bold">{{estudiante.user.first_name}}<span></p>
+                        <p>Código Estudiante: <span class="fw-bold">{{estudiante.user.username}}<span></p>
+                        <div class="w-100 d-flex justify-content-center gap-2">
+                            <button type="submit" name="agregar-estudiante" value="{{ estudiante.id }}" class="btn btn-primary d-flex gap-2 w-50"><i class="bi bi-plus-square"></i>Agregar</button>
+                            <button type="submit" class="btn btn-secondary d-flex gap-2 w-50"><i class="bi bi-eraser"></i></i>Limpiar</button>   
+                        </div>
+                    </div>
+                </form>
+                {% endif%}
+            <!-- Tabla de estudiantes en el curso -->
+            <div class="w-100">
+                {%include "profesor/components/table_estudiantes.html"%}
             </div>
-        </form>
-        {% endif%}
-    <!-- Tabla de estudiantes en el curso -->
-    <div class="w-75">
-        {%include "profesor/components/table_estudiantes.html"%}
+        </div>
+
+        <!--Tabla de evaluaciones-->
+        <div class="w-100 " style="margin-top: 90px">
+            <div class="col-4  contenedor-back-bottom"><a class="" href="{% url "crear_evaluacion" curso.id %}" >
+                <span class="btn btn-primary d-flex gap-2"><i class="bi bi-plus-circle"></i>Crear</span> </a>
+            </div>
+            {%include "profesor/components/tabla_evaluaciones.html"%}
+        </div>
     </div>
-    
 </div>    
 {% endblock %}
