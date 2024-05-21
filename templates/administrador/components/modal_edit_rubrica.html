@@ -1,18 +1,58 @@
-<div class="modal fade" id="edit-rubrica" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="edit-rubrica-{{ rubrica.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel-{{ rubrica.id }}" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel-{{ rubrica.id }}">Editar Rúbrica</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex">
+                    <label for="nombre_rubrica_edit_{{ rubrica.id }}">Nombre Rúbrica</label>
+                    <input name="nombre_rubrica_edit_{{ rubrica.id }}" id="nombre_rubrica_edit_{{ rubrica.id }}" class="form-control" value="{{ rubrica.nombre }}">
+                </div>
+                <!-- Tabla para modificar criterios-->
+                <table class="table table-bordered mt-4">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="col-7 text-center"><b>Descripción</b></th>
+                            <th class="col-3 text-center"><b>Peso</b></th>
+                        </tr>
+                    </thead>
+                    <tbody id="criterios_tbody_edit_{{ rubrica.id }}">
+                        {% for criterio in rubrica.criterio_set.all %}
+                        <tr>
+                            <td><input type="text" class="form-control" value="{{ criterio.descripcion }}" name="descripcion_criterio_edit_{{ rubrica.id }}[]"></td>
+                            <td><input type="number" class="form-control" name="peso_criterio_edit_{{ rubrica.id }}[]" min="0.01" max="0.99" step="0.01" pattern="0\.([0-9]{2})?" value="{{ criterio.peso }}" title="Debe ser un número decimal con máximo dos decimales, entre 0.01 y 0.99" required></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <!-- Fin de tabla modificar criterios-->
+
+                <!-- Tabla modificar escalas-->
+                <table class="table table-bordered mt-4">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="text-center col-3"><b>Calificación</b></th>
+                            <th class="text-center col-7"><b>Descripción</b></th>
+                        </tr>
+                    </thead>
+                    <tbody id="escalas-tbody-edit_{{ rubrica.id }}">
+                        {% for escala in rubrica.calificacion_set.all %}
+                        <tr>
+                            <td><input type="number" class="form-control" name="escala_edit_{{ rubrica.id }}[]" min="0" max="10" value="{{ escala.calificacion }}"></td>
+                            <td><input type="text" class="form-control" name="descripcion_escala_edit_{{ rubrica.id }}[]" value="{{ escala.descripcion }}"></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <!-- Fin tabla modificar escalas-->
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" name="editar-rubrica" value="{{ rubrica.id }}" class="btn btn-primary">Guardar</button>
+            </div>
         </div>
-        <div class="modal-body">
-          {{ rubrica.id }}
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Understood</button>
-        </div>
-      </div>
     </div>
-  </div>
-  
+</div>

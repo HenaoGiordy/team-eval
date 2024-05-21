@@ -6,11 +6,11 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          {{ rubrica.id }}
+          <p>¿Seguro que deseas eliminar la rúbrica <span class="fw-bold">{{ rubrica.nombre }}</span>?<p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-danger">Understood</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" name="eliminar-rubrica" value="{{ rubrica.id }}" class="btn btn-danger">Eliminar</button>
         </div>
       </div>
     </div>

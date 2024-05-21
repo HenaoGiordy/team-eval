@@ -48,9 +48,11 @@
                         </div>
                     </div>
                 </div>
+        
         <div class="w-75">
             {%include "administrador/components/table_rubricas.html"%}
         </div>
+  
     </div>
 
     
@@ -71,9 +73,11 @@
             for (var i = 0; i < inputs.length; i++) {
                 total += parseFloat(inputs[i].value);
             }
-    
+            console.log(total)
+            
             // Verificar si la suma es igual a 1
             if (total !== 1) {
+                console.log(total)
                 event.preventDefault(); // Evitar que se envíe el formulario
                 mostrarMensaje("La suma de los pesos debe ser igual a 1");
             }
