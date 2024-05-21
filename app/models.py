@@ -58,7 +58,7 @@ class Calificacion(models.Model):
 
 class Criterio(models.Model):
     descripcion = models.TextField(max_length=200)
-    peso = models.DecimalField(max_digits=3, decimal_places=3)
+    peso = models.DecimalField(max_digits=2, decimal_places=2)
     rubrica = models.ForeignKey(Rubrica, on_delete=models.CASCADE)
     def __str__(self):
         return self.descripcion + f" Peso: {self.peso}" 

@@ -17,7 +17,7 @@
           <th scope="row">{{ rubrica.nombre | capfirst }}</th>
           <td class="text-center" >
             {% if rubrica.is_used %}
-            <button type="button" class="btn btn-primary" data-id="{{ rubrica.id }}" name="ver" data-bs-toggle="modal" data-bs-target="#ver"><i class="bi bi-eye"></i></button>
+            <button type="button" class="btn btn-primary" data-id="{{ rubrica.id }}" name="ver" data-bs-toggle="modal" data-bs-target="#ver-{{ rubrica.id }}"><i class="bi bi-eye"></i></button>
             {%endif%}
             <button type="button" {% if rubrica.is_used%} disabled {%endif%} class="btn btn-primary btn-ver-rubrica" name="edit-rubrica" data-id="{{ rubrica.id }}" data-bs-toggle="modal" data-bs-target="#edit-rubrica-{{ rubrica.id }}" >
               <i class="bi bi-pen"></i>
