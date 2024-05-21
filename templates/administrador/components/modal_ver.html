@@ -8,7 +8,7 @@
           <div class="modal-body">
               <div class="d-flex">
                   <label >Nombre Rúbrica</label>
-                  <input  class="form-control" value="{{ rubrica.nombre }}" readonly="true">
+                  <input  class="form-control" value="{{rubrica.nombre | capfirst }}" readonly="true">
               </div>
               <!-- Tabla para modificar criterios-->
               <table class="table table-bordered mt-4">

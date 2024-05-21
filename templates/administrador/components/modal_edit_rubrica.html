@@ -8,7 +8,7 @@
             <div class="modal-body">
                 <div class="d-flex">
                     <label for="nombre_rubrica_edit_{{ rubrica.id }}">Nombre Rúbrica</label>
-                    <input name="nombre_rubrica_edit_{{ rubrica.id }}" id="nombre_rubrica_edit_{{ rubrica.id }}" class="form-control" value="{{ rubrica.nombre }}">
+                    <input name="nombre_rubrica_edit_{{ rubrica.id }}" id="nombre_rubrica_edit_{{ rubrica.id }}" class="form-control" value="{{ rubrica.nombre | capfirst }}">
                 </div>
                 <!-- Tabla para modificar criterios-->
                 <table class="table table-bordered mt-4">
