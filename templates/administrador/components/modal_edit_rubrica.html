@@ -22,7 +22,7 @@
                         {% for criterio in rubrica.criterio_set.all %}
                         <tr>
                             <td><input type="text" class="form-control" value="{{ criterio.descripcion }}" name="descripcion_criterio_edit_{{ rubrica.id }}[]"></td>
-                            <td><input type="number" class="form-control" name="peso_criterio_edit_{{ rubrica.id }}[]" min="0.01" max="0.99" step="0.01" pattern="0\.([0-9]{2})?" value="{{ criterio.peso }}" title="Debe ser un número decimal con máximo dos decimales, entre 0.01 y 0.99" required></td>
+                            <td><input type="number" class="form-control" name="peso_criterio_edit_{{ rubrica.id }}[]" min="0.01" max="0.99" step="0.01" pattern="0\[.,]([0-9]{2})?" value="{{ criterio.peso | floatformat:2 }}" title="Debe ser un número decimal con máximo dos decimales, entre 0.01 y 0.99" required></td>
                         </tr>
                         {% endfor %}
                     </tbody>
