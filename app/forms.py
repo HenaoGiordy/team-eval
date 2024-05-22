@@ -3,7 +3,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 
 
 class UsernameForm(forms.Form):
-    username = forms.CharField(label='Nombre de usuario', max_length=150)
+    username = forms.CharField(label='Código o Número de Documento', max_length=150)
 
 class MinimalPasswordChangeForm(forms.Form):
     old_password = forms.CharField(
