@@ -8,11 +8,18 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from TeamEval import settings
 from app.exeptions import PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso
+from app.forms import MinimalPasswordChangeForm, UsernameForm
 from app.models import  Calificacion, Criterio, Evaluacion, Rubrica, User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
-
+from django.utils.http import urlsafe_base64_decode
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
+from django.core.mail import send_mail
 # Create your views here.
 
 def login_register(request):
@@ -41,6 +48,65 @@ def redirect_user_by_role(user):
         return redirect('profesor')
     else:
         return redirect('login_register')
+
+def request_username(request):
+    if request.method == 'POST':
+        form = UsernameForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            try:
+                user = User.objects.get(username=username)
+                # Generar el token y el UID
+                token = default_token_generator.make_token(user)
+                uid = urlsafe_base64_encode(force_bytes(user.pk))
+                
+                # Construir el enlace
+                link = request.build_absolute_uri(
+                    reverse('change_password') + f'?uid={uid}&token={token}'
+                )
+                
+                # Enviar el correo electrónico
+                subject = 'Restablecimiento de contraseña'
+                message = render_to_string('login/password_reset_email.html', {
+                    'user': user,
+                    'link': link,  # Pasar el enlace sin escapar
+                })
+                send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email])
+                
+                messages.success(request, 'Se ha enviado un enlace de restablecimiento de contraseña a tu correo electrónico.')
+                return redirect('login')
+            except User.DoesNotExist:
+                messages.error(request, 'El nombre de usuario no existe.')
+    else:
+        form = UsernameForm()
+
+    return render(request, 'login/request_username.html', {'form': form})
+
+def change_password(request):
+    uidb64 = request.GET.get('uid')
+    token = request.GET.get('token')
+    try:
+        uid = urlsafe_base64_decode(uidb64)
+        user = User.objects.get(pk=uid)
+    
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    
+    if user is not None and default_token_generator.check_token(user, token):
+        if request.method == 'POST':
+            form = MinimalPasswordChangeForm(user, request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Tu contraseña ha sido cambiada con éxito.')
+                return redirect('login')
+        else:
+            form = MinimalPasswordChangeForm(user)
+    else:
+        messages.error(request, 'El enlace de restablecimiento de contraseña no es válido o ha expirado.')
+        return redirect('request_username')
+
+    return render(request, 'login/change_password.html', {'form': form})
+
 
 @login_required(redirect_field_name='login')
 def logout_usuario(request):

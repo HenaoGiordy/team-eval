@@ -1,0 +1,14 @@
+
+    <title>Solicitar Cambio de Contraseña</title>
+</head>
+<body>
+    <h2>Solicitar Cambio de Contraseña</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Enviar</button>
+    </form>
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+

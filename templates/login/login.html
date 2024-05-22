@@ -4,7 +4,7 @@
 
 {% if messages %}
         {% for message in messages %}
-        <div class="alert alert-danger alert-dismissible d-flex w-75 justify-content-center position-absolute alert-modificador"  role="alert">
+        <div class="alert {{ message.tags }} alert-dismissible d-flex w-75 justify-content-center position-absolute alert-modificador"  role="alert">
             <p>{{ message }}</p>
         </div>
         {% endfor %}
@@ -36,7 +36,7 @@
                     </label>
             </div>
             <div class="mb-4">
-                <a class="fs-8 mb-5" href="{% url 'login_recuperar_contraseña' %}">¿Has olvidado tu contraseña?</a>
+                <a class="fs-8 mb-5" href="{% url 'request_username' %}">¿Has olvidado tu contraseña?</a>
             </div>
                 
             <div class="d-grid w-60">
