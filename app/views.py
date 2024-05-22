@@ -633,17 +633,17 @@ def administrador_gestion_de_evaluacion(request):
             
             if "editar-rubrica" in request.POST:
                 rubrica_id_editar = request.POST.get("editar-rubrica")
-                print(rubrica_id_editar)
+                
 
                 # Prefix the input names with the rubrica_id
                 nombre_rubrica_editar = request.POST.get(f'nombre_rubrica_edit_{rubrica_id_editar}')
-                print(nombre_rubrica_editar)
+                
                 descripciones_criterios_editar = request.POST.getlist(f'descripcion_criterio_edit_{rubrica_id_editar}[]')
-                print(descripciones_criterios_editar)
+                
                 pesos_criterios_editar = request.POST.getlist(f'peso_criterio_edit_{rubrica_id_editar}[]')
-                print(pesos_criterios_editar)
+                
                 escalas_editar = request.POST.getlist(f'escala_edit_{rubrica_id_editar}[]')
-                print(escalas_editar)
+                
                 descripciones_escalas_editar = request.POST.getlist(f'descripcion_escala_edit_{rubrica_id_editar}[]')
 
                 rubrica_editar = Rubrica.objects.get(id=rubrica_id_editar)
