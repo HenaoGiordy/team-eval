@@ -1,5 +1,6 @@
 from datetime import datetime
 from decimal import InvalidOperation
+from django import forms
 from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
@@ -50,7 +51,7 @@ def redirect_user_by_role(user):
         return redirect('login_register')
 
 def request_username(request):
-    if request.method == 'POST':
+    if request.method == 'POST': 
         form = UsernameForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
@@ -77,6 +78,9 @@ def request_username(request):
                 return redirect('login')
             except User.DoesNotExist:
                 messages.error(request, 'El nombre de usuario no existe.')
+            
+            
+            
     else:
         form = UsernameForm()
 

@@ -1,22 +1,33 @@
+import re
 from django import forms
 from django.contrib.auth.forms import PasswordChangeForm
 
 
 class UsernameForm(forms.Form):
-    username = forms.CharField(label='Código o Número de Documento', max_length=150)
+    username = forms.CharField(label='Código o Número de Documento', 
+                               max_length=150,
+                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese su código', 'required' : 'true', "type" : "number"})
+                               )
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if not username:
+            raise forms.ValidationError("Por favor, ingresa un nombre de usuario.")
+        if not re.match(r'^[0-9]+$', username):
+            raise forms.ValidationError("Por favor, ingresa un código válido (solo números).")
+        return username
 
 class MinimalPasswordChangeForm(forms.Form):
     old_password = forms.CharField(
         label="Contraseña antigua",
-        widget=forms.PasswordInput(attrs={'autocomplete': 'current-password'}),
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'autocomplete': 'current-password'}),
     )
     new_password1 = forms.CharField(
         label="Nueva contraseña",
-        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'autocomplete': 'new-password'}),
     )
     new_password2 = forms.CharField(
         label="Confirmar nueva contraseña",
-        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'autocomplete': 'new-password'}),
     )
 
     def __init__(self, user, *args, **kwargs):
