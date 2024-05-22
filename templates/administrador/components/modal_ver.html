@@ -22,7 +22,7 @@
                       {% for criterio in rubrica.criterio_set.all %}
                       <tr>
                           <td><input type="text" class="form-control" value="{{ criterio.descripcion }}" readonly="true"></td>
-                          <td><input type="number" class="form-control"  min="0.01" max="0.99" step="0.01"pattern="0\[.,]([0-9]{2})?" value="{{ criterio.peso | floatformat:2 }}" readonly="true" value="{{ criterio.peso }}" ></td>
+                          <td><input type="number" class="form-control"  min="0.01" max="0.99" step="0.01"pattern="0\[.,]([0-9]{2})?" value="" readonly="true" value="{{ criterio.peso | stringformat:"s" }}" >{{ criterio.peso | floatformat:2 }}</td>
                       </tr>
                       {% endfor %}
                   </tbody>
