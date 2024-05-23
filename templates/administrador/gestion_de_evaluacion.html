@@ -1,59 +1,59 @@
 {% extends 'administrador/administrador.html'%}
 {%load static%}
 {% block content %}
-    <div class="container__admin">
-        {% if messages %}
-                {% for message in messages %}
-                <div class="alert  {{ message.tags }}  position-absolute alert-docenter"  role="alert">
-                    <p>{{ message }}</p>
-                </div>
-                {% endfor %}
-            {% endif %}
-        <h2 class="titulos"><b>Gestión de evaluación</b></h2>
-        <div class="card-rubrica mt-2 pb-4">
-            <h5 class="card-header">Creación de una rúbrica</h5>
-            <div class="card-body">
-                <form method="POST">
-                    {% csrf_token %} 
-                    <div class="form-row justify-content">
-                        <div class="form-group col mt-2">
-                            <i class="bi bi-pencil mr-2 ml-2"></i>
-                            <label for="nombre-rubrica">Nombre de la rúbrica</label>
-                        </div>
-                        <div class="form-row col-lg-9 mr-2">
-                            <input type="text" class="form-control" name="nombre_rubrica" id="nombre-rubrica" placeholder="Nombre rúbrica" required>
-                            <p id="mensaje"></p>
-                        </div>
-                    <div class="d-flex w-100 gap-3 mt-5">
-                        <div class="w-50 form-group">
-                            <h4 class="text-center">Lista Criterios</h4>
-                            {% include "administrador/components/lst_criterios.html"%}
-                        </div>
-                        <div class="w-50">
-                            <h4 class="text-center">Escala</h4>
-                            {% include "administrador/components/lst_escalas.html"%}
-                        </div>
+<div class="container__admin">
+    <!--Alertas / notificaciones-->
+    {% if messages %}
+            {% for message in messages %}
+            <div class="alert  {{ message.tags }} position-absolute"  role="alert">
+                <p>{{ message }}</p>
+            </div>
+            {% endfor %}
+    {% endif %}
+    <!--Formulario-->
+    <h2 class="titulos"><b>Gestión de evaluación</b></h2>
+    <div class="card-rubrica mt-2 pb-4">
+        <h5 class="card-header">Creación de una rúbrica</h5>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %} 
+                <div class="form-row justify-content">
+                    <div class="form-group col mt-2">
+                        <i class="bi bi-pencil mr-2 ml-2"></i>
+                        <label for="nombre-rubrica">Nombre de la rúbrica</label>
                     </div>
-                                <div class="botones justify-content-center w-100" >
-                                    <button type="submit" class="btn btn-primary" name="guardar" id="submit-btn-rubrica" style="border: none;">
-                                        <b>Guardar</b>
-                                        <i class="bi bi-floppy"></i>
-                                    </button>
-                                    <button type="reset" class="btn btn-secondary ml-2" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
-                                        <b>Limpiar</b>
-                                        <i class="bi bi-eraser"></i>
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+                    <div class="form-row col-lg-9 mr-2">
+                        <input type="text" class="form-control" name="nombre_rubrica" id="nombre-rubrica" placeholder="Nombre rúbrica" required>
+                        <p id="mensaje"></p>
+                    </div>
+                <div class="d-flex w-100 gap-3 mt-1">
+                    <div class="w-50 form-group">
+                        <h4 class="text-center">Lista criterios</h4>
+                        {% include "administrador/components/lst_criterios.html"%}
+                    </div>
+                    <div class="w-50">
+                        <h4 class="text-center">Lista escalas</h4>
+                        {% include "administrador/components/lst_escalas.html"%}
                     </div>
                 </div>
-        
-        <div class="w-75">
-            {%include "administrador/components/table_rubricas.html"%}
-        </div>
-  
+                            <div class="botones justify-content-center w-100" >
+                                <button type="submit" class="btn btn-primary" name="guardar" id="submit-btn-rubrica" style="border: none;">
+                                    <b>Guardar</b>
+                                    <i class="bi bi-floppy"></i>
+                                </button>
+                                <button type="reset" class="btn btn-secondary ml-2" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
+                                    <b>Limpiar</b>
+                                    <i class="bi bi-eraser"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+    <div class="w-75">
+        {%include "administrador/components/table_rubricas.html"%}
     </div>
+</div>
 
     
     <script>
@@ -73,11 +73,9 @@
             for (var i = 0; i < inputs.length; i++) {
                 total += parseFloat(inputs[i].value);
             }
-            console.log(total)
-            
+    
             // Verificar si la suma es igual a 1
             if (total !== 1) {
-                console.log(total)
                 event.preventDefault(); // Evitar que se envíe el formulario
                 mostrarMensaje("La suma de los pesos debe ser igual a 1");
             }

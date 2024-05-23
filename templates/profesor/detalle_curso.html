@@ -1,74 +1,117 @@
 {% extends "profesor/mainprofesor.html" %}
 {%block content%}
 <div  class="container__admin">
+    <div class="col-10 mt-2">
+        <a class="refrescar btn btn-secondary" style="color: #0D6EFD; background-color: #d9d9d9; border: none;" href="{% url 'profesor_cursos' %}">
+            <b>Volver</b>
+            <i class="bi bi-arrow-return-left"></i>
+        </a>
+    </div>
     <h2 class="titulos"><b>Información del curso</b></h2>
-        <div class="card-body">
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert  {{ message.tags }}  position-absolute alert-docenter"  role="alert">
-                        <p>{{ message }}</p>
-                    </div>
-                {% endfor %}
-            {% endif %}
-                    <div class="col-4  contenedor-back-bottom"><a href="{% url "profesor_cursos" %}" >
-                        <span class="material-icons btn btn-primary back-bottom">arrow_back</span> </a>
-                    </div>
-            <div class="row w-100">
-                
-                <div class="col">
-                    <div class="contenedor-titulos">
-                        <h3><span style="font-weight: bold;">Asignatura: </span> {{ curso }}</h3>
-                        <h3><span style="font-weight: bold;">Código: </span> {{ curso.codigo }}</h3>
-                        <h3><span style="font-weight: bold;">Periodo: </span> {{ curso.get_periodo_academico }}</h3>
-                    </div>
-                </div>
+
+    <div class="card-body">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert {{ message.tags }} position-absolute alert-docenter" role="alert">
+                <p>{{ message }}</p>
             </div>
-        </div>    
+            {% endfor %}
+        {% endif %}
+
+        <!--Información del curso-->
+        <form class="justify-content-center mt-n2">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-sm" style="background-color: #f8f9fa;">
+                    <i class="bi bi-pencil mr-1"></i><b>Nombre curso</b></span>
+                <input style="background-color: #f8f9fa;" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="{{ curso }}" disabled>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-sm" style="background-color: #f8f9fa;">
+                    <i class="bi bi-journal-text mr-1"></i><b>Código curso</b></span>
+                <input style="background-color: #f8f9fa;" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="{{ curso.codigo }}" disabled>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-sm" style="background-color: #f8f9fa;">
+                    <i class="bi bi-calendar3 mr-1"></i><b>Periodo académico</b></span>
+                <input style="background-color: #f8f9fa;" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="{{ curso.get_periodo_academico }}" disabled>
+            </div>
+            <div class="d-flex justify-content-center align-items-center gap-3">
+                <a href="{% url 'profesor_grupo' %}">
+                    <span class="btn btn-primary"><b>Grupos</b>
+                        <i class="bi bi-people-fill"></i>
+                    </span> 
+                </a>
+                <a href="{% url "crear_evaluacion" curso.id %}" >
+                    <span class="btn btn-primary"><b>Evaluación</b>
+                        <i class="bi bi-file-earmark-check"></i>
+                    </span> 
+                </a>
+            </div>
+        </form>    
+    </div>    
     
-        <!--TABLAS DE ESTUDIANTES Y DE EVALUACIONES-->
-    <div class="d-flex w-75 gap-3 mx-2">
-        <!-- formulario para ingresar estudiante a un curso -->
-        <div class="d-flex flex-column w-100 align-items-center justify-content-center">
-            <form method="POST" class="row w-50 mt-5 d-flex flex-column align-items-center justify-content-center">
-                {% csrf_token %} 
-
-                <h3 class="text-center">Añadir estudiante</h3>
-                <div class="d-flex w-75 gap-3">
-                    <input type="number" id="codigo_estudiante" name="codigo_estudiante" class="form-control" placeholder="Código del estudiante" required>
-                    <button type="submit" name="buscar-estudiante" class="btn btn-primary"><i class="bi bi-search"></i></button>
-                </div>
-            </form>
-
-            <!-- Formilario para crear una evaluación-->
-            
-            <!-- Card que aparece cuando se busca el estudiante para agregarlo-->
-            {% if estudiante %}
-                <form method="POST">
-                    {% csrf_token %} 
-                    <div class="d-flex flex-column  mt-3 bg-body-secondary rounded p-3">
-                        <p>Información del estudiante: </p>
-                        <p>Nombre: <span class="fw-bold">{{estudiante.user.first_name}}<span></p>
-                        <p>Código Estudiante: <span class="fw-bold">{{estudiante.user.username}}<span></p>
-                        <div class="w-100 d-flex justify-content-center gap-2">
-                            <button type="submit" name="agregar-estudiante" value="{{ estudiante.id }}" class="btn btn-primary d-flex gap-2 w-50"><i class="bi bi-plus-square"></i>Agregar</button>
-                            <button type="submit" class="btn btn-secondary d-flex gap-2 w-50"><i class="bi bi-eraser"></i></i>Limpiar</button>   
+    <div class="row justify-content-center">
+        <!-- Búsqueda de estudiantes -->
+        <div class="col-md-7">
+            <div style="box-shadow: none; border: 1px solid #dee2e6; border-radius: 6px">
+                <h5 class="card-header">Añadir estudiantes</h5>
+                <div class="row mx-auto">
+                    <div class="col mt-3 ml-2">
+                        <h6>Descarga la plantilla</h6>
+                    </div>
+                    <div class="col-auto mt-2">
+                        <a href="/static/anexos/Plantilla-TeamEval.csv" class="btn btn-primary mr-3" download>
+                            <b>Descargar</b>
+                            <i class="bi bi-download"></i>
+                        </a>
+                    </div>
+                    <div>
+                        <div class="col-auto mt-2">
+                            <label for="formFile" class="form-label">Cargar plantilla modificada</label>
+                        </div>
+                        <div class="col-auto">
+                            <input class="form-control" type="file" id="formFile" accept=".csv">
                         </div>
                     </div>
+                    <!--Botones e iconos/metáforas de "Guardar" y "Limpiar"-->
+                    <div class="botones mt-3" style="padding-bottom: 2%;">
+                        <button type="submit" class="btn btn-primary" style="border: none;">
+                            <b>Guardar</b>
+                            <i class="bi bi-floppy"></i>
+                        </button>
+                        <button type="reset" class="btn btn-secondary ml-2" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
+                            <b>Limpiar</b>
+                            <i class="bi bi-eraser"></i>
+                        </button>
+                    </div>
+                </div>
+                <form method="POST" class="row flex-column align-items-center">
+                    {% csrf_token %} 
+                    <div class="d-flex gap-3 mt-3 col-11">
+                        <input type="number" id="codigo_estudiante" name="codigo_estudiante" class="form-control" placeholder="Código del estudiante" required>
+                        <button type="submit" name="buscar-estudiante" class="btn btn-primary"><i class="bi bi-search"></i></button>
+                    </div>
                 </form>
-                {% endif%}
-            <!-- Tabla de estudiantes en el curso -->
-            <div class="w-100">
-                {%include "profesor/components/table_estudiantes.html"%}
+                <!-- Card que muestra el estudiante encontrado -->
+                {% if estudiante %}
+                    <form method="POST">
+                        {% csrf_token %} 
+                        <div class="d-flex flex-column mt-3 bg-body-secondary rounded p-3">
+                            <p>Información del estudiante: </p>
+                            <p>Nombre: <span class="fw-bold">{{estudiante.user.first_name}}</span></p>
+                            <p>Código Estudiante: <span class="fw-bold">{{estudiante.user.username}}</span></p>
+                            <div class="w-100 d-flex justify-content-center gap-2">
+                                <button type="submit" name="agregar-estudiante" value="{{ estudiante.id }}" class="btn btn-primary d-flex gap-2 w-50"><i class="bi bi-plus-square"></i>Agregar</button>
+                                <button type="submit" class="btn btn-secondary d-flex gap-2 w-50"><i class="bi bi-eraser"></i>Limpiar</button>   
+                            </div>
+                        </div>
+                    </form>
+                {% endif %}
+                {% include "profesor/components/table_estudiantes.html" %}
             </div>
-        </div>
-
-        <!--Tabla de evaluaciones-->
-        <div class="w-100 " style="margin-top: 90px">
-            <div class="col-4  contenedor-back-bottom"><a class="" href="{% url "crear_evaluacion" curso.id %}" >
-                <span class="btn btn-primary d-flex gap-2"><i class="bi bi-plus-circle"></i>Crear</span> </a>
-            </div>
-            {%include "profesor/components/tabla_evaluaciones.html"%}
-        </div>
+        </div>  
     </div>
 </div>    
 {% endblock %}

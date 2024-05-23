@@ -2,15 +2,21 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Eliminar Rúbrica</h1>
+          <h1 class="modal-title fs-5" id="staticBackdropLabel"><b>Eliminar rúbrica</b></h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <p>¿Seguro que deseas eliminar la rúbrica <span class="fw-bold">{{ rubrica.nombre }}</span>?<p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" name="eliminar-rubrica" value="{{ rubrica.id }}" class="btn btn-danger">Eliminar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
+            <b>Cancelar</b>
+            <i class="bi bi-x-lg"></i>
+          </button>
+          <button type="submit" name="eliminar-rubrica" value="{{ rubrica.id }}" class="btn btn-danger">
+            <b>Eliminar</b>
+            <i class="bi bi-trash"></i>
+          </button>
         </div>
       </div>
     </div>

@@ -43,11 +43,11 @@
 
         var escalaCell = document.createElement('td');
         escalaCell.className = 'text-center col-3';
-        escalaCell.innerHTML = '<input type="number" class="form-control" name="escala[]" min="0" max="10">';
+        escalaCell.innerHTML = '<input type="number" class="form-control" name="escala[]" min="0" max="10" required>';
 
         var descripcionCell = document.createElement('td');
         descripcionCell.className = 'text-center col-7';
-        descripcionCell.innerHTML = '<input type="text" class="form-control" name="descripcion_escala[]">';
+        descripcionCell.innerHTML = '<input type="text" class="form-control" name="descripcion_escala[]" required>';
 
         var eliminarCell = document.createElement('td');
         eliminarCell.className = 'text-center';

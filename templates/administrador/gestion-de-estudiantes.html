@@ -2,96 +2,89 @@
 {%load static%}
 {% block content %}
 <div  class="container__admin ">
+    <!--Alertas / notificaciones-->
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert {{ message.tags }} position-absolute"  role="alert">
+            <p>{{ message }}</p>
+        </div>
+        {% endfor %}
+    {% endif %}
+    <!--Formulario-->
     <h2 class="titulos"><b>Gestión de estudiantes</b></h2>
-    <div class="d-flex gap-3 mt-3">
+    <div class="d-flex gap-2 mt-2 justify-content-center">
         <div class="card-form">
             <h5 class="card-header">Crear un estudiante</h5>
             <div class="card-body">
-                {% if messages %}
-                    {% for message in messages %}
-                    <div class="alert  {{ message.tags }}  position-absolute alert-docenter"  role="alert">
-                        <p>{{ message }}</p>
-                    </div>
-                    {% endfor %}
-                {% endif %}
-            <form method="POST">
-                {% csrf_token %} 
-                <!-- Grupo de nombres y apellidos -->
-                <div class="form-row justify-content-center mt-1">
-                    <div class="form-group col-md-5 mx-3">
-                        <i class="bi bi-pencil"></i>
-                        <label for="nombres-estudiante">Nombre</label>
-                        <input type="text" class="form-control" id="nombres-estudiante" name="nombres-estudiante" placeholder="Nombre" required>
-                    </div>
-                    <div class="form-group col-md-5 mx-3">
-                        <i class="bi bi-pencil"></i>
-                        <label for="apellidos-estudiante">Apellidos</label>
-                        <input type="text" class="form-control" id="apellidos-estudiante" name="apellidos-estudiante" placeholder="Apellidos" required>
-                    </div>
-                </div>
                 
-                <!-- Grupo de código y correo -->
-                <div class="form-row justify-content-center">
-                    <div class="form-group col-md-5 mx-3">
-                        <i class="bi bi-person-lines-fill"></i>
-                        <label for="codigo-estudiante">Código</label>
-                        <input type="number" class="form-control" id="codigo-estudiante" name="codigo-estudiante" placeholder="Código estudiantil" min="1" required>
+                <form method="POST">
+                    {% csrf_token %} 
+                    <!-- Grupo de nombres y apellidos -->
+                    <div class="form-row justify-content-center">
+                        <div class="form-group col-md-5 mx-3">
+                            <i class="bi bi-pencil"></i>
+                            <label for="nombres-estudiante">Nombre</label>
+                            <input type="text" class="form-control" id="nombres-estudiante" name="nombres-estudiante" placeholder="Nombre" required>
+                        </div>
+                        <div class="form-group col-md-5 mx-3">
+                            <i class="bi bi-pencil"></i>
+                            <label for="apellidos-estudiante">Apellidos</label>
+                            <input type="text" class="form-control" id="apellidos-estudiante" name="apellidos-estudiante" placeholder="Apellidos" required>
+                        </div>
                     </div>
-                    <div class="form-group col-md-5 mx-3">
-                        <i class="bi bi-envelope-at"></i>
-                        <label for="email-estudiante">Correo</label>
-                        <input type="email" class="form-control" id="email-estudiante" name="email-estudiante" placeholder="ejemplo@correo.com" required>
+                    <!-- Grupo de código y correo -->
+                    <div class="form-row justify-content-center">
+                        <div class="form-group col-md-5 mx-3">
+                            <i class="bi bi-person-lines-fill"></i>
+                            <label for="codigo-estudiante">Código</label>
+                            <input type="number" class="form-control" id="codigo-estudiante" name="codigo-estudiante" placeholder="Código estudiantil" min="1" required>
+                        </div>
+                        <div class="form-group col-md-5 mx-3">
+                            <i class="bi bi-envelope-at"></i>
+                            <label for="email-estudiante">Correo</label>
+                            <input type="email" class="form-control" id="email-estudiante" name="email-estudiante" placeholder="ejemplo@correo.com" required>
+                        </div>
                     </div>
-                </div>
-
-                <!--Botones e iconos/metáforas de "Guardar" y "Limpiar"-->
-                <div class="botones">
-                    <button type="submit" class="btn btn-primary" name="guardar-estudiante" style="border: none;">
-                        <b>Guardar</b>
-                        <i class="bi bi-floppy"></i>
-                    </button>
-                    <button type="reset" class="btn btn-secondary ml-2" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
-                        <b>Limpiar</b>
-                        <i class="bi bi-eraser"></i>
-                    </button>
-                </div>
-            </form>
+                    <!--Botones e iconos/metáforas de "Guardar" y "Limpiar"-->
+                    <div class="botones">
+                        <button type="submit" class="btn btn-primary" name="guardar-estudiante" style="border: none;">
+                            <b>Guardar</b>
+                            <i class="bi bi-floppy"></i>
+                        </button>
+                        <button type="reset" class="btn btn-secondary ml-2" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
+                            <b>Limpiar</b>
+                            <i class="bi bi-eraser"></i>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
-
         <!-- Archivo de la plantilla -->
-        <div class="card-form">
+        <div class="card-form" style="width: 39%">
             <h5 class="card-header">Importar varios estudiantes</h5>
             <div class="card-body">
                 <div class="row mx-1">
-                    <div class="col mt-3">
+                    <div class="col mt-2">
                         <h6>Descarga la plantilla</h6>
                     </div>
-                    <div class="col-auto mr-3">
-                        <a href="/static/img/logoTeamEval.png" class="btn btn-primary" download>
+                    <div class="col-auto mr-3 mt-n1">
+                        <a href="/static/anexos/Plantilla-TeamEval.csv" class="btn btn-primary" download>
                             <b>Descargar</b>
                             <i class="bi bi-download"></i>
                         </a>
                     </div>
                 </div>    
-
                 <!-- Subir plantilla -->
                 <div class="row mx-1">
-                    <div class="col mt-4">
-                        <h6>Carga la plantilla modificada</h6>
+                    <div class="col-auto mt-2">
+                        <label for="formFile" class="form-label">Cargar plantilla modificada</label>
                     </div>
-                <div class="col-auto mr-3">
-                    <label for="fileInput" class="subir-archivo btn btn-primary mt-2">
-                        <input type="file" id="fileInput" accept=".txt, .pdf, .doc">
-                        <span><b>Seleccionar</b></span>
-                        <i class="bi bi-paperclip"></i>
-                    </label>
+                    <div class="col-auto">
+                        <input class="form-control" type="file" id="formFile" accept=".csv">
+                    </div>
                 </div>
-                <div class="mx-1 mt-2" id="filePreview"></div>
-            </div>
-
             <!--Botones e iconos/metáforas de "Guardar" y "Limpiar"-->
-                <div class="botones">
+                <div class="botones mt-3">
                     <button type="submit" class="btn btn-primary" style="border: none;">
                         <b>Guardar</b>
                         <i class="bi bi-floppy"></i>
@@ -104,9 +97,7 @@
             </div>
         </div>
     </div>
-    <div class="w-75">
-        {%include "administrador/components/table_estudiantes.html"%}
-    </div>
+    <div class="w-75">{%include "administrador/components/table_estudiantes.html"%}</div>
 </div>
 
 {% endblock %}

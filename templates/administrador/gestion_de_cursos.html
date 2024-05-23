@@ -2,46 +2,42 @@
 {%load static%}
 {% block content %}
 <div  class="container__admin">
+    <!--Alertas / notificaciones-->
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert  {{ message.tags }} position-absolute"  role="alert">
+            <p>{{ message }}</p>
+        </div>
+        {% endfor %}
+    {% endif %}
+    <!--Formulario-->
     <h2 class="titulos"><b>Gestión de cursos</b></h2>
-    <div class="card-form pb-3">
+    <div class="card-form mt-2">
         <h5 class="card-header">Crear un curso</h5>
-        
-            {% if messages %}
-                {% for message in messages %}
-                <div class="alert  {{ message.tags }}  position-absolute alert-docenter"  role="alert">
-                    <p>{{ message }}</p>
-                </div>
-                {% endfor %}
-            {% endif %}
-            <form method="POST" class="d-flex flex-column">
+        <div class="card-body position-relative">
+            <form method="POST">
                 {% csrf_token %} 
-                <!-- Grupo y nombre del curso -->
-                <div class="form-row justify-content-center mt-2">
-                    <div class="form-group col-md-10 mx-3">
+                <!-- Código y nombre del curso -->
+                <div class="form-row justify-content-center ">
+                    <div class="form-group col-md-5 mx-3">
                         <i class="bi bi-journal-text"></i>
                         <label for="codigo-curso">Código curso</label>
                         <input type="text" class="form-control" name="codigo-curso" id="codigo-curso" placeholder="Código curso" required>
                     </div>
-                </div>
-                
-                <!-- Nombre y estado del curso -->
-                <div class="form-row justify-content-center">
-                    <div class="form-group col-md-10 mx-3">
+                    <div class="form-group col-md-5 mx-3">
                         <i class="bi bi-pencil"></i>
                         <label for="nombre-curso">Nombre curso</label>
                         <input type="text" class="form-control" name="nombre-curso" id="nombre-curso" placeholder="Nombre curso" required>
                     </div>
-                
-                    
-
-                <!-- Código y nombre del docente -->
-                <div class="form-row justify-content-center w-100">
-                    <div class="form-group col-md-10 mx-2">
+                </div>
+                <!-- Código del docente y periodo académico -->
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-md-5 mx-3">
                         <i class="bi bi-person-lines-fill"></i>
                         <label for="codigo-docente">Código Docente</label>
                         <input type="number" class="form-control" id="codigo-docente" name="codigo-docente" placeholder="Código docente" required>
                     </div>
-                    <div class="form-group col-md-10 mx-2">
+                    <div class="form-group col-md-5 mx-3">
                         <i class="bi bi-calendar3"></i>
                         <label for="periodo-curso">Periodo Académico</label>
                         <select class="form-control" name="periodo-curso" id="periodo-curso">
@@ -49,7 +45,7 @@
                             <option value="II">II - Segundo Semestre</option>
                         </select>
                     </div>
-
+                </div>
                 <!--Botones e iconos/metáforas de "Guardar" y "Limpiar"-->
                 <div class="botones">
                     <button type="submit" class="btn btn-primary" name="guardar-curso" style="border: none;">
@@ -63,12 +59,8 @@
                 </div>
             </form>
         </div>
-    </div>
-    </div>
-    <div class="w-75">
-        {%include "administrador/components/tabla_cursos.html" %}
-    </div>
+    </div>    
+    <div class="w-75">{%include "administrador/components/tabla_cursos.html" %}</div>
 </div>
-
 
 {% endblock %}

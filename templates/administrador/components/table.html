@@ -20,7 +20,7 @@
       <td>{{ docente.user.email }}</td>
       <td class="text-center"> {%if docente.user.is_active%}<i class="bi bi-check-circle" style="color:green;"></i> {%else%} <i class="bi bi-x-lg" style="color:red;"></i> {%endif%}</td>
       <td class="text-center" >
-        <button type="button" class="btn btn-primary btn-edit" data-id="{{ docente.user.id }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop"style="border-radius: 50%">
+        <button type="button" class="btn btn-primary btn-edit" data-id="{{ docente.user.id }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
           <i class="bi bi-pen"></i>
         </button>
       </td>
@@ -54,30 +54,41 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar</h1>
+        <h1 class="modal-title fs-5" id="staticBackdropLabel"><b>Editar</b></h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form method="POST">
           {% csrf_token %}
+          <i class="bi bi-pencil ml-1"></i>
           <label for="edit-nombre">Nombre</label> 
-          <input type="text" name="edit-nombre" id="edit-nombre" class="form-control" placeholder="nombre" required>
-          <label for="edit-apellidos">Apellidos</label> 
-          <input type="text" name="edit-apellidos" id="edit-apellidos" class="form-control" placeholder="Apellidos" required>
-          <label for="edit-documento">Documento</label> 
-          <input type="number" name="edit-documento" id="edit-documento" class="form-control" placeholder="No. Documento" min="1" required>
-          <label for="edit-email">Email</label> 
-          <input type="email" name="edit-email" id="edit-email" class="form-control" placeholder="email"  required>
-          <label for="estado-curso">Estado Docente</label>
-          <select class="form-control" name="edit-estado" id="edit-estado">
+          <input type="text" name="edit-nombre" id="edit-nombre" class="form-control mt-n2" placeholder="Nombre" required>
+          <i class="bi bi-pencil ml-1"></i>
+          <label for="edit-apellidos" class="mt-2">Apellidos</label> 
+          <input type="text" name="edit-apellidos" id="edit-apellidos" class="form-control mt-n2" placeholder="Apellidos" required>
+          <i class="bi bi-person-lines-fill ml-1"></i>
+          <label for="edit-documento" class="mt-2">Documento</label> 
+          <input type="number" name="edit-documento" id="edit-documento" class="form-control mt-n2" placeholder="No. Documento" min="1" required>
+          <i class="bi bi-envelope-at ml-1"></i>
+          <label for="edit-email" class="mt-2">Correo</label> 
+          <input type="email" name="edit-email" id="edit-email" class="form-control mt-n2" placeholder="email"  required>
+          <i class="bi bi-person-circle ml-1"></i>
+          <label for="estado-curso" class="mt-2">Estado Docente</label>
+          <select class="form-control mt-n2" name="edit-estado" id="edit-estado">
             <option value="True">Activo</option>
             <option value="False">Inactivo</option>
         </select>
         
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" name="edit-user" id="edit-user" value="{{ docente.user.id }}" class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
+          <b>Cancelar</b>
+          <i class="bi bi-x-lg"></i>
+        </button>
+        <button type="submit" name="edit-user" id="edit-user" value="{{ docente.user.id }}" class="btn btn-primary" style="border: none;">
+          <b>Guardar</b>
+          <i class="bi bi-floppy"></i>
+        </button>
       </div>
       <form>
     </div>

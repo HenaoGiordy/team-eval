@@ -9,7 +9,13 @@
         {% endfor %}
     {% endif %}
 
+    <div class="col-4 contenedor-back-bottom">
+        <a href="">
+            <span class="material-icons btn btn-primary back-bottom">arrow_back</span>
+        </a>
+    </div>
     <h2 class="titulos"><b>Gestión de Grupos</b></h2>
+    
     <div class="card-rubrica mt-2 pb-4">
         <h5 class="card-header">Creación de un grupo</h5>
         <div class="card-body">
@@ -24,11 +30,7 @@
                         <input type="text" class="form-control" name="nombre_grupo" id="nombre-grupo" placeholder="Nombre del grupo" required>
                         <p id="mensaje"></p>
                     </div>
-                    <div>
-                        <button class="btn-search" name="buscar" type="submit" style="border-radius: 50%; color: white">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </div>
+                   
                 </div>
 
                 <div class="form-row justify-content">
@@ -42,30 +44,7 @@
                     </div>
                 </div>
 
-                <div class="form-row justify-content">
-                    <div class="form-group col mt-2">
-                        <i class="bi bi-pencil mr-2 ml-2"></i>
-                        <label for="nombre-rubrica">Codigo del curso</label>
-                    </div>
-                    <div class="form-row col-lg-4 mr-2 ml-2">
-                        <input type="text" class="form-control" name="codigo_curso" id="codigo_curso" placeholder="Codigo del curso" required>
-                        <p id="mensaje"></p>
-                    </div>
-                    <div>
-                        <button class="btn-search" name="buscar" type="submit" style="border-radius: 50%; color: white">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </div>
-                    <div class="form-group col-auto mt-2">
-                        <i class="bi bi-pencil mr-2 ml-2"></i>
-                        <label for="nombre-rubrica">curso</label>
-                    </div>
-                    <div class="form-row  col-lg-4">
-                        <input type="text" class="form-control" name="codigo_curso" id="codigo_curso" placeholder="Nombre del curso" required>
-                        <p id="mensaje"></p>
-                    </div>
-                </div>
-
+                
                 <h5 class="card-header">Asignar estudiantes</h5>
 
                 <div class="form-row justify-content mt-3">
