@@ -1,14 +1,21 @@
 <table class="table table-bordered  table-hover w-100">
     <thead>
         <tr>
-            <th scope="col" class="fw-bold">Codigo</th>
             <th scope="col" class="fw-bold">Nombre</th>
-            <th scope="col" class="fw-bold">Acciones</th>
+            <th scope="col" class="fw-bold">Proyecto Asignado</th>
+            <th scope="col" class="fw-bold text-center">Acciones</th>
           </tr>
     </thead>
-    <tbody>
+    <tbody id="estudiantes-grupo">
+        {% for grupo in grupos%}
         <tr>
-            <td></td>
+            <td>{{ grupo.nombre }}</td>
+            <td>{{ grupo.proyecto_asignado }}</td>
+            <td class="text-center"><button type="button" class="btn btn-primary" name="edit-rubrica"  data-bs-toggle="modal" data-bs-target="#add-estudiante" >
+                <i class="bi bi-pen"></i>
+              </button></button></td>
         </tr>
+        {%include "profesor/components/modal_estudiante_grupo.html"%}
+        {%endfor%}
     </tbody>
 </table>

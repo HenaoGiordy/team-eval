@@ -21,5 +21,13 @@ class RubricaEnUso(Exception):
 
     def __str__(self):
         return self.mensaje
+    
+class EmptyField(Exception):
+    def __init__(self, mensaje):
+        self.mensaje = mensaje
+        super().__init__(self.mensaje)
+
+    def __str__(self):
+        return self.mensaje
 
 

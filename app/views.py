@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from TeamEval import settings
-from app.exeptions import PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso
+from app.exeptions import EmptyField, PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso
 from app.forms import MinimalPasswordChangeForm, UsernameForm
 from app.models import  Calificacion, Criterio, Evaluacion, Rubrica, User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
 from django.core.exceptions import ValidationError
@@ -89,13 +89,19 @@ def request_username(request):
 def change_password(request):
     uidb64 = request.GET.get('uid')
     token = request.GET.get('token')
-    try:
-        uid = urlsafe_base64_decode(uidb64)
-        user = User.objects.get(pk=uid)
     
-    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+    # Verificar que uidb64 no sea None antes de decodificar
+    if uidb64 is not None:
+        try:
+            uid = urlsafe_base64_decode(uidb64)
+            user = User.objects.get(pk=uid)
+        
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+            
+    else:
         user = None
-    
+        
     if user is not None and default_token_generator.check_token(user, token):
         if request.method == 'POST':
             form = MinimalPasswordChangeForm(user, request.POST)
@@ -203,11 +209,11 @@ def profesor_cursos(request):
 def filtrar_datos(request):
     query = request.GET.get('q', '')
     if query:
-        resultados = Rubrica.objects.filter(nombre__icontains=query)  # Ajusta el campo según tu modelo
+        resultados = Rubrica.objects.filter(nombre__icontains=query)  
     else:
         resultados = Rubrica.objects.none()
 
-    data = list(resultados.values('id', 'nombre'))  # Convierte el queryset en una lista de diccionarios
+    data = list(resultados.values('id', 'nombre')) 
     return JsonResponse(data, safe=False)
 
 
@@ -217,7 +223,7 @@ def filtrar_datos(request):
 def detalle_curso(request, curso_id):
     curso = get_object_or_404(Curso, id=curso_id)
     estudiantes_lista = curso.perfilestudiante_set.all()
-    evaluaciones = Evaluacion.objects.filter(curso=curso)
+    
     estudiante = None  # Inicializa la variable estudiante
     
     if request.method == "POST":
@@ -260,24 +266,28 @@ def detalle_curso(request, curso_id):
             except PerfilEstudiante.DoesNotExist:
                 messages.error(request, "No se encontró el estudiante para eliminar")
     
-    return render(request, 'profesor/detalle_curso.html', {"curso": curso, "estudiante": estudiante, "estudiantes_lista" : estudiantes_lista, "evaluaciones" : evaluaciones})
+    return render(request, 'profesor/detalle_curso.html', {"curso": curso, "estudiante": estudiante, "estudiantes_lista" : estudiantes_lista})
 
 #Configuración de evaluación del curso
 @login_required
 def profesor_evaluacion_curso(request, curso_id):
     curso = Curso.objects.get(id = curso_id)
+    evaluaciones = Evaluacion.objects.filter(curso=curso)
     fecha_inicio = request.POST.get("fecha-inicio")
     fecha_fin = request.POST.get("fecha-fin")
     rubrica_id = request.POST.get("guardar-evaluacion")
-    if request.method == "POST":
-        rubrica = Rubrica.objects.get(id = rubrica_id)
-        rubrica.is_used = True
-        rubrica.save()
-        Evaluacion.objects.create(fecha_inicio = fecha_inicio, fecha_fin = fecha_fin, curso = curso, rubrica = rubrica )
-        messages.success(request, "Evaluación creada exitosamente")
+    try:
+        if request.method == "POST":
+            rubrica = Rubrica.objects.get(id = rubrica_id)
+            rubrica.is_used = True
+            rubrica.save()
+            Evaluacion.objects.create(fecha_inicio = fecha_inicio, fecha_fin = fecha_fin, curso = curso, rubrica = rubrica )
+            messages.success(request, "Evaluación creada exitosamente")
         
-    
-    return render(request, 'profesor/evaluacion_curso.html', {"curso": curso})
+    except Exception as e:
+        messages.error(request, e)
+        
+    return render(request, 'profesor/evaluacion_curso.html', {"curso": curso, "evaluaciones" : evaluaciones})
 
 
 
@@ -297,8 +307,46 @@ def profesor_grupos_curso(request):
 
 #Crear un grupo 
 @login_required
-def profesor_grupo(request):
-    return render(request, 'profesor/grupo.html')
+def profesor_grupo(request, curso_id):
+    curso_actual = curso_id
+    curso = Curso.objects.get(id = curso_id)
+    grupos = Grupo.objects.filter(curso = curso_id)
+    estudiante = None
+    try:
+        if request.method == "POST":
+            if "buscar-estudiante" in request.POST:
+                codigo = request.POST.get("codigo-estudiante")
+                if not codigo:
+                    raise EmptyField("Ingrese el código")
+                try:
+                    user = User.objects.get(username=codigo)
+                    estudiante = PerfilEstudiante.objects.get(user=user, cursos= curso)
+                except User.DoesNotExist:
+                    # Manejar el caso donde el usuario no existe
+                    messages.error(request, "No se encontró el estudiante")
+                    estudiante = None
+                except PerfilEstudiante.DoesNotExist:
+                    # Manejar el caso donde el perfil del estudiante no existe
+                    messages.error(request, "No se encontró el estudiante")
+                    estudiante = None
+                        
+            if "guardar" in request.POST:
+                
+                nombre_grupo = request.POST.get("nombre-grupo")
+                nombre_proyecto = request.POST.get("nombre-proyecto")
+                
+                if not nombre_grupo  or not nombre_proyecto :
+                    raise EmptyField("Escribe nombre de grupo y nombre de proyecto")
+                
+                # Crear el grupo y guardarlo en la base de datos
+                Grupo.objects.create(nombre=nombre_grupo, proyecto_asignado=nombre_proyecto, curso=curso)
+                
+                # Redirigir a una página de éxito o mostrar un mensaje de éxito
+                messages.success(request, "Grupo creado exitosamente.")
+                # Cambia "ruta_de_redireccion" a la URL adecuada
+    except EmptyField as e:   
+        messages.error(request, e)
+    return render(request, 'profesor/grupo.html', {"estudiante" : estudiante, "curso_actual" : curso_actual, "grupos" : grupos})
     
 #Informes
 @login_required

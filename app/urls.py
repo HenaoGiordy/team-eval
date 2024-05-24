@@ -18,7 +18,7 @@ urlpatterns= [
     path('profesor/rubrica_curso', views.profesor_rubrica_curso, name="profesor_rubrica_curso"),
     path('profesor/grupos_curso', views.profesor_grupos_curso, name="profesor_grupos_curso"),
     path('profesor/gestion_rubricas', views.profesor_gestion_rubricas, name="profesor_gestion_rubricas"),
-    path('profesor/grupo', views.profesor_grupo, name="profesor_grupo"),
+    path('profesor/<int:curso_id>/grupo', views.profesor_grupo, name="profesor_grupo"),
     path('profesor/informes', views.profesor_informes, name="profesor_informes"),    path('logout/', views.logout_usuario, name="logout"),
     path('administrador/', views.administrador, name="administrador"),
     path('administrador/gestion_de_docentes', views.administrador_gestion_de_docentes, name="administrador_gestion_de_docentes"),

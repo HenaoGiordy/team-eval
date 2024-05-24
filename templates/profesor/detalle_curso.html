@@ -38,7 +38,7 @@
                 <input style="background-color: #f8f9fa;" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="{{ curso.get_periodo_academico }}" disabled>
             </div>
             <div class="d-flex justify-content-center align-items-center gap-3">
-                <a href="{% url 'profesor_grupo' %}">
+                <a href="{% url 'profesor_grupo' curso.id %}">
                     <span class="btn btn-primary"><b>Grupos</b>
                         <i class="bi bi-people-fill"></i>
                     </span> 
