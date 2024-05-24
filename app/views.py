@@ -223,7 +223,9 @@ def filtrar_datos(request):
 def detalle_curso(request, curso_id):
     curso = get_object_or_404(Curso, id=curso_id)
     estudiantes_lista = curso.perfilestudiante_set.all()
-    
+    pagination = Paginator(estudiantes_lista, 10)
+    page = request.GET.get('page')
+    estudiantes_lista_paginada = pagination.get_page(page)
     estudiante = None  # Inicializa la variable estudiante
     
     if request.method == "POST":
@@ -236,7 +238,7 @@ def detalle_curso(request, curso_id):
                
                 if estudiante.cursos.get(id = curso_id):
                     messages.warning(request, "El estudiante ya está en el curso")
-                    estudiantes_lista = PerfilEstudiante.objects.filter(user=user)
+                    estudiantes_lista_paginada = PerfilEstudiante.objects.filter(user=user)
                     estudiante = None
                 
                       
@@ -276,7 +278,7 @@ def detalle_curso(request, curso_id):
             except PerfilEstudiante.DoesNotExist:
                 messages.error(request, "No se encontró el estudiante para eliminar")
     
-    return render(request, 'profesor/detalle_curso.html', {"curso": curso, "estudiante": estudiante, "estudiantes_lista" : estudiantes_lista})
+    return render(request, 'profesor/detalle_curso.html', {"curso": curso, "estudiante": estudiante, "estudiantes_lista" : estudiantes_lista_paginada})
 
 #Configuración de evaluación del curso
 @login_required
