@@ -233,12 +233,15 @@ def detalle_curso(request, curso_id):
                 user = User.objects.get(username=codigo)
                 estudiante = PerfilEstudiante.objects.get(user=user)
                 
-                if estudiante.cursos.get(id = curso_id):
-                    messages.warning(request, "El estudiante ya está en el curso")
-                    estudiantes_lista = PerfilEstudiante.objects.filter(user=user)
-                    print(estudiantes_lista)
-                    estudiante = None
-                    
+                try:
+                    if estudiante.cursos.get(id = curso_id):
+                        messages.warning(request, "El estudiante ya está en el curso")
+                        estudiantes_lista = PerfilEstudiante.objects.filter(user=user)
+                        print(estudiantes_lista)
+                        estudiante = None
+                except Curso.DoesNotExist:
+                    pass
+                      
             except User.DoesNotExist:
                 # Manejar el caso donde el usuario no existe
                 messages.error(request, "No se encontró el estudiante")
