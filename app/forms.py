@@ -17,10 +17,7 @@ class UsernameForm(forms.Form):
         return username
 
 class MinimalPasswordChangeForm(forms.Form):
-    old_password = forms.CharField(
-        label="Contraseña antigua",
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'autocomplete': 'current-password'}),
-    )
+    
     new_password1 = forms.CharField(
         label="Nueva contraseña",
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'autocomplete': 'new-password'}),
@@ -34,11 +31,7 @@ class MinimalPasswordChangeForm(forms.Form):
         self.user = user
         super().__init__(*args, **kwargs)
 
-    def clean_old_password(self):
-        old_password = self.cleaned_data.get('old_password')
-        if not self.user.check_password(old_password):
-            raise forms.ValidationError('La contraseña antigua es incorrecta.')
-        return old_password
+    
 
     def clean(self):
         cleaned_data = super().clean()
