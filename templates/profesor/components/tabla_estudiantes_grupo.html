@@ -10,12 +10,16 @@
         
             {%for estudiante in grupo.estudiantes.all%}
             <tr>
-                <td>{{ estudiante.user.username }}</td>
-                <td>{{ estudiante.nombre }} </td>
-                <td><button type="submit" name="eliminar-estudiante-grupo" value="{{ estudiante.id }}" class="btn btn-danger">
+              <td>{{ estudiante.user.username }}</td>
+              <td>{{ estudiante.nombre }} </td>
+              <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="codigo_estudiante" value="{{ estudiante.user.username }}">
+                <td><button type="submit" name="eliminar-estudiante-grupo" value="{{ grupo.id }}" class="btn btn-danger">
                     <i class="bi bi-trash"></i>
                   </button></td>
-                
+                </form>
+                {% include "profesor/components/modal_delete_estudiante.html" %}
               </tr>
             {%endfor%}
         

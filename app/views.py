@@ -344,11 +344,11 @@ def profesor_grupo(request, curso_id):
                 try:
                     user = User.objects.get(username=codigo)
                     estudiante = PerfilEstudiante.objects.get(user=user, cursos= curso)
-                    grupo = Grupo.objects.get(id = grupo_id)
                     
-                    if grupo.estudiantes.filter(id=estudiante.id).exists():
+                    if Grupo.objects.filter(curso=curso, estudiantes=estudiante).exists():
                         raise AlreadyExist("El estudiante ya está en el grupo")
                     
+                    grupo = Grupo.objects.get(id = grupo_id)
                     grupo.estudiantes.add(estudiante)
                     messages.success(request, "Estudiante añadido con éxito")
                     
@@ -387,6 +387,19 @@ def profesor_grupo(request, curso_id):
                 grupo.proyecto_asignado = nombre_proyecto_edit
                 grupo.save()
                 
+            if "eliminar-estudiante-grupo" in request.POST:
+                estudiante_codigo = request.POST.get("codigo_estudiante")
+                grupo_id = request.POST.get("eliminar-estudiante-grupo")
+                if estudiante_codigo is None:
+                    raise EmptyField("Estudiante no especificado")
+                
+                estudiante = get_object_or_404(PerfilEstudiante, user__username=estudiante_codigo)
+                grupo = get_object_or_404(Grupo, id=grupo_id)
+                
+                grupo.estudiantes.remove(estudiante)
+                messages.success(request, "Estudiante eliminado del grupo exitosamente.")
+                
+            
     except EmptyField as e:   
         messages.error(request, e)
     return render(request, 'profesor/grupo.html', {"curso_actual" : curso_actual, "grupos" : grupos})
