@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from TeamEval import settings
-from app.exeptions import AlreadyExist, EmptyField, PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso
+from app.exeptions import AlreadyExist, EmptyField, EstudianteInactivo, PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso
 from app.forms import MinimalPasswordChangeForm, UsernameForm
 from app.models import  Calificacion, Criterio, Evaluacion, Rubrica, User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
 from django.core.exceptions import ValidationError
@@ -227,7 +227,7 @@ def detalle_curso(request, curso_id):
     pagination = Paginator(estudiantes_lista, 10)
     page = request.GET.get('page')
     estudiantes_lista_paginada = pagination.get_page(page)
-
+    estudiante = None
     
     if request.method == "POST":
         if "buscar-estudiante" in request.POST:
@@ -236,13 +236,18 @@ def detalle_curso(request, curso_id):
                 user = User.objects.get(username=codigo)
                 estudiante = PerfilEstudiante.objects.get(user=user)
                 
+                if not estudiante.user.is_active:
+                    raise EstudianteInactivo("Estudiante no está activo")
                
                 if estudiante.cursos.get(id = curso_id):
                     messages.warning(request, "El estudiante ya está en el curso")
                     estudiantes_lista_paginada = PerfilEstudiante.objects.filter(user=user)
                     
                 
-                      
+            except EstudianteInactivo as e:
+                messages.error(request, e)
+                estudiante = None
+                
             except User.DoesNotExist:
                 # Manejar el caso donde el usuario no existe
                 messages.error(request, "No se encontró el estudiante")
@@ -274,12 +279,17 @@ def detalle_curso(request, curso_id):
             try:
                 estudiante_a_eliminar = PerfilEstudiante.objects.get(user__id=estudiante_id)
                 estudiante_a_eliminar.cursos.remove(curso)
+                grupos_asociados = Grupo.objects.filter(curso=curso)
+                
+                for grupo in grupos_asociados:
+                    grupo.estudiantes.remove(estudiante_a_eliminar)
+                    
                 messages.success(request, "Estudiante eliminado del curso exitosamente")
                 estudiantes_lista_paginada = curso.perfilestudiante_set.all()
             except PerfilEstudiante.DoesNotExist:
                 messages.error(request, "No se encontró el estudiante para eliminar")
     
-    return render(request, 'profesor/detalle_curso.html', {"curso": curso, "estudiantes_lista_paginada" : estudiantes_lista_paginada})
+    return render(request, 'profesor/detalle_curso.html', {"curso": curso, "estudiantes_lista_paginada" : estudiantes_lista_paginada, "estudiante" : estudiante})
 
 #Configuración de evaluación del curso
 @login_required

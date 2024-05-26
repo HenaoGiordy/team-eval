@@ -129,6 +129,3 @@ class Grupo(models.Model):
     estudiantes = models.ManyToManyField(PerfilEstudiante)
     def __str__(self):
         return self.nombre
-    
-    
-    
