@@ -372,6 +372,19 @@ def profesor_grupo(request, curso_id):
             
                 Grupo.objects.create(nombre=nombre_grupo, proyecto_asignado=nombre_proyecto, curso=curso) 
                 messages.success(request, "Grupo creado exitosamente.")
+            
+            if "edit-info-grupo" in request.POST:
+                nombre_grupo_edit = request.POST.get("nombre-grupo-edit")
+                nombre_proyecto_edit = request.POST.get("nombre-proyecto-edit")
+                grupo_id = request.POST.get("edit-info-grupo")
+                
+                if not nombre_grupo_edit  or not nombre_proyecto_edit :
+                    raise EmptyField("Escribe nombre de grupo y nombre de proyecto")
+                
+                grupo = get_object_or_404(Grupo, id=grupo_id)
+                grupo.nombre = nombre_grupo_edit
+                grupo.proyecto_asignado = nombre_proyecto_edit
+                grupo.save()
                 
     except EmptyField as e:   
         messages.error(request, e)
