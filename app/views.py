@@ -399,7 +399,23 @@ def profesor_grupo(request, curso_id):
                 grupo.estudiantes.remove(estudiante)
                 messages.success(request, "Estudiante eliminado del grupo exitosamente.")
                 
-            
+            if "eliminar-grupo" in request.POST:
+                grupo_id = request.POST.get("eliminar-grupo")
+                
+                if not grupo_id:
+                    raise EmptyField("No se especificó el grupo.")
+                try:
+                    grupo = Grupo.objects.get(id = grupo_id)
+                    if not grupo.estudiantes.exists():
+                        grupo.delete()
+                        messages.warning(request, "Se eliminó el grupo satisfactoriamente.")
+                    else:
+                        messages.error(request, "No se puede eliminar el grupo porque tiene estudiantes asignados.")
+                except Grupo.DoesNotExist:
+                    messages.error(request, "Ya no existe ese grupo.")
+                
+                
+                
     except EmptyField as e:   
         messages.error(request, e)
     return render(request, 'profesor/grupo.html', {"curso_actual" : curso_actual, "grupos" : grupos})
