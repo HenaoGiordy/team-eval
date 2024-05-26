@@ -5,8 +5,8 @@
           <h5 class="modal-title" id="staticBackdropLabel">Editar Grupo</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body" >
-          <form method="POST" class="d-flex flex-column gap-4">
+        <div class="modal-body d-flex flex-column gap-4" >
+          <form method="POST" >
             {% csrf_token %}
               <div class="d-flex ">
                 <label for="nombre-grupo-edit" class="w-75">Nombre Grupo</label>
