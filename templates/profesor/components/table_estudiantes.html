@@ -11,58 +11,35 @@
       </tr>
   </thead>
   <tbody>
-    {%if estudiantes_lista%}
-      {%for estudiante in estudiantes_lista%}
+    {%if estudiantes_lista_paginada %}
+      {%for estudiante in estudiantes_lista_paginada%}
         <tr>
             <td >{{ estudiante.user.username }}</td>
             <td>{{ estudiante.user.first_name }}</td>
             <td>{{ estudiante.user.email }}</td>
             <td class="text-center" >
-            <form method="POST">
-            {% csrf_token %} 
-            <button type="button" class="btn btn-danger btn-eliminar"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            <button type="button" class="btn btn-danger btn-eliminar" value="{{estudiante.user.id}}" data-bs-toggle="modal" data-bs-target="#delete-estudiante-{{estudiante.id}}">
                 <i class="bi bi-trash"></i>
             </button>
-            <!--Modal para confirmar la eliminación-->
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-              <div class="modal-dialog modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h1 class="modal-title fs-5" class="text-center" id="staticBackdropLabel">Eliminar</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <p>¿Seguro que deseas eliminar a <span class="fw-bold">{{ estudiante.user.first_name }}</span> ?</p>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <!--Botón para eliminar el estudiante-->
-                    <button type="submit" class="btn btn-danger btn-eliminar" name="eliminar-estudiante"  value="{{ estudiante.user.id }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                      Eliminar
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-            </td>
+            {% include "profesor/components/modal_delete_estudiante.html" %}
+          </td>
         </tr>
-      {%endfor%}
-    {%endif%}
+        {%endfor%}
+        {%endif%}
   </tbody>
 </table>
 <nav aria-label="Page navigation example">
   <ul class="pagination">
-    {% if estudiantes_lista.has_previous %}
+    {% if estudiantes_lista_paginada.has_previous %}
     <li class="page-item"><a class="page-link" href="?page=1">Primer Página</a></li>
-    <li class="page-item"><a class="page-link" href="?page={{ estudiantes_lista.previous_page_number }}">&laquo Anterior</a></li>
+    <li class="page-item"><a class="page-link" href="?page={{ estudiantes_lista_paginada.previous_page_number }}">&laquo Anterior</a></li>
     {%endif%}
     
-    <li class="page-item disabled"><a class="page-link" href="#"> Página {{ estudiantes_lista.number }} de {{ estudiantes_lista.paginator.num_pages }}</a></li>
+    <li class="page-item disabled"><a class="page-link" href="#"> Página {{ estudiantes_lista_paginada.number }} de {{ estudiantes_lista_paginada.paginator.num_pages }}</a></li>
 
-    {%if estudiantes_lista.has_next%}
-    <li class="page-item"><a class="page-link" href="?page={{ estudiantes_lista.next_page_number }}">Siguiente</a></li>
-    <li class="page-item"><a class="page-link" href="?page={{ estudiantes_lista.paginator.num_pages }}">&raquo última Página</a></li>
+    {%if estudiantes_lista_paginada.has_next%}
+    <li class="page-item"><a class="page-link" href="?page={{ estudiantes_lista_paginada.next_page_number }}">Siguiente</a></li>
+    <li class="page-item"><a class="page-link" href="?page={{ estudiantes_lista_paginada.paginator.num_pages }}">&raquo última Página</a></li>
     {%endif%}
   </ul>
 

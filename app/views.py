@@ -182,6 +182,13 @@ def evaluar(request, estudianteid, cursoid, grupoid):
 
     return render(request, 'estudiante/evaluar.html', {'curso': curso, 'estudiantes_curso': estudiantes_curso,  'grupo': grupo }  )
 
+@login_required
+def realizar_evaluacion(request, estudianteid, grupoid):
+    
+    estudiante_evaluado = PerfilEstudiante.objects.get(id = estudianteid)
+    grupo = Grupo.objects.get(id = grupoid)
+    
+    return render(request, "estudiante/realizar_evaluacion.html", {"estudiante_evaluado" : estudiante_evaluado ,"grupo": grupo})
 
 #Vistas del profesor
 
@@ -220,7 +227,7 @@ def detalle_curso(request, curso_id):
     pagination = Paginator(estudiantes_lista, 10)
     page = request.GET.get('page')
     estudiantes_lista_paginada = pagination.get_page(page)
-    estudiante = None  # Inicializa la variable estudiante
+
     
     if request.method == "POST":
         if "buscar-estudiante" in request.POST:
@@ -233,7 +240,7 @@ def detalle_curso(request, curso_id):
                 if estudiante.cursos.get(id = curso_id):
                     messages.warning(request, "El estudiante ya está en el curso")
                     estudiantes_lista_paginada = PerfilEstudiante.objects.filter(user=user)
-                    estudiante = None
+                    
                 
                       
             except User.DoesNotExist:
@@ -272,7 +279,7 @@ def detalle_curso(request, curso_id):
             except PerfilEstudiante.DoesNotExist:
                 messages.error(request, "No se encontró el estudiante para eliminar")
     
-    return render(request, 'profesor/detalle_curso.html', {"curso": curso, "estudiante": estudiante, "estudiantes_lista" : estudiantes_lista_paginada})
+    return render(request, 'profesor/detalle_curso.html', {"curso": curso, "estudiantes_lista_paginada" : estudiantes_lista_paginada})
 
 #Configuración de evaluación del curso
 @login_required

@@ -29,7 +29,7 @@
               <p><span style="font-weight: bold;">Código :</span> {{ estudiante.user.username }}</p>
             </div>
 
-            <a class="btn btn-primary" href="#">Evaluar Estudiante</a>
+            <a class="btn btn-primary" href="{%url "realizar_evaluacion" estudiante.id grupo.id%}">Evaluar Estudiante</a>
 
           </div>            
     {% endfor %}
