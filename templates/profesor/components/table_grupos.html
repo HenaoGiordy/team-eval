@@ -14,10 +14,10 @@
             <td>{{ grupo.proyecto_asignado }}</td>
             <td class="text-center">{{ grupo.estudiantes.count }}</td>
             <td class="text-center d-flex justify-content-center gap-2">
-                <button type="button" class="btn btn-primary" name="edit-rubrica"  data-bs-toggle="modal" data-bs-target="#edit-grupo" >
+                <button type="button" class="btn btn-primary" name="edit-rubrica"  data-bs-toggle="modal" data-bs-target="#edit-grupo-{{grupo.id}}" >
                 <i class="bi bi-pen"></i>
                 </button>
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#add-estudiantes">
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#add-estudiantes-{{grupo.id}}">
                     <i class="bi bi-plus"></i>
                 </button>
                 {%include "profesor/components/modal_estudiante_grupo.html"%}
