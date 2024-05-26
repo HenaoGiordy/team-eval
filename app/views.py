@@ -374,9 +374,10 @@ def profesor_grupo(request, curso_id):
                 messages.success(request, "Grupo creado exitosamente.")
             
             if "edit-info-grupo" in request.POST:
-                nombre_grupo_edit = request.POST.get("nombre-grupo-edit")
-                nombre_proyecto_edit = request.POST.get("nombre-proyecto-edit")
+                nombre_grupo_edit = request.POST.get("nombre-grupo-edit").strip()
+                nombre_proyecto_edit = request.POST.get("nombre-proyecto-edit").strip()
                 grupo_id = request.POST.get("edit-info-grupo")
+                
                 
                 if not nombre_grupo_edit  or not nombre_proyecto_edit :
                     raise EmptyField("Escribe nombre de grupo y nombre de proyecto")
