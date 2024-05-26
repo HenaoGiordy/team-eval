@@ -258,7 +258,7 @@ def detalle_curso(request, curso_id):
                     estudiante.cursos.add(curso)
                     messages.success(request, "Estudiante agregado al curso exitosamente")
                     # Actualiza la lista de estudiantes
-                    estudiantes_lista = curso.perfilestudiante_set.all()
+                    estudiantes_lista_paginada = curso.perfilestudiante_set.all()
             else:
                 messages.error(request, "Debe buscar un estudiante antes de agregar")
             estudiante = None
@@ -268,7 +268,7 @@ def detalle_curso(request, curso_id):
                 estudiante_a_eliminar = PerfilEstudiante.objects.get(user__id=estudiante_id)
                 estudiante_a_eliminar.cursos.remove(curso)
                 messages.success(request, "Estudiante eliminado del curso exitosamente")
-                estudiantes_lista = curso.perfilestudiante_set.all()
+                estudiantes_lista_paginada = curso.perfilestudiante_set.all()
             except PerfilEstudiante.DoesNotExist:
                 messages.error(request, "No se encontró el estudiante para eliminar")
     
