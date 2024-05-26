@@ -56,6 +56,9 @@ class Calificacion(models.Model):
     calificacion = models.IntegerField(choices=NUMEROS_ESCALA)
     descripcion = models.TextField(max_length=100)
     rubrica = models.ForeignKey(Rubrica, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return f"{self.calificacion} -- {self.descripcion}"
 
 class Criterio(models.Model):
     descripcion = models.TextField(max_length=200)
@@ -66,7 +69,7 @@ class Criterio(models.Model):
     
 
 class Puntuacion(models.Model):
-    nota = models.SmallIntegerField()
+    nota = models.ForeignKey(Calificacion, on_delete=models.CASCADE)
     retroalimentacion = models.TextField(max_length=200)
     criterio_evaluado = models.ForeignKey(Criterio, on_delete=models.CASCADE)
     def __str__(self):

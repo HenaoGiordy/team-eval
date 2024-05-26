@@ -30,13 +30,13 @@
     
 <div class="container--estudiantes">
     {%for estudiante in estudiantes%}
-          <div class="card">
+          <div class="card p-3">
             <div class="card-body">
               <p><span style="font-weight: bold;">Estudiante :</span> {{ estudiante.user.first_name }}</p>
               <p><span style="font-weight: bold;">Estudiante :</span> {{ estudiante.user.username }}</p>
               
             </div>
-             <a class="btn btn-primary boton-cursos" href="evaluar/{{ estudiante.id }}/{{ curso.id }}/{{ grupo.id }}">Evaluar</a>
+             <a class="btn btn-primary" href="evaluar/{{ estudiante.id }}/{{ curso.id }}/{{ grupo.id }}">Ver Grupo</a>
           </div>            
     {% endfor %}
 </div>

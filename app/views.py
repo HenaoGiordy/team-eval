@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from TeamEval import settings
-from app.exeptions import EmptyField, PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso
+from app.exeptions import AlreadyExist, EmptyField, PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso
 from app.forms import MinimalPasswordChangeForm, UsernameForm
 from app.models import  Calificacion, Criterio, Evaluacion, Rubrica, User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
 from django.core.exceptions import ValidationError
@@ -167,26 +167,20 @@ def estudiante_curso(request, cursoid):
 def evaluar(request, estudianteid, cursoid, grupoid):
     
     usuario = User.objects.get(username = request.user.username)
-    
     perfil = PerfilEstudiante.objects.get(user = usuario)
     
+    # evaluacion = Evaluacion.objects.get(curso = cursoid)
+    #Obtengo el curso
     curso = perfil.cursos.get(id = cursoid)
-    
-    rubrica = curso.rubrica
-    
-    criterios = rubrica.criterios.all()
-    
-    escalaCalificacion = rubrica.escalaCalificacion.all()
-    
+    #Criterios y escalas de la evaluación del curso
+    # criterios = evaluacion.rubrica.criterio_set.all()
+    # escalaCalificacion = evaluacion.rubrica.calificacion_set.all()
+    #Obtengo el grupo del curso al que pertenece
     grupo = perfil.grupo_set.get(curso = cursoid)
-    
-    # estudiantes_grupo = grupo.estudiantes.all().exclude(user = perfil.user)
-    
-    estudiante_evaluado = grupo.estudiantes.get(id = estudianteid)
-    
-    
-    return render(request, 'estudiante/evaluar.html', {'curso': curso, 'estudiante_evaluado': estudiante_evaluado, 'estudiante_evaluador' : perfil,  'grupo': grupo,
-                                                       'rubrica' : rubrica, "criterios" : criterios, "escalacalificacion" : escalaCalificacion }  )
+    #Estudiantes del curso
+    estudiantes_curso = grupo.estudiantes.all().exclude(user = usuario)
+
+    return render(request, 'estudiante/evaluar.html', {'curso': curso, 'estudiantes_curso': estudiantes_curso,  'grupo': grupo }  )
 
 
 #Vistas del profesor
@@ -323,25 +317,34 @@ def profesor_grupo(request, curso_id):
     curso_actual = curso_id
     curso = Curso.objects.get(id = curso_id)
     grupos = Grupo.objects.filter(curso = curso_id)
-    estudiante = None
     try:
         if request.method == "POST":
-            if "buscar-estudiante" in request.POST:
-                codigo = request.POST.get("codigo-estudiante")
+            if "add-estudiante" in request.POST:
+                codigo = request.POST.get("codigo_estudiante")
+                grupo_id = request.POST.get("add-estudiante")
                 if not codigo:
                     raise EmptyField("Ingrese el código")
                 try:
                     user = User.objects.get(username=codigo)
                     estudiante = PerfilEstudiante.objects.get(user=user, cursos= curso)
+                    grupo = Grupo.objects.get(id = grupo_id)
+                    
+                    if grupo.estudiantes.filter(id=estudiante.id).exists():
+                        raise AlreadyExist("El estudiante ya está en el grupo")
+                    
+                    grupo.estudiantes.add(estudiante)
+                    messages.success(request, "Estudiante añadido con éxito")
+                    
                 except User.DoesNotExist:
-                    # Manejar el caso donde el usuario no existe
                     messages.error(request, "No se encontró el estudiante")
-                    estudiante = None
                 except PerfilEstudiante.DoesNotExist:
-                    # Manejar el caso donde el perfil del estudiante no existe
                     messages.error(request, "No se encontró el estudiante")
-                    estudiante = None
-                        
+                except Grupo.DoesNotExist:
+                    messages.error(request, "No se encontró el grupo")
+                except AlreadyExist as e:
+                    messages.warning(request, e)
+                
+                    
             if "guardar" in request.POST:
                 
                 nombre_grupo = request.POST.get("nombre-grupo")
@@ -349,16 +352,13 @@ def profesor_grupo(request, curso_id):
                 
                 if not nombre_grupo  or not nombre_proyecto :
                     raise EmptyField("Escribe nombre de grupo y nombre de proyecto")
-                
-                # Crear el grupo y guardarlo en la base de datos
-                Grupo.objects.create(nombre=nombre_grupo, proyecto_asignado=nombre_proyecto, curso=curso)
-                
-                # Redirigir a una página de éxito o mostrar un mensaje de éxito
+            
+                Grupo.objects.create(nombre=nombre_grupo, proyecto_asignado=nombre_proyecto, curso=curso) 
                 messages.success(request, "Grupo creado exitosamente.")
-                # Cambia "ruta_de_redireccion" a la URL adecuada
+                
     except EmptyField as e:   
         messages.error(request, e)
-    return render(request, 'profesor/grupo.html', {"estudiante" : estudiante, "curso_actual" : curso_actual, "grupos" : grupos})
+    return render(request, 'profesor/grupo.html', {"curso_actual" : curso_actual, "grupos" : grupos})
     
 #Informes
 @login_required

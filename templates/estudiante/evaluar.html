@@ -22,33 +22,17 @@
 
     {% comment %} FORM PARA REALIZAR EVALUACIÓN {% endcomment %}
     <div class="w-50" style="margin-top: 100px">
-        <h2>{{ rubrica }}</h2>
-        <form method="POST" class="d-flex flex-column align-items-center" action="" >
-            {% csrf_token %} 
-            
-            {%for criterio in criterios%}
-            <div class="contenedor-input mb-4 w-75 mt-1">
-                <label for="username" id="username-label" class="form-label">{{ criterio.descripcion }}</label>
-                <select class="form-select" name="Escala">
-                    <option selected>Seleccione una Calificación</option>
-                    {%for calificacion in escalacalificacion%}
-                    <option >
-                        {{ calificacion }}
-                    </option>
-                    {% endfor %}
-                </select>     
+        {%for estudiante in estudiantes_curso%}
+          <div class="card p-3">
+            <div class="card-body">
+              <p><span style="font-weight: bold;">Estudiante :</span> {{ estudiante.user.first_name }}</p>
+              <p><span style="font-weight: bold;">Código :</span> {{ estudiante.user.username }}</p>
             </div>
-            {% endfor %}
-            <div class="contenedor-input mb-4 w-75 ">
-                <label for="username" id="username-label" class="form-label">Retroalimentación</label>
-                <textarea type="text" id="username" name="username" class="form-control" required ></textarea>      
-            </div>
-            <div class="d-grid w-75">
-                <button class="btn btn-primary" type="submit">Evaluar</button>
-            </div>
-                
-            
-        </form>
+
+            <a class="btn btn-primary" href="#">Evaluar Estudiante</a>
+
+          </div>            
+    {% endfor %}
     </div>
 
 {% endblock%}

@@ -1,0 +1,23 @@
+<table class="table table-bordered mt-4">
+    <thead class="thead-light">
+        <tr>
+            <th  class="col-3 text-center"><b>Código</b></th>
+            <th  class="col-7 text-center"><b>Nombre Estudiante</b></th>
+            <th class="text-center"><b>Eliminar</b></th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            {%for estudiante in grupo.estudiantes.all%}
+            <tr>
+                <td>{{ estudiante.user.username }}</td>
+                <td>{{ estudiante.nombre }} </td>
+                <td><button type="submit" name="eliminar-estudiante-grupo" value="{{ estudiante.id }}" class="btn btn-danger">
+                    <i class="bi bi-trash"></i>
+                  </button></td>
+                
+              </tr>
+            {%endfor%}
+        
+    </tbody>
+</table>
