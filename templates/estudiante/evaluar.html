@@ -1,9 +1,9 @@
 {% extends 'estudiante/mainestudiante.html' %}
 {% block content %}
 
-<div class="container--evaluacion--curso">
+<div class="container--evaluacion--curso ">
     
-    <div class="row w-100">
+    <div class="row w-100 my-5">
         <div class="col-4  contenedor-back-bottom">
             <a href="{% url "estudiante_curso" curso.id%}"><span class="material-icons btn btn-primary back-bottom">arrow_back</span> </a>
         </div>
@@ -11,13 +11,8 @@
             <div class="contenedor-titulos">
                 <h3>Co-Evaluación</h3>
                 <h3><span style="font-weight: bold;">Asignatura: </span> {{ grupo.curso.nombre}}</h3>
-            </div>
-            <div>
-                <h3><span style="font-weight: bold;">Grupo :</span> {{ grupo }} </h3>
-                <h3><span style="font-weight: bold;">Proyecto :</span> {{ grupo.proyecto_asignado }} </h3>
-                <h3><span style="font-weight: bold;">Estudiante Evaluado :</span> {{ evaluado }} </h3>
-                <h3><span style="font-weight: bold;">Código :</span> {{ evaluado.user.username }} </h3>
-                
+                <h3><span style="font-weight: bold;">Grupo: </span> {{ grupo}}</h3>
+                <h3><span style="font-weight: bold;">Evaluación: </span> {{ evaluacion.rubrica}}</h3>
             </div>
         </div>
     </div>

@@ -180,7 +180,7 @@ def evaluar(request, evaluacionid ,grupoid):
     #Criterios
     criterios = rubrica.criterio_set.all()
     #Escala
-    escala = rubrica.calificacion_set.all()
+    rubrica = rubrica.calificacion_set.all()
     #Grupo
     grupo = Grupo.objects.get(id = grupoid)
     
@@ -192,8 +192,10 @@ def evaluar(request, evaluacionid ,grupoid):
     
     
     return render(request, 'estudiante/evaluar.html', { "evaluador" : perfil_evaluador,
-                                                       "curso":curso, "estudiantes":estudiantes, "evaluacion": evaluacion, "criterios": criterios,
-                                                       "escalas": escala})
+                                                       "curso":curso, "estudiantes":estudiantes, 
+                                                       "evaluacion": evaluacion, 
+                                                       "criterios": criterios,
+                                                       "rubrica": rubrica, "grupo" : grupo})
 
 
 
