@@ -154,41 +154,48 @@ def estudiante_curso(request, cursoid):
     try:
         grupo = perfil.grupo_set.get(curso = cursoid)
         estudiantes_grupo = grupo.estudiantes.all().exclude(user = perfil.user)
+        #Evaluaciones
+        evaluaciones = grupo.curso.evaluacion_set.all()
     except:
         messages.error(request, "Aún no estás en un grupo para este curso")
         return redirect('/estudiante/')
     
     
     
-    return render(request, 'estudiante/curso.html', {'curso': curso, 'grupo': grupo, 'estudiantes': estudiantes_grupo})
+    
+    
+    
+    return render(request, 'estudiante/curso.html', {'curso': curso, 'grupo': grupo, 'estudiantes': estudiantes_grupo, "evaluaciones" : evaluaciones})
 
 
 @login_required
-def evaluar(request, estudianteid, cursoid, grupoid):
-    
+def evaluar(request, evaluacionid ,grupoid):
+    #Evaluador
     usuario = User.objects.get(username = request.user.username)
-    perfil = PerfilEstudiante.objects.get(user = usuario)
+    perfil_evaluador = PerfilEstudiante.objects.get(user = usuario)
     
-    # evaluacion = Evaluacion.objects.get(curso = cursoid)
-    #Obtengo el curso
-    curso = perfil.cursos.get(id = cursoid)
-    #Criterios y escalas de la evaluación del curso
-    # criterios = evaluacion.rubrica.criterio_set.all()
-    # escalaCalificacion = evaluacion.rubrica.calificacion_set.all()
-    #Obtengo el grupo del curso al que pertenece
-    grupo = perfil.grupo_set.get(curso = cursoid)
-    #Estudiantes del curso
-    estudiantes_curso = grupo.estudiantes.all().exclude(user = usuario)
-
-    return render(request, 'estudiante/evaluar.html', {'curso': curso, 'estudiantes_curso': estudiantes_curso,  'grupo': grupo }  )
-
-@login_required
-def realizar_evaluacion(request, estudianteid, grupoid):
-    
-    estudiante_evaluado = PerfilEstudiante.objects.get(id = estudianteid)
+    #Rúbrica
+    evaluacion = Evaluacion.objects.get(id = evaluacionid)
+    rubrica = evaluacion.rubrica
+    #Criterios
+    criterios = rubrica.criterio_set.all()
+    #Escala
+    escala = rubrica.calificacion_set.all()
+    #Grupo
     grupo = Grupo.objects.get(id = grupoid)
     
-    return render(request, "estudiante/realizar_evaluacion.html", {"estudiante_evaluado" : estudiante_evaluado ,"grupo": grupo})
+    #Curso
+    curso = grupo.curso
+
+    #Estudiantes del grupo
+    estudiantes = grupo.estudiantes.all().exclude(id=perfil_evaluador.id)
+    
+    
+    return render(request, 'estudiante/evaluar.html', { "evaluador" : perfil_evaluador,
+                                                       "curso":curso, "estudiantes":estudiantes, "evaluacion": evaluacion, "criterios": criterios,
+                                                       "escalas": escala})
+
+
 
 #Vistas del profesor
 

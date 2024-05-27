@@ -4,35 +4,25 @@
 <div class="container--evaluacion--curso">
     
     <div class="row w-100">
-        <div class="col-4  contenedor-back-bottom"><a href="{% url 'estudiante'  %}" >
-            <span class="material-icons btn btn-primary back-bottom">arrow_back</span> </a>
+        <div class="col-4  contenedor-back-bottom">
+            <a href="{% url "estudiante_curso" curso.id%}"><span class="material-icons btn btn-primary back-bottom">arrow_back</span> </a>
         </div>
         <div class="col">
             <div class="contenedor-titulos">
                 <h3>Co-Evaluación</h3>
-                <h3><span style="font-weight: bold;">Asignatura: </span> {{ curso }}</h3>
+                <h3><span style="font-weight: bold;">Asignatura: </span> {{ grupo.curso.nombre}}</h3>
             </div>
             <div>
                 <h3><span style="font-weight: bold;">Grupo :</span> {{ grupo }} </h3>
                 <h3><span style="font-weight: bold;">Proyecto :</span> {{ grupo.proyecto_asignado }} </h3>
+                <h3><span style="font-weight: bold;">Estudiante Evaluado :</span> {{ evaluado }} </h3>
+                <h3><span style="font-weight: bold;">Código :</span> {{ evaluado.user.username }} </h3>
                 
             </div>
         </div>
     </div>
 
     {% comment %} FORM PARA REALIZAR EVALUACIÓN {% endcomment %}
-    <div class="w-50" style="margin-top: 100px">
-        {%for estudiante in estudiantes_curso%}
-          <div class="card p-3">
-            <div class="card-body">
-              <p><span style="font-weight: bold;">Estudiante :</span> {{ estudiante.user.first_name }}</p>
-              <p><span style="font-weight: bold;">Código :</span> {{ estudiante.user.username }}</p>
-            </div>
-
-            <a class="btn btn-primary" href="{%url "realizar_evaluacion" estudiante.id grupo.id%}">Evaluar Estudiante</a>
-
-          </div>            
-    {% endfor %}
-    </div>
+    {% include "estudiante/components/table_evaluar.html" %}
 
 {% endblock%}

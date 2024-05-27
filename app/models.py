@@ -68,12 +68,7 @@ class Criterio(models.Model):
         return self.descripcion + f" Peso: {self.peso}" 
     
 
-class Puntuacion(models.Model):
-    nota = models.ForeignKey(Calificacion, on_delete=models.CASCADE)
-    retroalimentacion = models.TextField(max_length=200)
-    criterio_evaluado = models.ForeignKey(Criterio, on_delete=models.CASCADE)
-    def __str__(self):
-        return self.criterio_evaluado + "Nota: "+ self.nota + ", Retroalimentación: " + self.retroalimentacion
+
 
 class Curso(models.Model):
     PERIODOS = [("I", "I"), ("II", "II")]
@@ -121,6 +116,14 @@ class Evaluacion(models.Model):
     @property
     def numero_estudiantes_evaluados(self):
         return self.evaluados.count()
+
+class Puntuacion(models.Model):
+    nota = models.ForeignKey(Calificacion, on_delete=models.CASCADE)
+    retroalimentacion = models.TextField(max_length=200)
+    criterio_evaluado = models.ForeignKey(Criterio, on_delete=models.CASCADE)
+    evaluacion = models.ForeignKey(Evaluacion, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.criterio_evaluado + "Nota: "+ self.nota + ", Retroalimentación: " + self.retroalimentacion
 
 class Grupo(models.Model):
     nombre = models.TextField(max_length=50)

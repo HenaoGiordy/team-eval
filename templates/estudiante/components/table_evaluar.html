@@ -1,0 +1,40 @@
+<div class="container">
+    <h2>Realizar Evaluación</h2>
+    <select class="form-select" aria-label="Seleccionar estudiante">
+        <option selected>Seleccionar estudiante</option>
+        {%for estudiante in estudiantes%}
+        <option value="{{ estudiante.id }}">{{ estudiante }}</option>
+        {% endfor %}
+        <!-- Agrega más opciones según sea necesario -->
+      </select>
+    <div class="row">
+      <div class="col">
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="text-center fw-bold">Criterios</th>
+                <th class="text-center fw-bold">Calificación</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for criterio in criterios %}
+              <tr>
+                <td>{{ criterio.descripcion }}</td>
+                <td>
+                  <select class="form-select" aria-label="Seleccionar una Calificación">
+                    <option selected>Seleccionar una Calificación</option>
+                    {% for escala in escalas %}
+                    <option value="{{ escala.calificacion }}">{{ escala.calificacion }} - {{ escala.descripcion }}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          
+      </div>
+    </div>
+  </div>
+  
+
