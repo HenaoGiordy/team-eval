@@ -8,28 +8,22 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
-      </tr>
+      
+        {%for resultado in resultados%}
+        <tr>
+            <td>{{ resultado.criterio_evaluado.descripcion}}</td>
+            <td>{{ resultado.nota.calificacion}}</td>
+            <td>{{ resultado.criterio_evaluado.peso}}</td>
+            <td>{{ resultado.valor_ponderado}}</td> 
+        </tr>
+        {%endfor%}
+      
+
     </tbody>
     <tfoot>
         <tr>
             <td colspan="3" class="fw-bold text-end">Nota Final :</td>
-            <td >5</td>
+            <td >{{ suma_ponderados }}</td>
         </tr>
     </tfoot>
   </table>

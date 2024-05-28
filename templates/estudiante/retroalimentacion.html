@@ -11,7 +11,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Curso: {{ evaluacion.curso.nombre }}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">{{ evaluacion.rubrica.nombre }}</h6>
-                        <a href="{% url "estudiante_ver_resultado" %}" class="btn btn-primary">Ver resultados</a>
+                        <a href="{% url "estudiante_ver_resultado" evaluacion.id%}" class="btn btn-primary">Ver resultados</a>
                     </div>
                 </div>
             </div>

@@ -149,8 +149,16 @@ def estudiante_retroalimentacion(request):
     return render(request, 'estudiante/retroalimentacion.html', {"evaluaciones": evaluaciones})
 
 @login_required
-def estudiante_ver_resultado(request):
-    return render(request, "estudiante/ver_resultados.html")
+def estudiante_ver_resultado(request, evaluacionid):
+    usuario = User.objects.get(username = request.user.username)
+    perfil_estudiante = PerfilEstudiante.objects.get(user = usuario)
+    evaluacion = Evaluacion.objects.get(id = evaluacionid)
+    
+    resultados = Resultado.objects.filter(evaluado = perfil_estudiante, evaluacion = evaluacionid)
+    
+    return render(request, "estudiante/ver_resultados.html", {"resultados" : resultados})
+
+
 
 #Vista curso estudiante
 @login_required
