@@ -20,7 +20,7 @@
 
         {% url 'profesor_evaluacion_curso' as profesor_evaluacion_curso_url %}
         <li class="dropdown__list" id="evaluacion">
-            <a class="item-sidebar py-2 dropdown__link bordes {% if request.path == profesor_evaluacion_curso_url %}active{% endif %}" href="{{ profesor_evaluacion_curso_url }}">
+            <a class="item-sidebar py-2 dropdown__link bordes {% if not "retroalimentacion" in request.path %}active{% endif %}" href="{% url "estudiante" %}">
             <i class="bi bi-file-earmark-check mr-1"></i>
             <span>Evaluación</span>
             </a>
@@ -28,7 +28,7 @@
 
         {% url 'estudiante_grupos_curso' as profesor_grupos_curso_url %}
         <li class="dropdown__list" id="retroalimentacion">
-            <a class="item-sidebar py-2 dropdown__link bordes {% if request.path == profesor_grupos_curso_url %}active{% endif %}" href="{{ profesor_grupos_curso_url }}" style="border-bottom:1px solid #0D6EFD">
+            <a class="item-sidebar py-2 dropdown__link bordes {% if "retroalimentacion" in request.path %}active{% endif %}" href="{% url "estudiante_retroalimentacion" %}" style="border-bottom:1px solid #0D6EFD">
                 <i class="bi bi-file-earmark-person mr-1"></i>
             <span>Retroalimentación</span>
             </a>

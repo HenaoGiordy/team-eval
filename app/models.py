@@ -110,25 +110,36 @@ class Evaluacion(models.Model):
     fecha_fin = models.DateField(blank=False, null=False)
     rubrica = models.ForeignKey(Rubrica, on_delete=models.PROTECT, null=False, blank=False)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE, null=False, blank=False)
-    evaluadores = models.ManyToManyField(PerfilEstudiante, related_name='evaluaciones_hechas')
-    evaluados = models.ManyToManyField(PerfilEstudiante, related_name='evaluaciones_recibidas')
+    evaluados = models.SmallIntegerField(default=0)
     
     @property
     def numero_estudiantes_evaluados(self):
         return self.evaluados.count()
 
-class Puntuacion(models.Model):
+class Resultado(models.Model):
+    evaluador = models.ForeignKey(PerfilEstudiante, on_delete=models.CASCADE, related_name="evaluador")
+    evaluado = models.ForeignKey(PerfilEstudiante, on_delete=models.CASCADE, related_name="evaluado")
     nota = models.ForeignKey(Calificacion, on_delete=models.CASCADE)
-    retroalimentacion = models.TextField(max_length=200)
     criterio_evaluado = models.ForeignKey(Criterio, on_delete=models.CASCADE)
     evaluacion = models.ForeignKey(Evaluacion, on_delete=models.CASCADE)
     def __str__(self):
-        return self.criterio_evaluado + "Nota: "+ self.nota + ", Retroalimentación: " + self.retroalimentacion
+        return f"{self.criterio_evaluado} - Nota: {self.nota}, Retroalimentación: {self.retroalimentacion}"
+
+    class Meta:
+        constraints = [
+            UniqueConstraint(fields=['evaluador', 'evaluado', 'criterio_evaluado', 'evaluacion'], name='unique_resultado')
+        ]
+
+class Retroalimentracion(models.Model):
+    estudiante_retroalimentacion = models.ForeignKey(PerfilEstudiante, on_delete=models.CASCADE)
+    retroalimentacion = models.CharField(max_length=500)
+    evaluacion = models.ForeignKey(Evaluacion, on_delete=models.CASCADE)
 
 class Grupo(models.Model):
     nombre = models.TextField(max_length=50)
     proyecto_asignado = models.TextField(max_length=50)
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     estudiantes = models.ManyToManyField(PerfilEstudiante)
+    has_evaluated = models.BooleanField(default=False)
     def __str__(self):
         return self.nombre

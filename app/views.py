@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from TeamEval import settings
 from app.exeptions import AlreadyExist, EmptyField, EstudianteInactivo, PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso
 from app.forms import MinimalPasswordChangeForm, UsernameForm
-from app.models import  Calificacion, Criterio, Evaluacion, Rubrica, User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
+from app.models import  Calificacion, Criterio, Evaluacion, Resultado, Retroalimentracion, Rubrica, User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.utils.http import urlsafe_base64_decode
@@ -140,6 +140,12 @@ def estudiante(request):
 #Retroalimentación estudiante
 @login_required
 def estudiante_retroalimentacion(request):
+    usuario = User.objects.get(username = request.user.username)
+    perfil_estudiante = PerfilEstudiante.objects.get(user = usuario)
+    evaluaciones = Evaluacion.objects.filter(resultado__evaluado=perfil_estudiante).distinct()
+    
+    
+    print(evaluaciones)
     return render(request, 'estudiante/retroalimentacion.html')
 
 #Vista curso estudiante
@@ -191,6 +197,30 @@ def evaluar(request, evaluacionid ,grupoid):
     estudiantes = grupo.estudiantes.all().exclude(id=perfil_evaluador.id)
     
     
+    try:
+        if request.method == "POST":
+            calificaciones = request.POST.getlist("calificacion[]")
+            criterios_evaluados = request.POST.getlist("criterios[]")
+            retro_alimentacion = request.POST.get("retroalimentacion")
+        
+            evaluadoid = request.POST.get("evaluado")
+            evaluado = PerfilEstudiante.objects.get(id = evaluadoid)
+            
+            for calificacionid, criterioid in zip(calificaciones, criterios_evaluados):
+                print(calificacionid)
+                calificacion = Calificacion.objects.get(id = calificacionid)
+                criterio = Criterio.objects.get(id=criterioid)
+                Resultado.objects.create(nota = calificacion, criterio_evaluado = criterio, evaluacion = evaluacion, evaluado =evaluado, evaluador=perfil_evaluador )
+            Retroalimentracion.objects.create(estudiante_retroalimentacion= evaluado, retroalimentacion = retro_alimentacion, evaluacion= evaluacion)
+            grupo.has_evaluated = True
+            evaluacion.evaluados += 1
+            evaluacion.save()
+            grupo.save()
+            messages.success(request,"Evaluación enviada")
+            
+    except IntegrityError:
+        messages.error(request, "Ya has evaluado a este estudiante")
+        
     return render(request, 'estudiante/evaluar.html', { "evaluador" : perfil_evaluador,
                                                        "curso":curso, "estudiantes":estudiantes, 
                                                        "evaluacion": evaluacion, 

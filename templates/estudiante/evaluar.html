@@ -1,8 +1,16 @@
 {% extends 'estudiante/mainestudiante.html' %}
 {% block content %}
 
+
 <div class="container--evaluacion--curso ">
-    
+    <!--Alertas / notificaciones-->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert  {{ message.tags }} position-absolute"  role="alert" style="z-index:999; top:50%">
+                <p>{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
     <div class="row w-100 my-5">
         <div class="col-4  contenedor-back-bottom">
             <a href="{% url "estudiante_curso" curso.id%}"><span class="material-icons btn btn-primary back-bottom">arrow_back</span> </a>
