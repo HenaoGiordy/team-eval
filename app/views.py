@@ -145,8 +145,8 @@ def estudiante_retroalimentacion(request):
     evaluaciones = Evaluacion.objects.filter(resultado__evaluado=perfil_estudiante).distinct()
     
     
-    print(evaluaciones)
-    return render(request, 'estudiante/retroalimentacion.html')
+    
+    return render(request, 'estudiante/retroalimentacion.html', {"evaluaciones": evaluaciones})
 
 #Vista curso estudiante
 @login_required

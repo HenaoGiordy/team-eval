@@ -1,6 +1,24 @@
 {% extends 'estudiante/mainestudiante.html' %}
 {% block content %}
 <div class="container--evaluacion--curso my-5">
-    <h2>Hola</h2>
+    <h2 class="my-5">Resultados de evaluaciones</h2>
+
+    
+    <div class="row">
+        {% for evaluacion in evaluaciones %}
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Curso: {{ evaluacion.curso.nombre }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ evaluacion.rubrica.nombre }}</h6>
+                        <a href="#" class="btn btn-primary">Ver resultados</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
 </div>
+
+
 {% endblock %}

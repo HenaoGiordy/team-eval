@@ -5,7 +5,7 @@
     
     
     
-    <div class="row w-100">
+    <div class="row w-100 my-5">
         <div class="col-4  contenedor-back-bottom"><a href="{% url 'estudiante' %}" >
             <span class="material-icons btn btn-primary back-bottom">arrow_back</span><a> </a>
         </div>
@@ -17,7 +17,7 @@
             <div>
                 <h3><span style="font-weight: bold;">Grupo :</span> {{ grupo }} </h3>
                 <h3><span style="font-weight: bold;">Proyecto :</span> {{ grupo.proyecto_asignado }} </h3>
-                
+                <h1 class="w-100 mt-5">Evaluaciones </h1>
             </div>
         </div>
     </div>
@@ -31,20 +31,21 @@
 <div class="container mt-2">
     <div class="row">
         <!-- Itera sobre las evaluaciones en tu vista y genera estos divs -->
-        <h1 class="w-100 text-center mb-5">Evaluaciones </h1>
+        
         {% for evaluacion in evaluaciones %}
-        <div class="col-md-6 mb-4">
+        
             <div class="card pb-2">
                 <div class="card-header">
-                    <h5 class="card-title">Evaluación del <strong>{{ evaluacion.fecha_inicio }}</strong> al <strong>{{ evaluacion.fecha_fin }}</strong></h5>
+                    <h5 class="card-title">Fecha Inicio:<strong>{{ evaluacion.fecha_inicio }}</strong></h5>
+                    <h5 class="card-title">Fecha fin: <strong>{{ evaluacion.fecha_fin }}</strong></h5>
                 </div>
                 <div class="card-body">
                     <p class="card-text"><strong>Rúbrica:</strong> {{ evaluacion.rubrica.nombre }}</p>
-                    <!-- Agrega más detalles aquí si es necesario -->
+                    <a class="btn btn-primary" href="{% url "evaluar" evaluacion.id grupo.id%}"> Evaluar </a>
+                    
                 </div>
-                <a class="btn btn-primary" href="{% url "evaluar" evaluacion.id grupo.id%}"> Evaluar </a>
             </div>
-        </div>
+        
         {% endfor %}
     </div>
 </div>

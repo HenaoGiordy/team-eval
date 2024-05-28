@@ -216,8 +216,11 @@ input:focus~label {
     margin: 2% 2%;
     width: 250px;
     box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.34);
-    height: 250px;
     align-items: center;
+}
+
+.card-heigth{
+    height: 250px;
 }
 
 .card-body {
