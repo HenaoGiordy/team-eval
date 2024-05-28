@@ -1,7 +1,7 @@
 {% extends 'estudiante/mainestudiante.html' %}
 {% block content %}
 <div class="container--evaluacion--curso my-5">
-    <h2 class="my-5">Resultados de evaluaciones</h2>
+    <h2 class="my-5">Evaluaciones</h2>
 
     
     <div class="row">
@@ -11,7 +11,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Curso: {{ evaluacion.curso.nombre }}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">{{ evaluacion.rubrica.nombre }}</h6>
-                        <a href="#" class="btn btn-primary">Ver resultados</a>
+                        <a href="{% url "estudiante_ver_resultado" %}" class="btn btn-primary">Ver resultados</a>
                     </div>
                 </div>
             </div>

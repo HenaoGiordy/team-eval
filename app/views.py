@@ -148,6 +148,10 @@ def estudiante_retroalimentacion(request):
     
     return render(request, 'estudiante/retroalimentacion.html', {"evaluaciones": evaluaciones})
 
+@login_required
+def estudiante_ver_resultado(request):
+    return render(request, "estudiante/ver_resultados.html")
+
 #Vista curso estudiante
 @login_required
 def estudiante_curso(request, cursoid):

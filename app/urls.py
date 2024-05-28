@@ -10,6 +10,7 @@ urlpatterns= [
     path('estudiante/curso/<int:cursoid>', views.estudiante_curso, name="estudiante_curso"),
     path('estudiante/evaluar/<int:evaluacionid>/<int:grupoid>', views.evaluar, name="evaluar"),
     path('estudiante/retroalimentacion', views.estudiante_retroalimentacion, name="estudiante_retroalimentacion"),
+    path('estudiante/retroalimentacion/ver_resultado', views.estudiante_ver_resultado, name="estudiante_ver_resultado"),
     path('profesor/', views.profesor, name="profesor"),
     path('profesor/gestion_cursos', views.profesor_cursos, name="profesor_cursos"),
     path('profesor/detalle_curso/<int:curso_id>', views.detalle_curso, name="detalle_curso"),
