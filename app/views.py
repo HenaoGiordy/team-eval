@@ -246,6 +246,8 @@ def evaluar(request, evaluacionid ,grupoid):
             for califica in calificaciones:
                 if califica == "Seleccionar una Calificación":
                     raise EmptyField("Por favor no dejes calificacion sin asignar")
+                if not califica.isdigit():
+                    raise EmptyField("No puedes introducir strings al valor de la calificación ni dejarlo vacío")
             
             for calificacionid, criterioid in zip(calificaciones, criterios_evaluados):
                 
