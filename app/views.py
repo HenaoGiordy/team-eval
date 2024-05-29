@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from TeamEval import settings
-from app.exeptions import AlreadyExist, EmptyField, EstudianteInactivo, PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso
+from app.exeptions import AlreadyExist, EmptyField, EstudianteInactivo, NumberError, PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso
 from app.forms import MinimalPasswordChangeForm, UsernameForm
 from app.models import  Calificacion, Criterio, Evaluacion, Resultado, Retroalimentracion, Rubrica, User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
 from django.core.exceptions import ValidationError
@@ -230,10 +230,25 @@ def evaluar(request, evaluacionid ,grupoid):
             retro_alimentacion = request.POST.get("retroalimentacion")
         
             evaluadoid = request.POST.get("evaluado")
-            evaluado = PerfilEstudiante.objects.get(id = evaluadoid)
+            
+            if not evaluadoid:
+                raise EmptyField("Ingrese un estudiante")
+            
+            
+            if not evaluadoid.isdigit():
+                raise NumberError("Selecciona un estudiante") 
+            
+            try:
+                evaluado = PerfilEstudiante.objects.get(id = evaluadoid)
+            except PerfilEstudiante.DoesNotExist:
+                messages.error(request, "El estudiante que intentas evaluar, por alguna razón no aparece.")
+            
             
             for calificacionid, criterioid in zip(calificaciones, criterios_evaluados):
-                print(calificacionid)
+                
+                if calificacionid == "Seleccionar una Calificación":
+                    raise EmptyField("Por favor no dejes calificacion sin asignar")
+                
                 calificacion = Calificacion.objects.get(id = calificacionid)
                 criterio = Criterio.objects.get(id=criterioid)
                 Resultado.objects.create(nota = calificacion, criterio_evaluado = criterio, evaluacion = evaluacion, evaluado =evaluado, evaluador=perfil_evaluador )
@@ -246,6 +261,10 @@ def evaluar(request, evaluacionid ,grupoid):
             
     except IntegrityError:
         messages.error(request, "Ya has evaluado a este estudiante")
+    except EmptyField as e:
+        messages.error(request, e)
+    except NumberError as e:
+        messages.error(request, e)
         
     return render(request, 'estudiante/evaluar.html', { "evaluador" : perfil_evaluador,
                                                        "curso":curso, "estudiantes":estudiantes, 
