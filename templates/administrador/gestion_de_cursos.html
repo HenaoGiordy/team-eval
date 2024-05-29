@@ -1,7 +1,7 @@
 {% extends 'administrador/administrador.html'%}
 {%load static%}
 {% block content %}
-<div  class="container__admin">
+<div class="container__admin">
     <!--Alertas / notificaciones-->
     {% if messages %}
         {% for message in messages %}
@@ -34,20 +34,20 @@
                 <div class="form-row justify-content-center">
                     <div class="form-group col-md-5 mx-3">
                         <i class="bi bi-person-lines-fill"></i>
-                        <label for="codigo-docente">Código Docente</label>
-                        <input type="number" class="form-control" id="codigo-docente" name="codigo-docente" placeholder="Código docente" required>
+                        <label for="codigo-docente">Código docente</label>
+                        <input type="text" class="form-control" id="codigo-docente" name="codigo-docente" placeholder="Código docente" required>
                     </div>
                     <div class="form-group col-md-5 mx-3">
                         <i class="bi bi-calendar3"></i>
-                        <label for="periodo-curso">Periodo Académico</label>
+                        <label for="periodo-curso">Periodo académico</label>
                         <select class="form-control" name="periodo-curso" id="periodo-curso">
-                            <option value="I">I - Primer Semestre</option>
-                            <option value="II">II - Segundo Semestre</option>
+                            <option value="I">I - Primer semestre</option>
+                            <option value="II">II - Segundo semestre</option>
                         </select>
                     </div>
                 </div>
                 <!--Botones e iconos/metáforas de "Guardar" y "Limpiar"-->
-                <div class="botones">
+                <div class="botones justify-content-center w-100">
                     <button type="submit" class="btn btn-primary" name="guardar-curso" style="border: none;">
                         <b>Guardar</b>
                         <i class="bi bi-floppy"></i>

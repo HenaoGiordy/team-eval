@@ -8,7 +8,7 @@
   </a>
 </nav> 
 
-<div class="sidebar-container">
+<div class="sidebar-container" style="z-index: 1">
   {% comment %} Header del sidebar {% endcomment %}
   <div class="cuadro-con-sombra">
     <div class="text-center"> Docente</div>
@@ -21,15 +21,15 @@
     {% url 'profesor_cursos' as profesor_cursos_url %}
     <li class="dropdown__list" id="gestion-de-docentes">
       <a class="item-sidebar py-2 dropdown__link bordes {% if request.path == profesor_cursos_url %}active{% endif %}" href="{{ profesor_cursos_url }}">
-        <i class="bi bi-person mr-1"></i>
-        <span>Gestión de cursos</span>
+        <i class="bi bi-book mr-1"></i>
+        <span>Cursos</span>
     </a>    
     </li> 
 
     {% url 'profesor_gestion_rubricas' as profesor_gestion_rubricas_url %}
     <li class="dropdown__list" id="gestion-evaluacion">
       <a class="item-sidebar py-2 dropdown__link bordes {% if request.path == profesor_gestion_rubricas_url %}active{% endif %}" href="{{ profesor_gestion_rubricas_url }}">
-        <i class="bi bi-book mr-1"></i>
+        <i class="bi bi-list-check mr-1"></i>
         <span>Gestión de rúbricas</span>
       </a>
     </li>
@@ -37,7 +37,7 @@
     {% url 'profesor_informes' as profesor_informes_url %}
     <li class="dropdown__list" id="gestion-informes">
       <a class="item-sidebar py-2 dropdown__link bordes {% if request.path == profesor_informes_url %}active{% endif %}" href="{{ profesor_informes_url }}" style="border-bottom:1px solid #0D6EFD">
-        <i class="bi bi-file-earmark-check mr-1"></i>
+        <i class="bi bi-clipboard-data mr-1"></i>
         <span>Informes</span>
       </a>
     </li>

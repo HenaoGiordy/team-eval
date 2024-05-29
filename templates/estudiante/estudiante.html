@@ -1,34 +1,28 @@
 {% extends 'estudiante/mainestudiante.html' %} 
 {% load static %}
 {% block content %}
-
-<h1 class="titulo-lista text-center">Lista de Cursos</h1>
-<div class="container--cursos">
-  
-  {% if cursos%} {%for curse in cursos%}
-  <div class="card pb-2">
-    <div class="card-body">
-      <p><span style="font-weight: bold">Asignatura :</span> {{ curse }}</p>
-      <p>
-        <span style="font-weight: bold">Profesor :</span> {{ curse.profesor }}
-      </p>
-    </div>
-    <a class="btn btn-primary" href="curso/{{ curse.id }}"
-      >Ir a curso</a
-    >
-  </div>
- 
-  {% endfor %} {% else %} <h3>No tienes cursos</h3> {% endif %}
-
+<div  class="container__admin">
+  <!--Alertas / notificaciones-->
   {% if messages %}
-
-  {% for message in messages %}
-  <div class="alert alert-danger alert-dismissible d-flex justify-content-center position-absolute alert-modificador-curso"  role="alert">
-      <p>{{ message }}</p>
-  </div>
-  {% endfor %}
+    {% for message in messages %}
+    <div class="alert  {{ message.tags }} position-absolute" style="z-index: 1" role="alert">
+        <p>{{ message }}</p>
+    </div>
+    {% endfor %}
 {% endif %}
+  <h2 class="titulos"><b>Lista de cursos</b></h2>
 </div>
-
-
+<div class="container--cursos">
+  {% if cursos%} {%for curse in cursos%}
+  <div class="card mt-n1">
+    <h5 class="card-header" style="text-align: center;"><b>{{ curse }}</b></h5>
+    <div class="card-body">
+      <p class="card-text"><i class="bi bi-journal-text mr-1"></i><b>Código curso:</b> {{ curse.codigo }}</p>
+      <p class="card-text"><i class="bi bi-person mr-1"></i><b>Docente: </b> {{ curse.profesor }}</p>
+      <a href="curso/{{ curse.id }}" class="btn btn-primary d-flex justify-content-center align-items-center mb-1">
+        Ir a curso<i class="bi bi-chevron-right ml-1"></i></a>
+    </div>
+  </div>
+  {% endfor %} {% else %} <h3 style="text-align: center; margin-top: 20%">No tienes cursos</h3> {% endif %}
+</div>
 {% endblock%}

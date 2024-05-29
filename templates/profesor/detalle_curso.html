@@ -1,82 +1,76 @@
 {% extends "profesor/mainprofesor.html" %}
 {%block content%}
-<div  class="container__admin">
-    <div class="col-10 mt-2">
-        <a class="refrescar btn btn-secondary" style="color: #0D6EFD; background-color: #d9d9d9; border: none;" href="{% url 'profesor_cursos' %}">
-            <b>Volver</b>
-            <i class="bi bi-arrow-return-left"></i>
-        </a>
+<div class="container__admin">
+    <!--Alertas / notificaciones-->
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert {{ message.tags }} position-absolute mt-5" style="z-index: 1" role="alert">
+            <p>{{ message }}</p>
+        </div>
+        {% endfor %}
+    {% endif %}
+
+    <!--Formulario Información curso-->
+    <div class="container">
+        <div class="header-row">
+            <a class="btn btn-secondary btn-volver mt-4" style="color: #0D6EFD; background-color: #d9d9d9; border: none;" href="{% url 'profesor_cursos' %}">
+                <b>Volver</b>
+                <i class="bi bi-arrow-return-left"></i>
+            </a>
+            <h2 class="titulos"><b>Información del curso</b></h2>
+        </div>
     </div>
-    <h2 class="titulos"><b>Información del curso</b></h2>
 
-    <div class="card-body">
-        {% if messages %}
-            {% for message in messages %}
-            <div class="alert {{ message.tags }} position-absolute alert-docenter" role="alert">
-                <p>{{ message }}</p>
-            </div>
-            {% endfor %}
-        {% endif %}
+    <div class="card-form" style="box-shadow: none;">
+        <div class="card-body position-relative">
+            <form class="justify-content-center mt-n2">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-sm" style="background-color: #+;">
+                        <i class="bi bi-pencil mr-1"></i><b>Nombre curso</b></span>
+                    <input style="background-color: #f8f9fa;" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="{{ curso }}" disabled>
+                </div>
 
-        <!--Información del curso-->
-        <form class="justify-content-center mt-n2">
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="inputGroup-sizing-sm" style="background-color: #f8f9fa;">
-                    <i class="bi bi-pencil mr-1"></i><b>Nombre curso</b></span>
-                <input style="background-color: #f8f9fa;" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="{{ curso }}" disabled>
-            </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-sm" style="background-color: #f8f9fa;">
+                        <i class="bi bi-journal-text mr-1"></i><b>Código curso</b></span>
+                    <input style="background-color: #f8f9fa;" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="{{ curso.codigo }}" disabled>
+                </div>
 
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="inputGroup-sizing-sm" style="background-color: #f8f9fa;">
-                    <i class="bi bi-journal-text mr-1"></i><b>Código curso</b></span>
-                <input style="background-color: #f8f9fa;" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="{{ curso.codigo }}" disabled>
-            </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-sm" style="background-color: #f8f9fa;">
+                        <i class="bi bi-calendar3 mr-1"></i><b>Periodo académico</b></span>
+                    <input style="background-color: #f8f9fa;" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="{{ curso.get_periodo_academico }}" disabled>
+                </div>
+                <div class="d-flex justify-content-center align-items-center gap-3">
+                    <a href="{% url 'profesor_grupo' curso.id %}">
+                        <span class="btn btn-primary"><b>Grupos</b>
+                            <i class="bi bi-people-fill"></i>
+                        </span> 
+                    </a>
+                    <a href="{% url 'crear_evaluacion' curso.id %}" >
+                        <span class="btn btn-primary"><b>Evaluación</b>
+                            <i class="bi bi-file-earmark-check"></i>
+                        </span> 
+                    </a>
+                </div>    
+            </form>   
+        </div>
+    </div>
 
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="inputGroup-sizing-sm" style="background-color: #f8f9fa;">
-                    <i class="bi bi-calendar3 mr-1"></i><b>Periodo académico</b></span>
-                <input style="background-color: #f8f9fa;" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="{{ curso.get_periodo_academico }}" disabled>
-            </div>
-            <div class="d-flex justify-content-center align-items-center gap-3">
-                <a href="{% url 'profesor_grupo' curso.id %}">
-                    <span class="btn btn-primary"><b>Grupos</b>
-                        <i class="bi bi-people-fill"></i>
-                    </span> 
-                </a>
-                <a href="{% url "crear_evaluacion" curso.id %}" >
-                    <span class="btn btn-primary"><b>Evaluación</b>
-                        <i class="bi bi-file-earmark-check"></i>
-                    </span> 
-                </a>
-            </div>
-        </form>    
-    </div>    
-    
-    <div class="row justify-content-center">
+    <div class="row justify-content-center" style="width: 85%">
         <!-- Búsqueda de estudiantes -->
         <div class="col-md-7">
             <div style="box-shadow: none; border: 1px solid #dee2e6; border-radius: 6px">
                 <h5 class="card-header">Añadir estudiantes</h5>
                 <div class="row mx-auto">
-                    <div class="col mt-3 ml-2">
-                        <h6>Descarga la plantilla</h6>
+                    <div class="col-auto mt-3 ml-2">
+                        <p>Descarga la plantilla <a href="/static/anexos/Plantilla-TeamEval.csv"><b>aquí</b></a>
+                        <label for="formFile" class="form-label">y selecciona el archivo modificado</label>
+                        <input class="form-control" type="file" id="formFile" accept=".csv"></p>
                     </div>
-                    <div class="col-auto mt-2">
-                        <a href="/static/anexos/Plantilla-TeamEval.csv" class="btn btn-primary mr-3" download>
-                            <b>Descargar</b>
-                            <i class="bi bi-download"></i>
-                        </a>
-                    </div>
-                    <div>
-                        <div class="col-auto mt-2">
-                            <label for="formFile" class="form-label">Cargar plantilla modificada</label>
-                        </div>
-                        <div class="col-auto">
-                            <input class="form-control" type="file" id="formFile" accept=".csv">
-                        </div>
-                    </div>
+                    
                     <!--Botones e iconos/metáforas de "Guardar" y "Limpiar"-->
-                    <div class="botones mt-3" style="padding-bottom: 2%;">
+                    <div class="d-flex justify-content-center align-items-center gap-2">
                         <button type="submit" class="btn btn-primary" style="border: none;">
                             <b>Guardar</b>
                             <i class="bi bi-floppy"></i>
@@ -89,8 +83,9 @@
                 </div>
                 <form method="POST" class="row flex-column align-items-center">
                     {% csrf_token %} 
-                    <div class="d-flex gap-3 mt-3 col-11">
-                        <input type="number" id="codigo_estudiante" name="codigo_estudiante" class="form-control" placeholder="Código del estudiante" required>
+                    <div class="d-flex gap-3 mt-3 col-11 mb-3">
+                        <h6 class="mt-2">Buscar</h6>
+                        <input type="text" id="codigo_estudiante" name="codigo_estudiante" class="form-control" placeholder="Código estudiante" required>
                         <button type="submit" name="buscar-estudiante" class="btn btn-primary"><i class="bi bi-search"></i></button>
                         <a class="refrescar btn btn-secondary ml-1" style="color: #0D6EFD; background-color: #d9d9d9; border: none;" href="{% url 'detalle_curso' curso.id %}">
                             <i class="bi bi-eraser"></i>
@@ -101,20 +96,20 @@
                 {% if estudiante %}
                     <form method="POST">
                         {% csrf_token %} 
-                        <div class="d-flex flex-column mt-3 bg-body-secondary rounded p-3">
-                            <p>Información del estudiante: </p>
-                            <p>Nombre: <span class="fw-bold">{{estudiante.user.first_name}}</span></p>
-                            <p>Código Estudiante: <span class="fw-bold">{{estudiante.user.username}}</span></p>
+                        <div class="d-flex flex-column rounded p-3" style="background-color:  #eeeeee;">
+                            <p><b>Información del estudiante</b></p>
+                            <p><b>Nombre:</b> <span>{{estudiante.user.first_name}} {{estudiante.user.last_name}}</span></p>
+                            <p><b>Código Estudiante:</b> <span>{{estudiante.user.username}}</span></p>
                             <div class="w-100 d-flex justify-content-center gap-2">
-                                <button type="submit" name="agregar-estudiante" value="{{ estudiante.id }}" class="btn btn-primary d-flex gap-2 w-50"><i class="bi bi-plus-square"></i>Agregar</button>
-                                <button type="submit" class="btn btn-secondary d-flex gap-2 w-50"><i class="bi bi-eraser"></i>Limpiar</button>   
+                                <button type="submit" name="agregar-estudiante" value="{{ estudiante.id }}" class="btn btn-primary d-flex gap-2 w-50"><i class="bi bi-plus-circle"></i><b>Añadir</b></button>
+                                <button type="submit" class="btn btn-secondary d-flex gap-2 w-50" style="color: #0D6EFD; background-color: #d9d9d9; border: none;"><i class="bi bi-eraser"></i><b>Limpiar</b></button>   
                             </div>
                         </div>
                     </form>
                 {% endif %}
-                {% include "profesor/components/table_estudiantes.html" %}
             </div>
         </div>  
     </div>
+    <div class="w-75">{% include "profesor/components/table_estudiantes.html" %}</div>
 </div>    
 {% endblock %}

@@ -6,12 +6,19 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="d-flex">
+                <div class="form-row">
+                    <div class="form-group col mt-2">
+                        <i class="bi bi-pencil"></i>
                     <label >Nombre rúbrica</label>
+                    </div>
+                    <div class="form-row col-lg-8 mr-1">
                     <input  class="form-control" value="{{rubrica.nombre | capfirst }}" readonly="true">
-                </div>
+                    </div>
+                </div> 
                 <!-- Tabla para modificar criterios-->
-                <table class="table table-bordered mt-4">
+                <label><b>Lista de criterios</b></label>
+                <table class="table table-bordered">
+                    
                     <thead class="thead-light">
                         <tr>
                             <th class="col-7 text-center"><b>Descripción</b></th>
@@ -30,7 +37,8 @@
                 <!-- Fin de tabla modificar criterios-->
 
                 <!-- Tabla modificar escalas-->
-                <table class="table table-bordered mt-4">
+                <label><b>Lista de escalas</b></label>
+                <table class="table table-bordered">
                     <thead class="thead-light">
                         <tr>
                             <th class="text-center col-3"><b>Calificación</b></th>
@@ -49,8 +57,11 @@
                 <!-- Fin tabla modificar escalas-->
 
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Salir</button>
+            <div class="modal-footer mt-n3">
+                <button type="button" class="btn btn-secondary mt-n2" data-bs-dismiss="modal" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
+                    <b>Cerrar</b>
+                    <i class="bi bi-x-lg"></i>
+                </button>
             </div>
         </div>
     </div>

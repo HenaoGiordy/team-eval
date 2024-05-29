@@ -1,6 +1,6 @@
 <form class="d-flex mt-4 w-100 gap-2 justify-content-center" method="POST">
     {% csrf_token %}
-    <input class="form-control w-25" name="codigo_buscar" type="number" min="1" placeholder="Código" aria-label="Search" required>
+    <input class="form-control w-25" name="codigo_buscar" type="text" placeholder="Documento docente" aria-label="Search" required>
     <button class="btn-search" name="buscar" type="submit" style=" color: white">
         <i class="bi bi-search"></i>
     </button>

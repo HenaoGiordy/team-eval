@@ -238,7 +238,7 @@ def detalle_curso(request, curso_id):
                 
                 if not estudiante.user.is_active:
                     raise EstudianteInactivo("Estudiante no está activo")
-               
+
                 if estudiante.cursos.get(id = curso_id):
                     messages.warning(request, "El estudiante ya está en el curso")
                     estudiantes_lista_paginada = PerfilEstudiante.objects.filter(user=user)
@@ -250,11 +250,11 @@ def detalle_curso(request, curso_id):
                 
             except User.DoesNotExist:
                 # Manejar el caso donde el usuario no existe
-                messages.error(request, "No se encontró el estudiante")
+                messages.error(request, "No se encontró el estudiante con ese código")
                 estudiante = None
             except PerfilEstudiante.DoesNotExist:
                 # Manejar el caso donde el perfil del estudiante no existe
-                messages.error(request, "No se encontró el estudiante")
+                messages.error(request, "No se encontró el estudiante con ese código")
                 estudiante = None
             except Curso.DoesNotExist:
                     pass
@@ -308,8 +308,7 @@ def profesor_evaluacion_curso(request, curso_id):
             messages.success(request, "Evaluación creada exitosamente")
         
     except Exception as e:
-        messages.error(request, e)
-        
+        messages.error(request, "No se encontró una rúbrica con ese nombre")
     return render(request, 'profesor/evaluacion_curso.html', {"curso": curso, "evaluaciones" : evaluaciones})
 
 
@@ -385,6 +384,7 @@ def profesor_grupo(request, curso_id):
                 grupo = get_object_or_404(Grupo, id=grupo_id)
                 grupo.nombre = nombre_grupo_edit
                 grupo.proyecto_asignado = nombre_proyecto_edit
+                messages.success(request, "Grupo actualizado correctamente")
                 grupo.save()
                 
     except EmptyField as e:   
@@ -424,7 +424,7 @@ def administrador_gestion_de_docentes(request):
                     usuario = User.objects.get(username = request.POST.get("codigo_buscar"))
                     docentes_lista = PerfilProfesor.objects.filter(user = usuario)
                 except:
-                    messages.error(request, "No se encontró un docente con ese código")
+                    messages.error(request, "No se encontró un docente con ese documento")
             elif "guardar" in request.POST:
                 first_name = request.POST.get('nombres')
                 last_name = request.POST.get('apellidos')
@@ -435,6 +435,7 @@ def administrador_gestion_de_docentes(request):
                     raise ValidationError(username)
                 
                 user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name,password=username, email=email, role="PROFESOR")
+                messages.success(request, "Docente guardado correctamente")
                 return redirect(reverse('administrador_gestion_de_docentes'))
             
             elif "edit-user" in request.POST:
@@ -446,11 +447,11 @@ def administrador_gestion_de_docentes(request):
                 usuario.email = request.POST.get('edit-email')
                 usuario.is_active = request.POST.get('edit-estado')
                 usuario.save()
-                messages.success(request, "Usuario actualizado correctamente")
+                messages.success(request, "Docente actualizado correctamente")
                 return redirect(reverse('administrador_gestion_de_docentes'))
             
         except IntegrityError:
-            messages.error(request, "Ya existe un usuario con ese documento.")
+            messages.error(request, "Ya existe un docente con ese documento")
         
         except ValueError  as e:
             messages.error(request, f"Error: debe proporcionar un código")
@@ -548,7 +549,7 @@ def administrador_gestion_de_estudiantes(request):
                 return redirect(reverse('administrador_gestion_de_estudiantes'))
             
         except IntegrityError:
-            messages.error(request, "Ya existe un usuario con ese documento.")
+            messages.error(request, "Ya existe un estudiante con ese código.")
         
         except ValueError  as e:
             messages.error(request, f"Error: debe proporcionar un código")
@@ -594,7 +595,7 @@ def administrador_gestion_de_cursos(request):
                 
                 curso = Curso.objects.filter(codigo = request.POST.get("codigo_buscar"))
                 if not curso:
-                    raise ValueError("No se encontró el curso")
+                    raise ValueError("No se encontró un curso con ese código")
                 cursos_lista = curso
 
             
@@ -615,6 +616,7 @@ def administrador_gestion_de_cursos(request):
                 
                 fecha_actual = datetime.now()
                 curso = Curso.objects.create(profesor=docente, nombre=nombre, codigo=codigo, periodo = periodo, fecha_curso = fecha_actual)
+                messages.success(request, "Curso guardado correctamente")
                 return redirect(reverse("administrador_gestion_de_cursos"))
     
             if "edit-curso" in request.POST:
@@ -636,7 +638,7 @@ def administrador_gestion_de_cursos(request):
                 
                 curso.periodo = periodo
                 curso.save()
-                messages.success(request, "Curso modificado con éxito")
+                messages.success(request, "Curso actualizado correctamente")
                 
         except ProfesorInactivo as e:
             messages.error(request, e)

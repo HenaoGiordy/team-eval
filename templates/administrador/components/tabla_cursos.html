@@ -1,12 +1,12 @@
 {%if cursos_lista%}
 {%  include "administrador/components/search_cursos.html"%}
 <table class="table table-bordered  table-hover w-100 mt-2">
-  <h5 class="card-header mt-3">Lista de Cursos</h5>
+  <h5 class="card-header mt-3">Lista de cursos</h5>
   <thead>
     <tr>
-      <th scope="col" class="fw-bold">Nombre Curso</th>
-      <th scope="col" class="fw-bold">Código Curso</th>
-      <th scope="col" class="text-center fw-bold">Profesor</th>
+      <th scope="col" class="fw-bold">Nombre curso</th>
+      <th scope="col" class="fw-bold">Código curso</th>
+      <th scope="col" class="text-center fw-bold">Docente</th>
       <th scope="col" class="fw-bold">Periodo</th>
       <th scope="col" class="fw-bold">Editar</th>
     </tr>
@@ -16,7 +16,7 @@
     <tr>
       <th scope="row">{{ curso.nombre }}</th>
       <td>{{ curso.codigo }}</td>
-      <td class="text-center"><span class="fw-bold">Nombre: </span>{{ curso.profesor }} <span class="fw-bold"> Codigo:</span> {{ curso.profesor.user.username }}</td>
+      <td class="text-center"><span class="fw-bold">Nombre: </span>{{ curso.profesor }} <span class="fw-bold"> Código:</span> {{ curso.profesor.user.username }}</td>
       <td>{{ curso.get_periodo_academico }}</td>
       <td class="text-center" >
         <button type="button" class="btn btn-primary btn-edit-curso" data-id="{{ curso.id }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -66,13 +66,13 @@
           <label for="edit-nombre-curso" class="mt-2">Nombre curso</label>
           <input type="text" class="form-control mt-n2" name="edit-nombre-curso" id="edit-nombre-curso" placeholder="Nombre curso" required>
           <i class="bi bi-person-lines-fill ml-1"></i>
-          <label for="edit-codigo-docente" class="mt-2">Código Docente</label>
+          <label for="edit-codigo-docente" class="mt-2">Código docente</label>
           <input type="number" class="form-control mt-n2" id="edit-codigo-docente" name="edit-codigo-docente" placeholder="Código docente" required>
           <i class="bi bi-calendar3 ml-1"></i>
-          <label for="edit-periodo-curso" class="mt-2">Periodo Académico</label>
+          <label for="edit-periodo-curso" class="mt-2">Periodo académico</label>
           <select class="form-control mt-n2" name="edit-periodo-curso" id="edit-periodo-curso">
-              <option value="I">I - Primer Semestre</option>
-              <option value="II">II - Segundo Semestre</option>
+              <option value="I">I - Primer semestre</option>
+              <option value="II">II - Segundo semestre</option>
           </select>
       </div>
       <div class="modal-footer">

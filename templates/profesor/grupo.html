@@ -1,49 +1,52 @@
 {% extends "profesor/mainprofesor.html" %}
 {%block content%}
 <div class="container__admin">
+    <!--Alertas / notificaciones-->
     {% if messages %}
         {% for message in messages %}
-            <div class="alert  {{ message.tags }}  position-absolute alert-docenter"  role="alert">
+            <div class="alert  {{ message.tags }} position-absolute mt-5" style="z-index: 1" role="alert">
                 <p>{{ message }}</p>
             </div>
         {% endfor %}
     {% endif %}
 
-    <div class="col-4 contenedor-back-bottom">
-        <a href="{% url 'detalle_curso' curso_actual%}">
-            <span class="material-icons btn btn-primary back-bottom">arrow_back</span>
-        </a>
+    <!--Formulario crear grupos-->
+    <div class="container">
+        <div class="header-row">
+            <a class="btn btn-secondary btn-volver mt-4" style="color: #0D6EFD; background-color: #d9d9d9; border: none;" href="{% url 'detalle_curso' curso_actual%}">
+                <b>Volver</b>
+                <i class="bi bi-arrow-return-left"></i>
+            </a>
+            <h2 class="titulos"><b>Gestión de grupos</b></h2>
+        </div>
     </div>
-    <h2 class="titulos"><b>Gestión de Grupos</b></h2>
-    
-    <div class="card-rubrica mt-2 pb-4">
+
+    <div class="card-form mt-2 pb-2">
         <h5 class="card-header">Creación de un grupo</h5>
         <div class="card-body">
             <form method="POST">
                 {% csrf_token %}
+                <!-- Nombres del grupo y proyecto -->
                 <div class="form-row justify-content">
                     <div class="form-group col mt-2">
-                        <i class="bi bi-pencil mr-2 ml-2"></i>
-                        <label for="nombre-rubrica">Nombre del grupo</label>
+                        <i class="bi bi-pencil"></i>
+                        <label for="nombre-grupo">Nombre del grupo</label>
                     </div>
-                    <div class="form-row col-lg-9 mr-2">
-                        <input type="text" class="form-control" name="nombre-grupo" id="nombre-grupo" placeholder="Nombre del grupo" >
-                        <p id="mensaje"></p>
+                    <div class="form-row col-lg-8">
+                        <input type="text" class="form-control" name="nombre-grupo" id="nombre-grupo" placeholder="Nombre del grupo" required>
                     </div>
-                   
+                </div>
+                <div class="form-row justify-content">
+                    <div class="form-group col mt-2">
+                        <i class="bi bi-pencil"></i>
+                        <label for="nombre-proyecto">Proyecto asignado</label>
+                    </div>
+                    <div class="form-row col-lg-8">
+                        <input type="text" class="form-control" name="nombre-proyecto" id="nombre-proyecto" placeholder="Nombre del proyecto" required>
+                    </div>
                 </div>
 
-                <div class="form-row justify-content">
-                    <div class="form-group col mt-2">
-                        <i class="bi bi-pencil mr-2  ml-2"></i>
-                        <label for="nombre-rubrica">Proyecto</label>
-                    </div>
-                    <div class="form-row col-lg-9 mr-4">
-                        <input type="text" class="form-control" name="nombre-proyecto" id="nombre-proyecto" placeholder="Nombre del proyecto" >
-                        <p id="mensaje"></p>
-                    </div>
-                </div>
-                <div class="botones justify-content-center w-100" >
+                <div class="botones justify-content-center w-100">
                     <button type="submit" class="btn btn-primary" onclick="limpiarCampos()" name="guardar" id="submit-btn-rubrica" style="border: none;">
                         <b>Guardar</b>
                         <i class="bi bi-floppy"></i>
@@ -56,11 +59,10 @@
             </form>
         </div>
     </div>
-    <div class="w-75 mt-5">
+    <div class="w-75 mt-2">
         {% include "profesor/components/table_grupos.html" %}
     </div>
 </div>
-   
 
 {%endblock%}
 

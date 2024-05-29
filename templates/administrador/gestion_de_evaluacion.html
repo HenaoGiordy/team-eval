@@ -1,119 +1,117 @@
 {% extends 'administrador/administrador.html'%}
 {%load static%}
 {% block content %}
+
+<script>
+    document.getElementById('submit-btn-rubrica').addEventListener('click', function(event) {
+        var nombreRubrica = document.getElementById('nombre-rubrica');
+        var inputs = document.querySelectorAll('input[name="peso_criterio[]"]');
+        var total = 0;
+        
+
+        if (nombreRubrica.value.trim() === '') {
+            event.preventDefault(); // Evitar que se envíe el formulario
+            mostrarMensaje('El nombre de la rúbrica no puede estar vacío.');
+            return;
+        }
+    
+        // Sumar todos los pesos
+        for (var i = 0; i < inputs.length; i++) {
+            total += parseFloat(inputs[i].value);
+        }
+
+        // Verificar si la suma es igual a 1
+        if (total !== 1) {
+            event.preventDefault(); // Evitar que se envíe el formulario
+            mostrarMensaje("La suma de los pesos debe ser igual a 1");
+        }
+    });
+    function mostrarMensaje(mensaje) {
+        // Crear el elemento del mensaje modal si no existe
+        var alertDiv = document.createElement('div');
+        alertDiv.className = 'alert alert-danger fixed-top fade show';
+        alertDiv.style.top = "50%";
+        alertDiv.style.left = "25%";
+        alertDiv.style.width = "50%";
+        
+        
+        alertDiv.setAttribute('role', 'alert');
+        alertDiv.innerHTML = `${mensaje}`;
+
+        // Remover cualquier alerta existente antes de agregar la nueva
+        var existingAlert = document.querySelector('.alert');
+        if (existingAlert) {
+            existingAlert.remove();
+        }
+
+        // Agregar el elemento de alerta al cuerpo del documento
+        document.body.appendChild(alertDiv);
+
+        // Hacer que la alerta se desvanezca después de 5 segundos
+        setTimeout(function() {
+            if (alertDiv.classList.contains('show')) {
+                alertDiv.classList.remove('show');
+                alertDiv.classList.add('fade');
+                setTimeout(function() {
+                    alertDiv.remove();
+                }, 500); // Tiempo para completar la animación de desvanecimiento
+            }
+        }, 3000); // Esperar 5 segundos antes de iniciar el desvanecimiento
+    }
+</script>
+
 <div class="container__admin">
     <!--Alertas / notificaciones-->
     {% if messages %}
-            {% for message in messages %}
-            <div class="alert  {{ message.tags }} position-absolute"  role="alert">
-                <p>{{ message }}</p>
-            </div>
-            {% endfor %}
+        {% for message in messages %}
+        <div class="alert  {{ message.tags }} position-absolute" role="alert">
+            <p>{{ message }}</p>
+        </div>
+        {% endfor %}
     {% endif %}
     <!--Formulario-->
     <h2 class="titulos"><b>Gestión de evaluación</b></h2>
-    <div class="card-rubrica mt-2 pb-4">
+    <div class="card-rubrica mt-2">
         <h5 class="card-header">Creación de una rúbrica</h5>
         <div class="card-body">
             <form method="POST">
                 {% csrf_token %} 
                 <div class="form-row justify-content">
                     <div class="form-group col mt-2">
-                        <i class="bi bi-pencil mr-2 ml-2"></i>
-                        <label for="nombre-rubrica">Nombre de la rúbrica</label>
+                        <i class="bi bi-pencil mr-1"></i>
+                        <label for="nombre-rubrica">Nombre rúbrica</label>
                     </div>
-                    <div class="form-row col-lg-9 mr-2">
+                    <div class="form-row col-lg-10">
                         <input type="text" class="form-control" name="nombre_rubrica" id="nombre-rubrica" placeholder="Nombre rúbrica" required>
                         <p id="mensaje"></p>
                     </div>
-                <div class="d-flex w-100 gap-3 mt-1">
-                    <div class="w-50 form-group">
-                        <h4 class="text-center">Lista criterios</h4>
-                        {% include "administrador/components/lst_criterios.html"%}
+                    <div class="d-flex w-100 gap-3 mt-1">
+                        <div class="w-50 form-group">
+                            <h4 class="text-center">Lista criterios</h4>
+                            {% include "administrador/components/lst_criterios.html"%}
+                        </div>
+                        <div class="w-50">
+                            <h4 class="text-center">Lista escalas</h4>
+                            {% include "administrador/components/lst_escalas.html"%}
+                        </div>
                     </div>
-                    <div class="w-50">
-                        <h4 class="text-center">Lista escalas</h4>
-                        {% include "administrador/components/lst_escalas.html"%}
+                    <div class="botones w-100 gap-2 mt-n3">
+                        <button type="submit" class="btn btn-primary" name="guardar" id="submit-btn-rubrica" style="border: none;">
+                            <b>Guardar</b>
+                            <i class="bi bi-floppy"></i>
+                        </button>
+                        <button type="reset" class="btn btn-secondary" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
+                            <b>Limpiar</b>
+                            <i class="bi bi-eraser"></i>
+                        </button>
                     </div>
-                </div>
-                            <div class="botones justify-content-center w-100" >
-                                <button type="submit" class="btn btn-primary" name="guardar" id="submit-btn-rubrica" style="border: none;">
-                                    <b>Guardar</b>
-                                    <i class="bi bi-floppy"></i>
-                                </button>
-                                <button type="reset" class="btn btn-secondary ml-2" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
-                                    <b>Limpiar</b>
-                                    <i class="bi bi-eraser"></i>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+                </div>    
+            </form>
+        </div>
+    </div>
     <div class="w-75">
         {%include "administrador/components/table_rubricas.html"%}
     </div>
 </div>
 
-    
-    <script>
-        document.getElementById('submit-btn-rubrica').addEventListener('click', function(event) {
-            var nombreRubrica = document.getElementById('nombre-rubrica');
-            var inputs = document.querySelectorAll('input[name="peso_criterio[]"]');
-            var total = 0;
-            
-
-            if (nombreRubrica.value.trim() === '') {
-                event.preventDefault(); // Evitar que se envíe el formulario
-                mostrarMensaje('El nombre de la rúbrica no puede estar vacío.');
-                return;
-            }
-
-            // Sumar todos los pesos
-            for (var i = 0; i < inputs.length; i++) {
-                total += parseFloat(inputs[i].value);
-            }
-    
-            // Verificar si la suma es igual a 1
-            if (total !== 1) {
-                event.preventDefault(); // Evitar que se envíe el formulario
-                mostrarMensaje("La suma de los pesos debe ser igual a 1");
-            }
-        });
-        function mostrarMensaje(mensaje) {
-            // Crear el elemento del mensaje modal si no existe
-            var alertDiv = document.createElement('div');
-            alertDiv.className = 'alert alert-danger fixed-top fade show';
-            alertDiv.style.top = "50%";
-            alertDiv.style.left = "25%";
-            alertDiv.style.width = "50%";
-            
-            
-            alertDiv.setAttribute('role', 'alert');
-            alertDiv.innerHTML = `${mensaje}`;
-
-            // Remover cualquier alerta existente antes de agregar la nueva
-            var existingAlert = document.querySelector('.alert');
-            if (existingAlert) {
-                existingAlert.remove();
-            }
-
-            // Agregar el elemento de alerta al cuerpo del documento
-            document.body.appendChild(alertDiv);
-
-            // Hacer que la alerta se desvanezca después de 5 segundos
-            setTimeout(function() {
-                if (alertDiv.classList.contains('show')) {
-                    alertDiv.classList.remove('show');
-                    alertDiv.classList.add('fade');
-                    setTimeout(function() {
-                        alertDiv.remove();
-                    }, 500); // Tiempo para completar la animación de desvanecimiento
-                }
-            }, 3000); // Esperar 5 segundos antes de iniciar el desvanecimiento
-        }
-        
-        
-    </script>
-    
 {% endblock %}

@@ -2,45 +2,55 @@
 {% load static %}
 {% block content %}
 <div class="container__admin">
+    <!--Alertas / notificaciones-->
     {% if messages %}
         {% for message in messages %}
-            <div class="alert  {{ message.tags }}  position-absolute alert-docenter"  role="alert">
+            <div class="alert  {{ message.tags }}  position-absolute mt-5" style="z-index: 1" role="alert">
                 <p>{{ message }}</p>
             </div>
         {% endfor %}
     {% endif %}
-    <h2 class="titulos"><b>Gestión de evaluación</b></h2>
-    <div class="col-4 contenedor-back-bottom">
-        <a href="{% url 'detalle_curso' curso.id %}">
-            <span class="material-icons btn btn-primary back-bottom">arrow_back</span>
-        </a>
+
+    <!--Formulario gestión de evaluación-->
+    <div class="container">
+        <div class="header-row">
+            <a class="btn btn-secondary btn-volver mt-4" style="color: #0D6EFD; background-color: #d9d9d9; border: none;" href="{% url 'detalle_curso' curso.id %}">
+                <b>Volver</b>
+                <i class="bi bi-arrow-return-left"></i>
+            </a>
+            <h2 class="titulos"><b>Gestión de evaluación</b></h2>
+        </div>
     </div>
-    <div class="card-form">
+
+    <div class="card-form mt-2">
         <h5 class="card-header">Límite de la evaluación</h5>
         <div class="card-body">
             <form method="POST">
                 {% csrf_token %} 
                 <!-- Campo de búsqueda y resultados -->
-                <div class="form-row justify-content-center mt-1 position-relative">
-                    <div class="form-group col-md-5 mx-3">
-                        <i class="bi bi-calendar4-week"></i>
-                        <label for="busqueda">Rúbrica</label>
-                        <input type="text" name="rubrica" id="busqueda" class="form-control" autocomplete="off">
-                        <div id="resultados" class="list-group position-absolute w-100" style="max-height: 200px; overflow-y: auto; z-index: 1000;"></div>
+                <div class="form-row justify-content-center">
+                    <div class="form-group mt-1">
+                        <i class="bi bi-search"></i>
+                        <label for="busqueda">Buscar rúbrica</label>
+                    </div>
+                    <div class="form-row col-lg-7 ml-2">
+                        <input type="text" name="rubrica" id="busqueda" class="form-control" autocomplete="off" placeholder="Nombre rúbrica" required>
+                        <div id="resultados" class="list-group position-absolute col cuadro-resultados"></div>
                         <input type="hidden" name="rubrica_id" id="rubrica-id">
                     </div>
                 </div>
+
                 <!-- Fecha de inicio y fin -->
-                <div class="form-row justify-content-center mt-1">
-                    <div class="form-group col-md-5 mx-3">
+                <div class="form-row justify-content-center">
+                    <div class="form-group col-md-5 mx-2">
                         <i class="bi bi-calendar4-week"></i>
                         <label for="fecha-inicio">Fecha inicio</label>
-                        <input type="date" name="fecha-inicio" class="form-control" id="fecha-inicio">
+                        <input type="date" name="fecha-inicio" class="form-control" id="fecha-inicio" required>
                     </div>
-                    <div class="form-group col-md-5 mx-3">
+                    <div class="form-group col-md-5 mx-2">
                         <i class="bi bi-calendar4-week"></i>
                         <label for="fecha-fin">Fecha fin</label>
-                        <input type="date" name="fecha-fin" class="form-control" id="fecha-fin">
+                        <input type="date" name="fecha-fin" class="form-control" id="fecha-fin" required>
                     </div>
                 </div>
                 <!-- Botones de guardar y limpiar -->
@@ -57,18 +67,16 @@
             </form>
         </div>
     </div>
-
     <!-- Tabla de evaluaciones -->
-    <div class="d-flex justify-content-center align-items-center mt-3">
-        <div style="box-shadow: none; border: 1px solid #dee2e6; border-radius: 6px">
-            {% include "profesor/components/tabla_evaluaciones.html" %}
-        </div>
+    <div class="w-75 mt-3">
+        {% include "profesor/components/tabla_evaluaciones.html" %}
     </div>
 
     <div class="w-75">
         {% include "profesor/components/table_rubricas.html" %}
     </div>
 </div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var busqueda = document.getElementById('busqueda');

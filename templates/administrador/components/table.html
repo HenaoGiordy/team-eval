@@ -19,7 +19,7 @@
       <td>{{ docente.user.first_name }}</td>
       <td>{{ docente.user.email }}</td>
       <td class="text-center"> {%if docente.user.is_active%}<i class="bi bi-check-circle" style="color:green;"></i> {%else%} <i class="bi bi-x-lg" style="color:red;"></i> {%endif%}</td>
-      <td class="text-center" >
+      <td class="text-center">
         <button type="button" class="btn btn-primary btn-edit" data-id="{{ docente.user.id }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
           <i class="bi bi-pen"></i>
         </button>
@@ -68,10 +68,10 @@
           <input type="text" name="edit-apellidos" id="edit-apellidos" class="form-control mt-n2" placeholder="Apellidos" required>
           <i class="bi bi-person-lines-fill ml-1"></i>
           <label for="edit-documento" class="mt-2">Documento</label> 
-          <input type="number" name="edit-documento" id="edit-documento" class="form-control mt-n2" placeholder="No. Documento" min="1" required>
+          <input type="text" name="edit-documento" id="edit-documento" class="form-control mt-n2" placeholder="No. Documento" required>
           <i class="bi bi-envelope-at ml-1"></i>
           <label for="edit-email" class="mt-2">Correo</label> 
-          <input type="email" name="edit-email" id="edit-email" class="form-control mt-n2" placeholder="email"  required>
+          <input type="email" name="edit-email" id="edit-email" class="form-control mt-n2" placeholder="email" required>
           <i class="bi bi-person-circle ml-1"></i>
           <label for="estado-curso" class="mt-2">Estado Docente</label>
           <select class="form-control mt-n2" name="edit-estado" id="edit-estado">

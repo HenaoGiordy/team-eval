@@ -1,10 +1,10 @@
 {%if estudiantes_lista%}
 {%  include "administrador/components/search_estudiantes.html"%}
-<table class="table table-bordered  table-hover w-100 mt-2">
-  <h5 class="card-header mt-3">Lista de Estudiantes</h5>
+<table class="table table-bordered table-hover w-100 mt-2">
+  <h5 class="card-header mt-3">Lista de estudiantes</h5>
   <thead>
     <tr>
-      <th scope="col" class="fw-bold">Código Estudiante</th>
+      <th scope="col" class="fw-bold">Código estudiante</th>
       <th scope="col" class="fw-bold">Nombre</th>
       <th scope="col" class="fw-bold">Correo</th>
       <th scope="col" class="text-center fw-bold">Activo</th>
@@ -16,7 +16,7 @@
     {%for estudiante in estudiantes_lista%}
     <tr>
       <th scope="row">{{ estudiante.user.username }}</th>
-      <td>{{ estudiante.user.first_name }}</td>
+      <td>{{ estudiante.user.first_name }} {{estudiante.user.last_name}}</td>
       <td>{{ estudiante.user.email }}</td>
       <td class="text-center"> {%if estudiante.user.is_active%}<i class="bi bi-check-circle" style="color:green;"></i> {%else%} <i class="bi bi-x-lg" style="color:red;"></i> {%endif%}</td>
       <td class="text-center" >
@@ -67,12 +67,12 @@
           <input type="text" name="edit-apellidos-estudiante" id="edit-apellidos-estudiante" class="form-control mt-n2" placeholder="Apellidos" required>
           <i class="bi bi-person-lines-fill ml-1"></i>
           <label for="edit-documento-estudiante" class="mt-2">Documento</label> 
-          <input type="number" name="edit-documento-estudiante" id="edit-documento-estudiante" class="form-control mt-n2" placeholder="Código" min="1" required>
+          <input type="text" name="edit-documento-estudiante" id="edit-documento-estudiante" class="form-control mt-n2" placeholder="Código" required>
           <i class="bi bi-envelope-at ml-1"></i>
           <label for="edit-email-estudiante" class="mt-2">Correo</label> 
           <input type="email" name="edit-email-estudiante" id="edit-email-estudiante" class="form-control mt-n2" placeholder="email"  required>
           <i class="bi bi-person-circle ml-1"></i>
-          <label for="edit-estado-estudiante" class="mt-2">Estado Estudiante</label>
+          <label for="edit-estado-estudiante" class="mt-2">Estado estudiante</label>
           <select class="form-control mt-n2" name="edit-estado-estudiante" id="edit-estado-estudiante">
             <option value="True">Activo</option>
             <option value="False">Inactivo</option>

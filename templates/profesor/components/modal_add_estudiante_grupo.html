@@ -1,28 +1,28 @@
 <div class="modal fade" id="add-estudiantes-{{grupo.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content ">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Añadir estudiante</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form method="POST" class="row flex-column align-items-center">
-                {% csrf_token %} 
-                <div class="d-flex gap-3 mt-3 col-11">
-                    <input type="number" id="codigo_estudiante" name="codigo_estudiante" class="form-control" placeholder="Código del estudiante" required>
-                    <button type="submit" name="add-estudiante" value="{{ grupo.id }}" class="btn btn-primary"><i class="bi bi-plus"></i></button> 
-                </div>
-            </form>
-            
-            {% include "profesor/components/tabla_estudiantes_grupo.html" %}
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        </div>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content ">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel"><b>Añadir estudiante</b></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form method="POST" class="row flex-column align-items-center">
+              {% csrf_token %} 
+              <div class="d-flex gap-3 mt-1 col-12">
+                  <input type="text" id="codigo_estudiante" name="codigo_estudiante" class="form-control" placeholder="Código del estudiante" required>
+                  <button type="submit" name="add-estudiante" value="{{ grupo.id }}" class="btn btn-primary"><i class="bi bi-plus-circle"></i></button> 
+              </div>
+          </form>
+          {% include "profesor/components/tabla_estudiantes_grupo.html" %}
+      </div>
+      
+      <div class="modal-footer mt-n4">
+        <button type="button" class="btn btn-secondary mt-n2" data-bs-dismiss="modal" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
+          <b>Cancelar</b>
+          <i class="bi bi-x-lg"></i>
+        </button>
       </div>
     </div>
   </div>
-<script>
-  
-</script>
+</div>
+

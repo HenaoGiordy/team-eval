@@ -1,11 +1,12 @@
-<table class="table table-bordered  table-hover w-100">
+<table class="table table-bordered table-hover w-100 mt-2">
+    <h5 class="card-header mt-3">Lista de grupos</h5>
     <thead>
         <tr>
             <th scope="col" class="fw-bold">Nombre</th>
-            <th scope="col" class="fw-bold">Proyecto Asignado</th>
-            <th scope="col" class="fw-bold text-center">No. Integrandes</th>
+            <th scope="col" class="fw-bold">Proyecto asignado</th>
+            <th scope="col" class="fw-bold text-center">No. Integrantes</th>
             <th scope="col" class="fw-bold text-center">Acciones</th>
-          </tr>
+        </tr>
     </thead>
     <tbody id="estudiantes-grupo">
         {% for grupo in grupos%}
@@ -15,16 +16,15 @@
             <td class="text-center">{{ grupo.estudiantes.count }}</td>
             <td class="text-center d-flex justify-content-center gap-2">
                 <button type="button" class="btn btn-primary" name="edit-rubrica"  data-bs-toggle="modal" data-bs-target="#edit-grupo-{{grupo.id}}" >
-                <i class="bi bi-pen"></i>
+                    <i class="bi bi-pen"></i>
                 </button>
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#add-estudiantes-{{grupo.id}}">
-                    <i class="bi bi-plus"></i>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-estudiantes-{{grupo.id}}">
+                    <i class="bi bi-plus-circle"></i>
                 </button>
                 {%include "profesor/components/modal_estudiante_grupo.html"%}
                 {%include "profesor/components/modal_add_estudiante_grupo.html"%}
             </td>
         </tr>
-        
         {%endfor%}
     </tbody>
 </table>

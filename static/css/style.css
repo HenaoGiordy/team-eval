@@ -7,15 +7,6 @@
     box-sizing: border-box;
 }
 
-.fondo {
-    background-repeat: no-repeat;
-    background-image: url('/static/img/logoTeamEval.png');
-    background-color: rgba(255, 255, 255, 0.6);
-    background-blend-mode: overlay;
-    background-size: 30%;
-    background-position: 35em 9em;
-}
-
 .titulos {
     padding-top: 2%;
 }
@@ -28,7 +19,6 @@
     justify-content: center;
     align-items: center;
 }
-
 
 /*Caja de formularios*/
 
@@ -43,9 +33,7 @@
 
 .botones {
     display: flex;
-    justify-content: flex-end;
-    padding-top: 0.5%;
-    margin-right: 6%;
+    justify-content: center;
 }
 
 /* FIN CSS GENERALES */
@@ -118,7 +106,7 @@ input:focus~label {
     background-color: #ffffff;
     border: 1px solid #ced4da;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 900; /* Ajusta el valor para que esté por encima de otros elementos */
+    z-index: 900; 
     width: 100%;
 }
 
@@ -136,7 +124,6 @@ input:focus~label {
     box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.20);
     background-color: #EAEAEA;
 }
-
 
 .sidebar-elementos {
     display: flex;
@@ -190,7 +177,7 @@ input:focus~label {
 
 /* END CSS CORRESPONDIENTE A LAS VISTAS DE ESTUDIANTE */
 
-/* CSS PARA LAS CARD DE LA LISTA DE CURSOS */
+/* CSS PARA LAS CARD DE LA LISTA DE CURSOS (DOCENTE)*/
 
 .container--cursos {
     margin-left: 300px;
@@ -198,7 +185,7 @@ input:focus~label {
     border-radius: 10px;
     padding: 20px 0px;
     min-height: 500px;
-    box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.34);
+    /*box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.34);*/
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -212,13 +199,14 @@ input:focus~label {
     font-weight: bold;
 }
 
+
 .card {
     margin: 2% 2%;
     width: 250px;
     box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.34);
-    height: 250px;
-    align-items: center;
+    height: 260px;
 }
+
 
 .card-body {
     display: flex;
@@ -359,3 +347,41 @@ input[type=number] {
 
 /* END CSS GESTIÓN-DE-EVALUACION (ADMIN)*/
 
+/* INICIO CSS INFORMACIÓN CURSO (DOCENTE) */
+
+.header-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+.header-row .btn-volver {
+    position: absolute;
+    left: 15%;
+}
+
+@media (max-width: 1200px) {
+    .header-row {
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+    .header-row .btn-volver {
+        position: static;
+        margin-bottom: 10px;
+    }
+}
+
+/* END CSS INFORMACIÓN CURSO (DOCENTE) */
+
+/* INICIO CSS GESTION DE EVALUACION (DOCENTE)*/
+
+.cuadro-resultados{
+    max-height: 200px; 
+    overflow-y: auto; 
+    z-index: 1; 
+    left:0; 
+    top: 75%;
+
+}
+
+/* END CSS GESTION DE EVALUACION (DOCENTE)*/

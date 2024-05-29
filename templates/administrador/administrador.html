@@ -15,7 +15,7 @@
 
     <title>Team Eval</title>
 </head>
-<body class="bg-ligth position-relative fondo">
+<body class=" position-relative">
     {% if user.is_authenticated and user.role == "ADMIN" %}
     {% include "administrador/components/sidebar.html" %}
     {% block content %}
