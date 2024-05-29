@@ -1,18 +1,17 @@
 from datetime import datetime
 from decimal import InvalidOperation
-from django import forms
 from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
-from django.db.models import ProtectedError
+from django.db.models import ProtectedError, Sum, Count, FloatField, F,ExpressionWrapper
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from TeamEval import settings
-from app.exeptions import AlreadyExist, EmptyField, EstudianteInactivo, PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso
+from app.exeptions import AlreadyExist, EmptyField, EstudianteInactivo, NumberError, PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso
 from app.forms import MinimalPasswordChangeForm, UsernameForm
-from app.models import  Calificacion, Criterio, Evaluacion, Rubrica, User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
+from app.models import  Calificacion, Criterio, Evaluacion, Resultado, Retroalimentracion, Rubrica, User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.utils.http import urlsafe_base64_decode
@@ -140,7 +139,40 @@ def estudiante(request):
 #Retroalimentación estudiante
 @login_required
 def estudiante_retroalimentacion(request):
-    return render(request, 'estudiante/retroalimentacion.html')
+    usuario = User.objects.get(username = request.user.username)
+    perfil_estudiante = PerfilEstudiante.objects.get(user = usuario)
+    evaluaciones = Evaluacion.objects.filter(resultado__evaluado=perfil_estudiante).distinct()
+    
+    
+    
+    return render(request, 'estudiante/retroalimentacion.html', {"evaluaciones": evaluaciones})
+
+@login_required
+def estudiante_ver_resultado(request, evaluacionid):
+    usuario = User.objects.get(username = request.user.username)
+    perfil_estudiante = PerfilEstudiante.objects.get(user = usuario)
+    evaluacion = Evaluacion.objects.get(id = evaluacionid)
+    
+    #NO TOCAR ESTA CONSULTA
+    resultados = Resultado.objects.filter(
+        evaluado=perfil_estudiante,
+        evaluacion=evaluacion
+    ).values(
+        'criterio_evaluado__descripcion',
+        'criterio_evaluado__peso'
+    ).annotate(
+        promedio_notas=Sum('nota__calificacion', output_field=FloatField()) / Count('nota__calificacion', output_field=FloatField())
+    ).annotate(
+        valor_ponderado=ExpressionWrapper(F('promedio_notas') * F('criterio_evaluado__peso'), output_field=FloatField())
+    )
+        
+    nota_final = resultados.aggregate(nota_final=Sum('valor_ponderado'))['nota_final']
+    
+    comentarios = Retroalimentracion.objects.filter(estudiante_retroalimentacion=perfil_estudiante, evaluacion=evaluacion)
+    
+    return render(request, "estudiante/ver_resultados.html", {"resultados" : resultados, "evaluacion": evaluacion, "nota_final": nota_final, "comentarios": comentarios})
+
+
 
 #Vista curso estudiante
 @login_required
@@ -154,41 +186,95 @@ def estudiante_curso(request, cursoid):
     try:
         grupo = perfil.grupo_set.get(curso = cursoid)
         estudiantes_grupo = grupo.estudiantes.all().exclude(user = perfil.user)
+        #Evaluaciones
+        evaluaciones = grupo.curso.evaluacion_set.all()
     except:
         messages.error(request, "Aún no estás en un grupo para este curso")
         return redirect('/estudiante/')
     
     
     
-    return render(request, 'estudiante/curso.html', {'curso': curso, 'grupo': grupo, 'estudiantes': estudiantes_grupo})
+    
+    
+    
+    return render(request, 'estudiante/curso.html', {'curso': curso, 'grupo': grupo, 'estudiantes': estudiantes_grupo, "evaluaciones" : evaluaciones})
 
 
 @login_required
-def evaluar(request, estudianteid, cursoid, grupoid):
-    
+def evaluar(request, evaluacionid ,grupoid):
+    #Evaluador
     usuario = User.objects.get(username = request.user.username)
-    perfil = PerfilEstudiante.objects.get(user = usuario)
+    perfil_evaluador = PerfilEstudiante.objects.get(user = usuario)
     
-    # evaluacion = Evaluacion.objects.get(curso = cursoid)
-    #Obtengo el curso
-    curso = perfil.cursos.get(id = cursoid)
-    #Criterios y escalas de la evaluación del curso
-    # criterios = evaluacion.rubrica.criterio_set.all()
-    # escalaCalificacion = evaluacion.rubrica.calificacion_set.all()
-    #Obtengo el grupo del curso al que pertenece
-    grupo = perfil.grupo_set.get(curso = cursoid)
-    #Estudiantes del curso
-    estudiantes_curso = grupo.estudiantes.all().exclude(user = usuario)
-
-    return render(request, 'estudiante/evaluar.html', {'curso': curso, 'estudiantes_curso': estudiantes_curso,  'grupo': grupo }  )
-
-@login_required
-def realizar_evaluacion(request, estudianteid, grupoid):
-    
-    estudiante_evaluado = PerfilEstudiante.objects.get(id = estudianteid)
+    #Rúbrica
+    evaluacion = Evaluacion.objects.get(id = evaluacionid)
+    rubrica = evaluacion.rubrica
+    #Criterios
+    criterios = rubrica.criterio_set.all()
+    #Escala
+    rubrica = rubrica.calificacion_set.all()
+    #Grupo
     grupo = Grupo.objects.get(id = grupoid)
     
-    return render(request, "estudiante/realizar_evaluacion.html", {"estudiante_evaluado" : estudiante_evaluado ,"grupo": grupo})
+    #Curso
+    curso = grupo.curso
+
+    #Estudiantes del grupo
+    estudiantes = grupo.estudiantes.all().exclude(id=perfil_evaluador.id)
+    
+    
+    try:
+        if request.method == "POST":
+            calificaciones = request.POST.getlist("calificacion[]")
+            criterios_evaluados = request.POST.getlist("criterios[]")
+            retro_alimentacion = request.POST.get("retroalimentacion")
+        
+            evaluadoid = request.POST.get("evaluado")
+            
+            if not evaluadoid:
+                raise EmptyField("Ingrese un estudiante")
+            
+            
+            if not evaluadoid.isdigit():
+                raise NumberError("Selecciona un estudiante") 
+            
+            try:
+                evaluado = PerfilEstudiante.objects.get(id = evaluadoid)
+            except PerfilEstudiante.DoesNotExist:
+                messages.error(request, "El estudiante que intentas evaluar, por alguna razón no aparece.")
+            
+            for califica in calificaciones:
+                if califica == "Seleccionar una Calificación":
+                    raise EmptyField("Por favor no dejes calificacion sin asignar")
+                if not califica.isdigit():
+                    raise EmptyField("No puedes introducir strings al valor de la calificación ni dejarlo vacío")
+            
+            for calificacionid, criterioid in zip(calificaciones, criterios_evaluados):
+                
+                calificacion = Calificacion.objects.get(id = calificacionid)
+                criterio = Criterio.objects.get(id=criterioid)
+                Resultado.objects.create(nota = calificacion, criterio_evaluado = criterio, evaluacion = evaluacion, evaluado =evaluado, evaluador=perfil_evaluador )
+            Retroalimentracion.objects.create(estudiante_retroalimentacion= evaluado, retroalimentacion = retro_alimentacion, evaluacion= evaluacion)
+            grupo.has_evaluated = True
+            evaluacion.evaluados += 1
+            evaluacion.save()
+            grupo.save()
+            messages.success(request,"Evaluación enviada")
+            
+    except IntegrityError:
+        messages.error(request, "Ya has evaluado a este estudiante")
+    except EmptyField as e:
+        messages.error(request, e)
+    except NumberError as e:
+        messages.error(request, e)
+        
+    return render(request, 'estudiante/evaluar.html', { "evaluador" : perfil_evaluador,
+                                                       "curso":curso, "estudiantes":estudiantes, 
+                                                       "evaluacion": evaluacion, 
+                                                       "criterios": criterios,
+                                                       "rubrica": rubrica, "grupo" : grupo})
+
+
 
 #Vistas del profesor
 
@@ -343,11 +429,11 @@ def profesor_grupo(request, curso_id):
                 try:
                     user = User.objects.get(username=codigo)
                     estudiante = PerfilEstudiante.objects.get(user=user, cursos= curso)
-                    grupo = Grupo.objects.get(id = grupo_id)
                     
-                    if grupo.estudiantes.filter(id=estudiante.id).exists():
+                    if Grupo.objects.filter(curso=curso, estudiantes=estudiante).exists():
                         raise AlreadyExist("El estudiante ya está en el grupo")
                     
+                    grupo = Grupo.objects.get(id = grupo_id)
                     grupo.estudiantes.add(estudiante)
                     messages.success(request, "Estudiante añadido con éxito")
                     
@@ -386,6 +472,35 @@ def profesor_grupo(request, curso_id):
                 grupo.proyecto_asignado = nombre_proyecto_edit
                 messages.success(request, "Grupo actualizado correctamente")
                 grupo.save()
+                
+            if "eliminar-estudiante-grupo" in request.POST:
+                estudiante_codigo = request.POST.get("codigo_estudiante")
+                grupo_id = request.POST.get("eliminar-estudiante-grupo")
+                if estudiante_codigo is None:
+                    raise EmptyField("Estudiante no especificado")
+                
+                estudiante = get_object_or_404(PerfilEstudiante, user__username=estudiante_codigo)
+                grupo = get_object_or_404(Grupo, id=grupo_id)
+                
+                grupo.estudiantes.remove(estudiante)
+                messages.success(request, "Estudiante eliminado del grupo exitosamente.")
+                
+            if "eliminar-grupo" in request.POST:
+                grupo_id = request.POST.get("eliminar-grupo")
+                
+                if not grupo_id:
+                    raise EmptyField("No se especificó el grupo.")
+                try:
+                    grupo = Grupo.objects.get(id = grupo_id)
+                    if not grupo.estudiantes.exists():
+                        grupo.delete()
+                        messages.warning(request, "Se eliminó el grupo satisfactoriamente.")
+                    else:
+                        messages.error(request, "No se puede eliminar el grupo porque tiene estudiantes asignados.")
+                except Grupo.DoesNotExist:
+                    messages.error(request, "Ya no existe ese grupo.")
+                
+                
                 
     except EmptyField as e:   
         messages.error(request, e)

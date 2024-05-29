@@ -1,0 +1,68 @@
+<div class="container mt-5">
+    <h2 class="text-center">Realizar Evaluación</h2>
+
+    <!--Seleccionar Estudiante a evaluar-->
+    <form method="POST">
+      {% csrf_token %}
+    <div class="w-100 d-flex justify-content-center my-5">
+      
+    <select class="form-select w-50 text-center" name="evaluado" aria-label="Seleccionar estudiante">
+        <option selected>Seleccionar estudiante</option>
+        {%for estudiante in estudiantes%}
+        <option value="{{ estudiante.id }}">{{ estudiante }}---<span class="fw-bold">Código</span>: {{ estudiante.user.username }}</option>
+        {% endfor %}
+
+      </select>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="text-center fw-bold">Criterios</th>
+                <th class="text-center fw-bold">Calificación</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for criterio in criterios %}
+              <tr>
+                <td>
+                  <input type="hidden" value="{{ criterio.id }}" name="criterios[]" readOnly>
+                  {{ criterio.descripcion }}
+                </td>
+                <td>
+                  <select class="form-select"  name="calificacion[]" aria-label="Seleccionar una Calificación">
+                    <option selected>Seleccionar una Calificación</option>
+                    {% for rubricaCalificacion in rubrica %}
+                    <option value="{{ rubricaCalificacion.id }}">{{ rubricaCalificacion.calificacion }} - {{ rubricaCalificacion.descripcion }}</option>
+                    {% endfor %}
+                  </select>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+
+            <tfoot>
+              <tr>
+                <td colspan="2">
+                  <div class="form-floating">
+                    <textarea class="form-control" name="retroalimentacion" placeholder="Leave a comment here" id="floatingTextarea" class="text-primary-emphasis"></textarea>
+                    <label for="floatingTextarea" class="text-secondary">Comentarios</label>
+                  </div>
+
+                  <div class="my-2 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary px-5" name="enviar-evaluacion">
+                      Enviar
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+

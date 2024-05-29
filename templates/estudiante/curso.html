@@ -1,13 +1,13 @@
 {% extends 'estudiante/mainestudiante.html' %}
 {% block content %}
 
-<div class="container--evaluacion--curso">
+<div class="container--evaluacion--curso my-5">
     
     
     
-    <div class="row w-100">
+    <div class="row w-100 my-5">
         <div class="col-4  contenedor-back-bottom"><a href="{% url 'estudiante' %}" >
-            <span class="material-icons btn btn-primary back-bottom">arrow_back</span> </a>
+            <span class="material-icons btn btn-primary back-bottom">arrow_back</span><a> </a>
         </div>
         <div class="col">
             <div class="contenedor-titulos">
@@ -17,30 +17,32 @@
             <div>
                 <h3><span style="font-weight: bold;">Grupo :</span> {{ grupo }} </h3>
                 <h3><span style="font-weight: bold;">Proyecto :</span> {{ grupo.proyecto_asignado }} </h3>
-                
+                <h1 class="w-100 mt-5">Evaluaciones </h1>
             </div>
         </div>
     </div>
 
     {% comment %} LISTA DE ESTUDIANTES {% endcomment %}
-
-
-</div>
-
-    
-<div class="container--estudiantes">
-    {%for estudiante in estudiantes%}
-          <div class="card p-3">
-            <div class="card-body">
-              <p><span style="font-weight: bold;">Estudiante :</span> {{ estudiante.user.first_name }}</p>
-              <p><span style="font-weight: bold;">Estudiante :</span> {{ estudiante.user.username }}</p>
-              
+    <div class="row">
+        <!-- Itera sobre las evaluaciones en tu vista y genera estos divs -->
+        
+        {% for evaluacion in evaluaciones %}
+        
+            <div class="card pb-2">
+                <div class="card-header">
+                    <h5 class="card-title">Fecha Inicio:<strong>{{ evaluacion.fecha_inicio }}</strong></h5>
+                    <h5 class="card-title">Fecha fin: <strong>{{ evaluacion.fecha_fin }}</strong></h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text"><strong>Rúbrica:</strong> {{ evaluacion.rubrica.nombre }}</p>
+                    <a class="btn btn-primary" href="{% url "evaluar" evaluacion.id grupo.id%}"> Evaluar </a>
+                    
+                </div>
             </div>
-             <a class="btn btn-primary" href="evaluar/{{ estudiante.id }}/{{ curso.id }}/{{ grupo.id }}">Ver Grupo</a>
-          </div>            
-    {% endfor %}
+        
+        {% endfor %}
+    </div>
+
 </div>
-
-
 
 {%endblock%}
