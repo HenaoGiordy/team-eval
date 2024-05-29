@@ -11,9 +11,9 @@
       
         {%for resultado in resultados%}
         <tr>
-            <td>{{ resultado.criterio_evaluado.descripcion}}</td>
-            <td>{{ resultado.nota.calificacion}}</td>
-            <td>{{ resultado.criterio_evaluado.peso}}</td>
+            <td>{{ resultado.criterio_evaluado__descripcion}}</td>
+            <td>{{ resultado.promedio_notas}}</td>
+            <td>{{ resultado.criterio_evaluado__peso}}</td>
             <td>{{ resultado.valor_ponderado}}</td> 
         </tr>
         {%endfor%}
@@ -23,7 +23,7 @@
     <tfoot>
         <tr>
             <td colspan="3" class="fw-bold text-end">Nota Final :</td>
-            <td >{{ suma_ponderados }}</td>
+            <td >{{ nota_final }}</td>
         </tr>
     </tfoot>
   </table>

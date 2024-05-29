@@ -1,10 +1,9 @@
 from datetime import datetime
 from decimal import InvalidOperation
-from django import forms
 from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
-from django.db.models import ProtectedError
+from django.db.models import ProtectedError, Sum, Count, FloatField, F,ExpressionWrapper
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -154,9 +153,22 @@ def estudiante_ver_resultado(request, evaluacionid):
     perfil_estudiante = PerfilEstudiante.objects.get(user = usuario)
     evaluacion = Evaluacion.objects.get(id = evaluacionid)
     
-    resultados = Resultado.objects.filter(evaluado = perfil_estudiante, evaluacion = evaluacionid)
+    #NO TOCAR ESTA CONSULTA
+    resultados = Resultado.objects.filter(
+        evaluado=perfil_estudiante,
+        evaluacion=evaluacion
+    ).values(
+        'criterio_evaluado__descripcion',
+        'criterio_evaluado__peso'
+    ).annotate(
+        promedio_notas=Sum('nota__calificacion', output_field=FloatField()) / Count('nota__calificacion', output_field=FloatField())
+    ).annotate(
+        valor_ponderado=ExpressionWrapper(F('promedio_notas') * F('criterio_evaluado__peso'), output_field=FloatField())
+    )
+        
+    nota_final = resultados.aggregate(nota_final=Sum('valor_ponderado'))['nota_final']
     
-    return render(request, "estudiante/ver_resultados.html", {"resultados" : resultados})
+    return render(request, "estudiante/ver_resultados.html", {"resultados" : resultados, "evaluacion": evaluacion, "nota_final": nota_final})
 
 
 
