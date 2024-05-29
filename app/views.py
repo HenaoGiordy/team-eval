@@ -168,7 +168,9 @@ def estudiante_ver_resultado(request, evaluacionid):
         
     nota_final = resultados.aggregate(nota_final=Sum('valor_ponderado'))['nota_final']
     
-    return render(request, "estudiante/ver_resultados.html", {"resultados" : resultados, "evaluacion": evaluacion, "nota_final": nota_final})
+    comentarios = Retroalimentracion.objects.filter(estudiante_retroalimentacion=perfil_estudiante, evaluacion=evaluacion)
+    
+    return render(request, "estudiante/ver_resultados.html", {"resultados" : resultados, "evaluacion": evaluacion, "nota_final": nota_final, "comentarios": comentarios})
 
 
 

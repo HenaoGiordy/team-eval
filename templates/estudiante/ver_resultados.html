@@ -1,7 +1,20 @@
 {% extends 'estudiante/mainestudiante.html' %}
 {% block content %}
 <div class="container--evaluacion--curso my-5">
-    <h2 class="my-5">Resultado de evaluacion</h2>
+    <div class="d-flex w-100 justify-content-center gap-5 my-5">
+        <a href="{% url "estudiante_retroalimentacion" %}"> <span class="material-icons btn btn-primary back-bottom">arrow_back</span></a>
+        <h2>Resultado de evaluación</h2>
+    </div>
+    
     {% include "estudiante/components/tabla_retroalimentacion.html" %}
+
+    <h2 class="my-3">Comentarios</h2>
+    <div class="retroalimentaciones d-flex flex-column gap-4">
+        {% for retro in comentarios %}
+            <div class="retroalimentacion">
+                <input class="form-control" value="{{ retro.retroalimentacion }}" readOnly="true">
+            </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

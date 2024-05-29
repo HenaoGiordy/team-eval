@@ -1,20 +1,21 @@
-<table class="table">
+<table class="table table-bordered">
+  <caption>Esta es la calificación promedio que te han dado tus compañeros de grupo y su ponderación.</caption>
     <thead>
       <tr>
-        <th scope="col">Criterios</th>
-        <th scope="col">Promedio</th>
-        <th scope="col">Peso</th>
-        <th scope="col">Valor Ponderado</th>
+        <th scope="col" class="fw-bold text-center">Criterios</th>
+        <th scope="col" class="fw-bold text-center">Promedio</th>
+        <th scope="col" class="fw-bold text-center">Peso</th>
+        <th scope="col" class="fw-bold text-center">Valor Ponderado</th>
       </tr>
     </thead>
     <tbody>
       
         {%for resultado in resultados%}
         <tr>
-            <td>{{ resultado.criterio_evaluado__descripcion}}</td>
-            <td>{{ resultado.promedio_notas}}</td>
-            <td>{{ resultado.criterio_evaluado__peso}}</td>
-            <td>{{ resultado.valor_ponderado}}</td> 
+            <td class="text-center">{{ resultado.criterio_evaluado__descripcion}}</td>
+            <td class="text-center">{{ resultado.promedio_notas}}</td>
+            <td class="text-center">{{ resultado.criterio_evaluado__peso}}</td>
+            <td class="text-center">{{ resultado.valor_ponderado}}</td> 
         </tr>
         {%endfor%}
       
@@ -22,8 +23,9 @@
     </tbody>
     <tfoot>
         <tr>
-            <td colspan="3" class="fw-bold text-end">Nota Final :</td>
-            <td >{{ nota_final }}</td>
+            <td colspan="2"></td>
+            <td colspan="1" class="fw-bold text-end"> Nota Final :</td>
+            <td class="table-active fw-bold text-center">{{ nota_final }}</td>
         </tr>
     </tfoot>
   </table>
