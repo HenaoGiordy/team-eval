@@ -243,11 +243,11 @@ def evaluar(request, evaluacionid ,grupoid):
             except PerfilEstudiante.DoesNotExist:
                 messages.error(request, "El estudiante que intentas evaluar, por alguna razón no aparece.")
             
+            for califica in calificaciones:
+                if califica == "Seleccionar una Calificación":
+                    raise EmptyField("Por favor no dejes calificacion sin asignar")
             
             for calificacionid, criterioid in zip(calificaciones, criterios_evaluados):
-                
-                if calificacionid == "Seleccionar una Calificación":
-                    raise EmptyField("Por favor no dejes calificacion sin asignar")
                 
                 calificacion = Calificacion.objects.get(id = calificacionid)
                 criterio = Criterio.objects.get(id=criterioid)
