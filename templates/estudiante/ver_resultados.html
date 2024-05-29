@@ -12,7 +12,7 @@
     <div class="retroalimentaciones d-flex flex-column gap-4">
         {% for retro in comentarios %}
             <div class="retroalimentacion">
-                <input class="form-control" value="{{ retro.retroalimentacion }}" readOnly="true">
+                <p class="form-control" >{{ retro.retroalimentacion }}</p>
             </div>
         {% endfor %}
     </div>
