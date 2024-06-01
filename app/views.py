@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from TeamEval import settings
-from app.exeptions import AlreadyExist, EmptyField, EstudianteInactivo, NumberError, PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso
+from app.exeptions import AlreadyExist, EmptyField, EstudianteInactivo, NumberError, PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso, RubricaNoEncontrada
 from app.forms import MinimalPasswordChangeForm, UsernameForm
 from app.models import  Calificacion, Criterio, Evaluacion, Resultado, Retroalimentracion, Rubrica, User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
 from django.core.exceptions import ValidationError
@@ -385,14 +385,19 @@ def profesor_evaluacion_curso(request, curso_id):
     fecha_inicio = request.POST.get("fecha-inicio")
     fecha_fin = request.POST.get("fecha-fin")
     rubrica_id = request.POST.get("guardar-evaluacion")
+    rubrica_name = request.POST.get("rubrica")
     try:
         if request.method == "POST":
             rubrica = Rubrica.objects.get(id = rubrica_id)
+            if rubrica_name != rubrica.nombre:
+                raise RubricaNoEncontrada("Seleccione una rúbrica (QUE EXISTA)")
             rubrica.is_used = True
             rubrica.save()
             Evaluacion.objects.create(fecha_inicio = fecha_inicio, fecha_fin = fecha_fin, curso = curso, rubrica = rubrica )
             messages.success(request, "Evaluación creada exitosamente")
-        
+    
+    except RubricaNoEncontrada as e:
+        messages.error(request, e)
     except Exception as e:
         messages.error(request, "No se encontró una rúbrica con ese nombre")
     return render(request, 'profesor/evaluacion_curso.html', {"curso": curso, "evaluaciones" : evaluaciones})
