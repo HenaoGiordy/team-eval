@@ -8,14 +8,20 @@
     </thead>
 
     <tbody>
+        
         {%for estudiante in grupo.estudiantes.all%}
         <tr>
             <td>{{ estudiante.user.username }}</td>
             <td>{{ estudiante.nombre}} {{ estudiante.user.last_name }}</td>
+            <form method="POST">
+                {% csrf_token %}
             <td><button type="submit" name="eliminar-estudiante-grupo" value="{{ estudiante.id }}" class="btn btn-danger">
                 <i class="bi bi-trash"></i>
                 </button></td>
+            <input hidden="true" name="grupo" value="{{ grupo.id }}">
+        </form>
         </tr>
-        {%endfor%}  
+        {%endfor%}
+      
     </tbody>
 </table>
