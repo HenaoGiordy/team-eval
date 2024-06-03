@@ -5,6 +5,7 @@
   <thead>
     <tr>
       <th scope="col" class="fw-bold">Nombre</th>
+      <th scope="col" class="fw-bold">Autor</th>
       <th class="text-center fw-bold" scope="col">Acción</th>
       
     </tr>
@@ -15,6 +16,7 @@
       {%for rubrica in rubrica_lista%}
         <tr>
           <th scope="row">{{ rubrica.nombre | capfirst }}</th>
+          <th scope="row">{{ rubrica.autor.first_name }}</th>
           <td class="text-center" >
             {% if rubrica.is_used %}
             <button type="button" class="btn btn-primary" data-id="{{ rubrica.id }}" name="ver" data-bs-toggle="modal" data-bs-target="#ver-{{ rubrica.id }}"><i class="bi bi-eye"></i></button>

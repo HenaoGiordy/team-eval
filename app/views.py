@@ -274,8 +274,8 @@ def filtrar_datos(request):
         resultados = Rubrica.objects.filter(nombre__icontains=query)  
     else:
         resultados = Rubrica.objects.none()
-
-    data = list(resultados.values('id', 'nombre')) 
+    
+    data = list(resultados.values('id', 'nombre', 'autor__first_name')) 
     return JsonResponse(data, safe=False)
 
 #Lista de estudiantes del curso
@@ -889,7 +889,7 @@ def administrador_gestion_de_evaluacion(request):
                 nombre_rubrica = nombre_rubrica.lower()
                 
                 # Crear la rúbrica
-                rubrica = Rubrica.objects.create(nombre=nombre_rubrica)
+                rubrica = Rubrica.objects.create(nombre=nombre_rubrica, autor = request.user)
 
                 # Crear los criterios
                 for descripcion, peso in zip(descripciones_criterios, pesos_criterios):

@@ -104,14 +104,14 @@
                         resultados.innerHTML = '';
                         data.forEach(item => {
                             var p = document.createElement('button');
-                            p.textContent = item.nombre;
+                            p.textContent = item.nombre + "- " + item.autor__first_name;
                             p.className = 'list-group-item list-group-item-action';
                             p.style.cursor = 'pointer';
                             p.addEventListener('click', function() {
-                                busqueda.value = item.nombre;
-                                rubricaId.value = item.id;  // Ajusta según el campo de tu modelo
+                                busqueda.value = item.nombre + "-" + item.autor__first_name;
+                                rubricaId.value = item.id;  
                                 botonGuardar.value= item.id
-                                resultados.innerHTML = '';  // Limpiar resultados después de la selección
+                                resultados.innerHTML = ''; 
                             });
                             resultados.appendChild(p);
                         });
