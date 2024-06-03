@@ -4,9 +4,9 @@ from django.contrib.auth.forms import PasswordChangeForm
 
 
 class UsernameForm(forms.Form):
-    username = forms.CharField(label='Código o Número de Documento', 
+    username = forms.CharField(label='Ingrese su código o No.Documento', 
                                max_length=150,
-                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese su código', 'required' : 'true', "type" : "number"})
+                               widget=forms.TextInput(attrs={'class': 'form-control mt-2 text-center', 'placeholder': 'Código o documento', 'required' : 'true', "type" : "number"})
                                )
     def clean_username(self):
         username = self.cleaned_data['username']
@@ -20,11 +20,11 @@ class MinimalPasswordChangeForm(forms.Form):
     
     new_password1 = forms.CharField(
         label="Nueva contraseña",
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'autocomplete': 'new-password'}),
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Nueva contraseña', 'autocomplete': 'new-password'}),
     )
     new_password2 = forms.CharField(
         label="Confirmar nueva contraseña",
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'autocomplete': 'new-password'}),
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirma contraseña', 'autocomplete': 'new-password'}),
     )
 
     def __init__(self, user, *args, **kwargs):

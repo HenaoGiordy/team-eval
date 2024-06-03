@@ -16,7 +16,7 @@
     {%for docente in docentes_lista%}
     <tr>
       <td >{{ docente.user.username }}</th>
-      <td>{{ docente.user.first_name }}</td>
+      <td>{{ docente.user.first_name }} {{docente.user.last_name}}</td>
       <td>{{ docente.user.email }}</td>
       <td class="text-center"> {%if docente.user.is_active%}<i class="bi bi-check-circle" style="color:green;"></i> {%else%} <i class="bi bi-x-lg" style="color:red;"></i> {%endif%}</td>
       <td class="text-center">

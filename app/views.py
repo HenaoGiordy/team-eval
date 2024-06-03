@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from TeamEval import settings
-from app.exeptions import AlreadyExist, EmptyField, EstudianteInactivo, NumberError, PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso, RubricaNoEncontrada
+from app.exeptions import AlreadyExist, EmptyField, EstudianteInactivo, NumberError, PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso
 from app.forms import MinimalPasswordChangeForm, UsernameForm
 from app.models import  Calificacion, Criterio, Evaluacion, Resultado, Retroalimentracion, Rubrica, User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
 from django.core.exceptions import ValidationError
@@ -78,8 +78,6 @@ def request_username(request):
             except User.DoesNotExist:
                 messages.error(request, 'El nombre de usuario no existe.')
             
-            
-            
     else:
         form = UsernameForm()
 
@@ -128,7 +126,6 @@ def logout_usuario(request):
 def login_recuperar_contraseña(request):
     return render(request, 'login/recuperar_contraseña.html')
 
-
 #Vistas estudiante
 @login_required
 def estudiante(request):
@@ -142,9 +139,6 @@ def estudiante_retroalimentacion(request):
     usuario = User.objects.get(username = request.user.username)
     perfil_estudiante = PerfilEstudiante.objects.get(user = usuario)
     evaluaciones = Evaluacion.objects.filter(resultado__evaluado=perfil_estudiante).distinct()
-    
-    
-    
     return render(request, 'estudiante/retroalimentacion.html', {"evaluaciones": evaluaciones})
 
 @login_required
@@ -170,18 +164,13 @@ def estudiante_ver_resultado(request, evaluacionid):
     
     comentarios = Retroalimentracion.objects.filter(estudiante_retroalimentacion=perfil_estudiante, evaluacion=evaluacion)
     
-    return render(request, "estudiante/ver_resultados.html", {"resultados" : resultados, "evaluacion": evaluacion, "nota_final": nota_final, "comentarios": comentarios})
-
-
+    return render(request, "estudiante/ver_resultados.html", {"resultados" : resultados, "evaluacion": evaluacion, "nota_final": nota_final, "comentarios": comentarios,})
 
 #Vista curso estudiante
 @login_required
 def estudiante_curso(request, cursoid):
     usuario = User.objects.get(username = request.user.username)
-    
     perfil = PerfilEstudiante.objects.get(user = usuario)
-    
-    
     curso = perfil.cursos.get(id = cursoid)
     try:
         grupo = perfil.grupo_set.get(curso = cursoid)
@@ -191,12 +180,6 @@ def estudiante_curso(request, cursoid):
     except:
         messages.error(request, "Aún no estás en un grupo para este curso")
         return redirect('/estudiante/')
-    
-    
-    
-    
-    
-    
     return render(request, 'estudiante/curso.html', {'curso': curso, 'grupo': grupo, 'estudiantes': estudiantes_grupo, "evaluaciones" : evaluaciones})
 
 
@@ -205,7 +188,6 @@ def evaluar(request, evaluacionid ,grupoid):
     #Evaluador
     usuario = User.objects.get(username = request.user.username)
     perfil_evaluador = PerfilEstudiante.objects.get(user = usuario)
-    
     #Rúbrica
     evaluacion = Evaluacion.objects.get(id = evaluacionid)
     rubrica = evaluacion.rubrica
@@ -215,25 +197,20 @@ def evaluar(request, evaluacionid ,grupoid):
     rubrica = rubrica.calificacion_set.all()
     #Grupo
     grupo = Grupo.objects.get(id = grupoid)
-    
     #Curso
     curso = grupo.curso
-
     #Estudiantes del grupo
     estudiantes = grupo.estudiantes.all().exclude(id=perfil_evaluador.id)
-    
     
     try:
         if request.method == "POST":
             calificaciones = request.POST.getlist("calificacion[]")
             criterios_evaluados = request.POST.getlist("criterios[]")
             retro_alimentacion = request.POST.get("retroalimentacion")
-        
             evaluadoid = request.POST.get("evaluado")
             
             if not evaluadoid:
                 raise EmptyField("Ingrese un estudiante")
-            
             
             if not evaluadoid.isdigit():
                 raise NumberError("Selecciona un estudiante") 
@@ -244,10 +221,10 @@ def evaluar(request, evaluacionid ,grupoid):
                 messages.error(request, "El estudiante que intentas evaluar, por alguna razón no aparece.")
             
             for califica in calificaciones:
-                if califica == "Seleccionar una Calificación":
-                    raise EmptyField("Por favor no dejes calificacion sin asignar")
+                if califica == "Seleccionar una calificación":
+                    raise EmptyField("Debes asignar una calificación")
                 if not califica.isdigit():
-                    raise EmptyField("No puedes introducir strings al valor de la calificación ni dejarlo vacío")
+                    raise EmptyField("No se puede introducir letras al valor de la calificación ni dejarlo vacío")
             
             for calificacionid, criterioid in zip(calificaciones, criterios_evaluados):
                 
@@ -273,8 +250,6 @@ def evaluar(request, evaluacionid ,grupoid):
                                                        "evaluacion": evaluacion, 
                                                        "criterios": criterios,
                                                        "rubrica": rubrica, "grupo" : grupo})
-
-
 
 #Vistas del profesor
 
@@ -303,8 +278,6 @@ def filtrar_datos(request):
     data = list(resultados.values('id', 'nombre')) 
     return JsonResponse(data, safe=False)
 
-
-
 #Lista de estudiantes del curso
 @login_required
 def detalle_curso(request, curso_id):
@@ -329,7 +302,6 @@ def detalle_curso(request, curso_id):
                     messages.warning(request, "El estudiante ya está en el curso")
                     estudiantes_lista_paginada = PerfilEstudiante.objects.filter(user=user)
                     
-                
             except EstudianteInactivo as e:
                 messages.error(request, e)
                 estudiante = None
@@ -385,24 +357,17 @@ def profesor_evaluacion_curso(request, curso_id):
     fecha_inicio = request.POST.get("fecha-inicio")
     fecha_fin = request.POST.get("fecha-fin")
     rubrica_id = request.POST.get("guardar-evaluacion")
-    rubrica_name = request.POST.get("rubrica")
     try:
         if request.method == "POST":
             rubrica = Rubrica.objects.get(id = rubrica_id)
-            if rubrica_name != rubrica.nombre:
-                raise RubricaNoEncontrada("Seleccione una rúbrica (QUE EXISTA)")
             rubrica.is_used = True
             rubrica.save()
             Evaluacion.objects.create(fecha_inicio = fecha_inicio, fecha_fin = fecha_fin, curso = curso, rubrica = rubrica )
             messages.success(request, "Evaluación creada exitosamente")
-    
-    except RubricaNoEncontrada as e:
-        messages.error(request, e)
+        
     except Exception as e:
         messages.error(request, "No se encontró una rúbrica con ese nombre")
     return render(request, 'profesor/evaluacion_curso.html', {"curso": curso, "evaluaciones" : evaluaciones})
-
-
 
 @login_required
 def profesor_gestion_de_estudiantes(request):
@@ -451,7 +416,6 @@ def profesor_grupo(request, curso_id):
                 except AlreadyExist as e:
                     messages.warning(request, e)
                 
-                    
             if "guardar" in request.POST:
                 
                 nombre_grupo = request.POST.get("nombre-grupo")
@@ -468,7 +432,6 @@ def profesor_grupo(request, curso_id):
                 nombre_proyecto_edit = request.POST.get("nombre-proyecto-edit").strip()
                 grupo_id = request.POST.get("edit-info-grupo")
                 
-                
                 if not nombre_grupo_edit  or not nombre_proyecto_edit :
                     raise EmptyField("Escribe nombre de grupo y nombre de proyecto")
                 
@@ -479,11 +442,12 @@ def profesor_grupo(request, curso_id):
                 grupo.save()
                 
             if "eliminar-estudiante-grupo" in request.POST:
-                estudiante_codigo = request.POST.get("eliminar-estudiante-grupo")
-                grupo_id = request.POST.get("grupo")
+                estudiante_codigo = request.POST.get("codigo_estudiante")
+                grupo_id = request.POST.get("eliminar-estudiante-grupo")
+                if estudiante_codigo is None:
+                    raise EmptyField("Estudiante no especificado")
                 
-                estudiante = PerfilEstudiante.objects.get(id = estudiante_codigo)
-                
+                estudiante = get_object_or_404(PerfilEstudiante, user__username=estudiante_codigo)
                 grupo = get_object_or_404(Grupo, id=grupo_id)
                 
                 grupo.estudiantes.remove(estudiante)
@@ -504,12 +468,10 @@ def profesor_grupo(request, curso_id):
                 except Grupo.DoesNotExist:
                     messages.error(request, "Ya no existe ese grupo.")
                 
-                
-                
     except EmptyField as e:   
         messages.error(request, e)
-    return render(request, 'profesor/grupo.html', {"curso_actual" : curso_actual, "grupos" : grupos})
-    
+    return render(request, 'profesor/grupo.html', {"curso_actual" : curso_actual, "curso": curso, "grupos": grupos})
+
 #Informes
 @login_required
 def profesor_informes(request):
@@ -520,8 +482,7 @@ def profesor_informes(request):
 def profesor_gestion_rubricas(request):
     return render(request, 'profesor/gestion_rubricas.html')
 
-
-# @login_required
+#@login_required
 def profesor(request):
     return render(request, 'profesor/profesor.html')
 
@@ -623,10 +584,6 @@ def obtener_detalles_estudiante(request, user_id):
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
 
-
-
-
-
 @login_required
 def administrador_gestion_de_estudiantes(request):
     pagination = Paginator(PerfilEstudiante.objects.all().order_by('-id'), 10)
@@ -679,9 +636,7 @@ def administrador_gestion_de_estudiantes(request):
         except Exception as e:
             messages.error(request, f"Error al procesar la solicitud: {e}")
     
-    
     return render(request, 'administrador/gestion-de-estudiantes.html', {'estudiantes_lista': estudiantes_lista})
-
 
 @login_required
 def obtener_detalles_curso(request, curso_id):
@@ -716,7 +671,6 @@ def administrador_gestion_de_cursos(request):
                 if not curso:
                     raise ValueError("No se encontró un curso con ese código")
                 cursos_lista = curso
-
             
             if "guardar-curso" in request.POST:
                 codigo = request.POST.get("codigo-curso")
@@ -776,10 +730,8 @@ def administrador_gestion_de_cursos(request):
 
     return render(request, 'administrador/gestion_de_cursos.html', {'cursos_lista': cursos_lista})
 
-
 @login_required
 def administrador_gestion_de_evaluacion(request):
-    
     pagination = Paginator(Rubrica.objects.all().order_by('-id'), 5)
     page = request.GET.get('page')
     rubrica_lista = pagination.get_page(page)
@@ -831,7 +783,6 @@ def administrador_gestion_de_evaluacion(request):
                     messages.error(request, "No se encontraron rúbricas con ese nombre")
                     return redirect("administrador_gestion_de_evaluacion")
             
-            
             if "eliminar-rubrica" in request.POST:
                 rubrica_id = request.POST.get("eliminar-rubrica")
                 rubrica = Rubrica.objects.get(id=rubrica_id)
@@ -845,7 +796,6 @@ def administrador_gestion_de_evaluacion(request):
             
             if "editar-rubrica" in request.POST:
                 rubrica_id_editar = request.POST.get("editar-rubrica")
-                
 
                 # Prefix the input names with the rubrica_id
                 nombre_rubrica_editar = request.POST.get(f'nombre_rubrica_edit_{rubrica_id_editar}')
@@ -899,7 +849,6 @@ def administrador_gestion_de_evaluacion(request):
                 messages.success(request, "Rúbrica actualizada exitosamente.")
                 return redirect('administrador_gestion_de_evaluacion')
 
-
         except Rubrica.DoesNotExist:
             messages.error(request, "No se encontró la rúbrica")
         except ProtectedError:
@@ -910,4 +859,3 @@ def administrador_gestion_de_evaluacion(request):
             messages.error(request, "Debe ingresar un valor decimal")
         
     return render(request, 'administrador/gestion_de_evaluacion.html', {'rubrica_lista': rubrica_lista})
-

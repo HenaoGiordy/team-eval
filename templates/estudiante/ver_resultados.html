@@ -1,19 +1,29 @@
 {% extends 'estudiante/mainestudiante.html' %}
 {% block content %}
-<div class="container--evaluacion--curso my-5">
-    <div class="d-flex w-100 justify-content-center gap-5 my-5">
-        <a href="{% url "estudiante_retroalimentacion" %}"> <span class="material-icons btn btn-primary back-bottom">arrow_back</span></a>
-        <h2>Resultado de evaluación</h2>
+<div class="container__admin">
+    <div class="container">
+        <nav aria-label="breadcrumb"class="my-3 ml-3">
+            <ol class="breadcrumb" style="background: none">
+                <li class="breadcrumb-item"><a href="{% url "estudiante_retroalimentacion" %}">Retroalimentación</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Nombre evaluación</li>
+            </ol>
+        </nav>
+        <div class="header-row">
+            <h2 class="titulos mt-n4"><b>Resultados evaluación</b></h2>
+            <h5><a href="#" data-toggle="tooltip" data-bs-placement="right" title="Calificación promedio que te han dado tus compañeros de grupo y su ponderación.">
+                <i class="bi bi-question-circle-fill ml-1"></i>
+            </a></h5>
+        </div>
     </div>
-    
-    {% include "estudiante/components/tabla_retroalimentacion.html" %}
+    {% include "estudiante/components/tabla_retroalimentacion.html"%}
 
-    <h2 class="my-3">Comentarios</h2>
-    <div class="retroalimentaciones d-flex flex-column gap-4">
+    <div class="header-row">
+        <h2 class="titulos"><b>Comentarios</b></h2>
+    </div>    
+
+    <div class=" flex-column w-75">
         {% for retro in comentarios %}
-            <div class="retroalimentacion">
-                <p class="form-control" >{{ retro.retroalimentacion }}</p>
-            </div>
+            <p class="form-control mt-2">{{ retro.retroalimentacion }}</p>
         {% endfor %}
     </div>
 </div>

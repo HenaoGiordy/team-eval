@@ -1,31 +1,30 @@
-<table class="table table-bordered">
-  <caption>Esta es la calificación promedio que te han dado tus compañeros de grupo y su ponderación.</caption>
-    <thead>
+<table class="table table-bordered mt-2 w-75">
+  <thead>
+    <tr>
+      <th scope="col" class="fw-bold text-center">Criterios</th>
+      <th scope="col" class="fw-bold text-center">Promedio</th>
+      <th scope="col" class="fw-bold text-center">Peso</th>
+      <th scope="col" class="fw-bold text-center">Valor ponderado</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+      {%for resultado in resultados%}
       <tr>
-        <th scope="col" class="fw-bold text-center">Criterios</th>
-        <th scope="col" class="fw-bold text-center">Promedio</th>
-        <th scope="col" class="fw-bold text-center">Peso</th>
-        <th scope="col" class="fw-bold text-center">Valor Ponderado</th>
+          <td class="text-center">{{ resultado.criterio_evaluado__descripcion}}</td>
+          <td class="text-center">{{ resultado.promedio_notas}}</td>
+          <td class="text-center">{{ resultado.criterio_evaluado__peso}}</td>
+          <td class="text-center">{{ resultado.valor_ponderado}}</td> 
       </tr>
-    </thead>
-    <tbody>
-      
-        {%for resultado in resultados%}
-        <tr>
-            <td class="text-center">{{ resultado.criterio_evaluado__descripcion}}</td>
-            <td class="text-center">{{ resultado.promedio_notas}}</td>
-            <td class="text-center">{{ resultado.criterio_evaluado__peso}}</td>
-            <td class="text-center">{{ resultado.valor_ponderado}}</td> 
-        </tr>
-        {%endfor%}
-      
+      {%endfor%}
+    
 
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="2"></td>
-            <td colspan="1" class="fw-bold text-end"> Nota Final :</td>
-            <td class="table-active fw-bold text-center">{{ nota_final }}</td>
-        </tr>
-    </tfoot>
-  </table>
+  </tbody>
+  <tfoot>
+      <tr>
+          <td colspan="2"></td>
+          <td colspan="1" class="fw-bold text-end"> Nota final</td>
+          <td class="table-active fw-bold text-center">{{ nota_final }}</td>
+      </tr>
+  </tfoot>
+</table>

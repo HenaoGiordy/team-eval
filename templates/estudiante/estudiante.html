@@ -18,7 +18,7 @@
     <h5 class="card-header" style="text-align: center;"><b>{{ curse }}</b></h5>
     <div class="card-body">
       <p class="card-text"><i class="bi bi-journal-text mr-1"></i><b>Código curso:</b> {{ curse.codigo }}</p>
-      <p class="card-text"><i class="bi bi-person mr-1"></i><b>Docente: </b> {{ curse.profesor }}</p>
+      <p class="card-text"><i class="bi bi-person mr-1"></i><b>Docente: </b> {{ curse.profesor }} {{curse.profesor.user.last_name}}</p>
       <a href="curso/{{ curse.id }}" class="btn btn-primary d-flex justify-content-center align-items-center mb-1">
         Ir a curso<i class="bi bi-chevron-right ml-1"></i></a>
     </div>

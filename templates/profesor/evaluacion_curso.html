@@ -13,12 +13,20 @@
 
     <!--Formulario gestión de evaluación-->
     <div class="container">
+        <nav aria-label="breadcrumb" class="mt-3 ml-3">
+            <ol class="breadcrumb" style="background: none">
+                <li class="breadcrumb-item"><a href="{% url 'profesor_cursos' %}">Cursos</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'detalle_curso' curso.id %}">{{curso}}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Evaluación</li>
+            </ol>
+        </nav>   
+
         <div class="header-row">
-            <a class="btn btn-secondary btn-volver mt-4" style="color: #0D6EFD; background-color: #d9d9d9; border: none;" href="{% url 'detalle_curso' curso.id %}">
+        <!--   <a class="btn btn-secondary btn-volver mt-4" style="color: #0D6EFD; background-color: #d9d9d9; border: none;" href="{% url 'detalle_curso' curso.id %}">
                 <b>Volver</b>
                 <i class="bi bi-arrow-return-left"></i>
-            </a>
-            <h2 class="titulos"><b>Gestión de evaluación</b></h2>
+            </a> -->
+            <h2 class="titulos mt-n4"><b>Gestión de evaluación</b></h2>
         </div>
     </div>
 
@@ -27,13 +35,16 @@
         <div class="card-body">
             <form method="POST">
                 {% csrf_token %} 
-                <!-- Campo de búsqueda y resultados -->
+                <!-- Campo de nombre de evaluación y búsqueda con resultados -->
                 <div class="form-row justify-content-center">
-                    <div class="form-group mt-1">
+                    <div class="form-group col-md-5 mx-2">
+                        <i class="bi bi-pencil"></i>
+                        <label for="fecha-inicio">Nombre evaluación</label>
+                        <input type="text" name="nombre-evaluacion" class="form-control" id="nombre-evaluacion" placeholder="Nombre evaluación" required>
+                    </div>
+                    <div class="form-group col-md-5 mx-2">
                         <i class="bi bi-search"></i>
                         <label for="busqueda">Buscar rúbrica</label>
-                    </div>
-                    <div class="form-row col-lg-7 ml-2">
                         <input type="text" name="rubrica" id="busqueda" class="form-control" autocomplete="off" placeholder="Nombre rúbrica" required>
                         <div id="resultados" class="list-group position-absolute col cuadro-resultados"></div>
                         <input type="hidden" name="rubrica_id" id="rubrica-id">

@@ -35,6 +35,7 @@
     </tbody>
 </table>
 
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const btnEliminarGrupo = document.querySelectorAll("button[name='eliminar-grupo']");
@@ -51,9 +52,9 @@
                     mensaje.setAttribute("role", "alert");
                     mensaje.textContent = "No se puede eliminar el grupo porque tiene estudiantes asignados.";
                     tr.after(mensaje);
-                    mensaje.style.top = "50%";
+                    mensaje.style.top = "7%";
                     
-                    mensaje.style.left = "40%";
+                    mensaje.style.left = "39%";
                     
 
                     // Desaparecer el mensaje después de 3 segundos

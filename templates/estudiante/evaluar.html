@@ -1,31 +1,40 @@
 {% extends 'estudiante/mainestudiante.html' %}
 {% block content %}
-
-
-<div class="container--evaluacion--curso ">
+<div  class="container__admin">
     <!--Alertas / notificaciones-->
     {% if messages %}
         {% for message in messages %}
-            <div class="alert  {{ message.tags }} position-absolute"  role="alert" style="z-index:999; top:50%">
+            <div class="alert  {{ message.tags }} position-absolute"  role="alert" style="z-index:1;">
                 <p>{{ message }}</p>
             </div>
         {% endfor %}
     {% endif %}
-    <div class="row w-100 my-5">
-        <div class="col-4  contenedor-back-bottom">
-            <a href="{% url "estudiante_curso" curso.id%}"><span class="material-icons btn btn-primary back-bottom">arrow_back</span> </a>
-        </div>
-        <div class="col">
-            <div class="contenedor-titulos">
-                <h3>Co-Evaluación</h3>
-                <h3><span style="font-weight: bold;">Asignatura: </span> {{ grupo.curso.nombre}}</h3>
-                <h3><span style="font-weight: bold;">Grupo: </span> {{ grupo}}</h3>
-                <h3><span style="font-weight: bold;">Evaluación: </span> {{ evaluacion.rubrica}}</h3>
-            </div>
+    <div class="container">
+        <nav aria-label="breadcrumb" class="my-3 ml-3">
+            <ol class="breadcrumb" style="background: none">
+                <li class="breadcrumb-item"><a href="{% url 'estudiante' %}">Cursos</a></li>
+                <li class="breadcrumb-item"><a href="{% url "estudiante_curso" curso.id%}">{{ grupo.curso.nombre}}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Nombre evaluación</li>
+            </ol>
+        </nav>
+        <div class="header-row">
+            <h2 class="titulos mt-n5"><b>Realizar evaluación</b></h2>
         </div>
     </div>
 
+    <div class="card-form" style="box-shadow: none;">
+        <div class="card-body position-relative">
+            <form class="justify-content-center mt-n2">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-sm" style="background-color: #f8f9fa;">
+                        <i class="bi bi-pencil mr-1"></i><b>Nombre evaluación</b></span>
+                    <input style="background-color: #f8f9fa;" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="oooooo" disabled>
+                </div>
+            </form>   
+        </div>
+    </div>
     {% comment %} FORM PARA REALIZAR EVALUACIÓN {% endcomment %}
     {% include "estudiante/components/table_evaluar.html" %}
+</div>
 
 {% endblock%}

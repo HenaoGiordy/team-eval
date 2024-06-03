@@ -1,24 +1,21 @@
 {% extends 'estudiante/mainestudiante.html' %}
 {% block content %}
-<div class="container--evaluacion--curso my-5">
-    <h2 class="my-5">Evaluaciones</h2>
-
-    
-    <div class="row">
-        {% for evaluacion in evaluaciones %}
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Curso: {{ evaluacion.curso.nombre }}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">{{ evaluacion.rubrica.nombre }}</h6>
-                        <a href="{% url "estudiante_ver_resultado" evaluacion.id%}" class="btn btn-primary">Ver resultados</a>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-
+<div  class="container__admin">
+    <h2 class="titulos"><b>Retroalimentación</b></h2>
 </div>
-
-
+<div class="container--cursos">
+    {% for evaluacion in evaluaciones %}
+    <div class="card mt-n1">
+        <h5 class="card-header" style="text-align: center;"><b>Nombre eval</b></h5>
+        <div class="card-body">
+            <p class="card-text"><i class="bi bi-book mr-1"></i><b>Curso:</b> {{ evaluacion.curso.nombre }}</p>
+            <p class="card-text"><i class="bi bi-journal-text mr-1"></i><b>Código curso:</b> {{ evaluacion.curso.codigo }}</p>
+            <p class="card-text"><i class="bi bi-folder mr-1"></i><b>Proyecto:</b> {{ curso.proyecto_asignado }}</p>
+            <a href="{% url "estudiante_ver_resultado" evaluacion.id%}" class="btn btn-primary">Resultados
+                <i class="bi bi-chevron-right ml-1"></i>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

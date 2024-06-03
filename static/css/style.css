@@ -184,7 +184,6 @@ input:focus~label {
     margin-right: 5%;
     border-radius: 10px;
     padding: 20px 0px;
-    min-height: 500px;
     /*box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.34);*/
     display: flex;
     justify-content: center;
@@ -199,14 +198,12 @@ input:focus~label {
     font-weight: bold;
 }
 
-
 .card {
-    margin: 2% 2%;
+    margin: 2% 2% 4%;
+    height: auto;
     width: 250px;
     box-shadow: 2px 0px 8px 0px rgba(0, 0, 0, 0.34);
-    height: 260px;
 }
-
 
 .card-body {
     display: flex;
@@ -379,9 +376,6 @@ input[type=number] {
     max-height: 200px; 
     overflow-y: auto; 
     z-index: 1; 
-    left:0; 
-    top: 75%;
-
 }
 
 /* END CSS GESTION DE EVALUACION (DOCENTE)*/

@@ -59,8 +59,9 @@
         }, 3000); // Esperar 5 segundos antes de iniciar el desvanecimiento
     }
 </script>
-
+    
 <div class="container__admin">
+
     <!--Alertas / notificaciones-->
     {% if messages %}
         {% for message in messages %}
@@ -72,7 +73,11 @@
     <!--Formulario-->
     <h2 class="titulos"><b>Gestión de evaluación</b></h2>
     <div class="card-rubrica mt-2">
-        <h5 class="card-header">Creación de una rúbrica</h5>
+        <h5 class="card-header">Creación de una rúbrica
+            <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Una rúbrica debe tener minimo 2 criterios y la suma de todos sus pesos debe ser igual a 1">
+                <i class="bi bi-question-circle-fill ml-1"></i>
+            </a>
+        </h5>
         <div class="card-body">
             <form method="POST">
                 {% csrf_token %} 

@@ -93,3 +93,8 @@ document.querySelectorAll('.btn-edit-curso').forEach(btn => {
             .catch(error => console.error('Error:', error));
     });
 });
+
+//Tooltip
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+});

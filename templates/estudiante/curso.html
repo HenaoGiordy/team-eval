@@ -1,48 +1,66 @@
 {% extends 'estudiante/mainestudiante.html' %}
 {% block content %}
+<div  class="container__admin">
+    <div class="container">
+        <nav aria-label="breadcrumb" class="my-3 ml-3">
+            <ol class="breadcrumb" style="background: none">
+                <li class="breadcrumb-item"><a href="{% url 'estudiante' %}">Cursos</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{curso.nombre}}</li>
+            </ol>
+        </nav>
 
-<div class="container--evaluacion--curso my-5">
-    
-    
-    
-    <div class="row w-100 my-5">
-        <div class="col-4  contenedor-back-bottom"><a href="{% url 'estudiante' %}" >
-            <span class="material-icons btn btn-primary back-bottom">arrow_back</span><a> </a>
-        </div>
-        <div class="col">
-            <div class="contenedor-titulos">
-                <h3>Co-Evaluación</h3>
-                <h3><span style="font-weight: bold;">Asignatura: </span> {{ curso }}</h3>
-            </div>
-            <div>
-                <h3><span style="font-weight: bold;">Grupo :</span> {{ grupo }} </h3>
-                <h3><span style="font-weight: bold;">Proyecto :</span> {{ grupo.proyecto_asignado }} </h3>
-                <h1 class="w-100 mt-5">Evaluaciones </h1>
-            </div>
+        <div class="header-row">
+        <!-- <a class="btn btn-secondary btn-volver mt-4" style="color: #0D6EFD; background-color: #d9d9d9; border: none;" href="{% url 'estudiante' %}">
+                <b>Volver</b>
+                <i class="bi bi-arrow-return-left"></i>
+            </a> -->
+            <h2 class="titulos mt-n5"><b>Evaluaciones</b></h2>
         </div>
     </div>
 
-    {% comment %} LISTA DE ESTUDIANTES {% endcomment %}
-    <div class="row">
-        <!-- Itera sobre las evaluaciones en tu vista y genera estos divs -->
-        
-        {% for evaluacion in evaluaciones %}
-        
-            <div class="card pb-2">
-                <div class="card-header">
-                    <h5 class="card-title">Fecha Inicio:<strong>{{ evaluacion.fecha_inicio }}</strong></h5>
-                    <h5 class="card-title">Fecha fin: <strong>{{ evaluacion.fecha_fin }}</strong></h5>
+    <div class="card-form" style="box-shadow: none;">
+        <div class="card-body position-relative">
+            <form class="justify-content-center mt-n2">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-sm" style="background-color: #f8f9fa;">
+                        <i class="bi bi-pencil mr-1"></i><b>Nombre curso</b></span>
+                    <input style="background-color: #f8f9fa;" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="{{ curso }}" disabled>
                 </div>
-                <div class="card-body">
-                    <p class="card-text"><strong>Rúbrica:</strong> {{ evaluacion.rubrica.nombre }}</p>
-                    <a class="btn btn-primary" href="{% url "evaluar" evaluacion.id grupo.id%}"> Evaluar </a>
-                    
-                </div>
-            </div>
-        
-        {% endfor %}
-    </div>
 
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-sm" style="background-color: #f8f9fa;">
+                        <i class="bi bi-journal-text mr-1"></i><b>Código curso</b></span>
+                    <input style="background-color: #f8f9fa;" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="{{ curso.codigo }}" disabled>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-sm" style="background-color: #f8f9fa;">
+                        <i class="bi bi-people-fill mr-1"></i><b>Grupo</b></span>
+                    <input style="background-color: #f8f9fa;" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="{{ grupo }}" disabled>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-sm" style="background-color: #f8f9fa;">
+                        <i class="bi bi-folder mr-1"></i><b>Proyecto</b></span>
+                    <input style="background-color: #f8f9fa;" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="{{ grupo.proyecto_asignado }}" disabled>
+                </div>
+            </form>   
+        </div>
+    </div>
 </div>
 
+<div class="container--cursos">
+    {% for evaluacion in evaluaciones %}
+    <div class="card mt-n3">
+        <h5 class="card-header" style="text-align: center;"><b>Nombre eval</b></h5>
+        <div class="card-body">
+            <p class="card-text"><i class="bi bi-calendar4-week mr-1"></i><b>Fecha inicio:</b> {{ evaluacion.fecha_inicio }}</p>
+            <p class="card-text"><i class="bi bi-calendar4-week mr-1"></i><b>Fecha fin:</b> {{ evaluacion.fecha_fin }}</p>
+            <p class="card-text"><i class="bi bi-list-check mr-1"></i><b>Rúbrica:</b> {{ evaluacion.rubrica.nombre }}</p>
+            <a href="{% url "evaluar" evaluacion.id grupo.id%}" class="btn btn-primary d-flex justify-content-center align-items-center mb-1">
+                Evaluar<i class="bi bi-chevron-right ml-1"></i></a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {%endblock%}
