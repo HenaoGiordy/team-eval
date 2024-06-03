@@ -78,6 +78,7 @@ class Curso(models.Model):
     codigo = models.TextField(max_length=20)
     fecha_curso = models.DateField()
     periodo = models.TextField(choices=PERIODOS)
+    has_finished = models.BooleanField(default=False)
     
     class Meta:
         constraints = [
