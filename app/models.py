@@ -46,6 +46,7 @@ class PerfilProfesor(models.Model):
 
 
 class Rubrica(models.Model):
+    autor = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     nombre = models.TextField(max_length=50)
     is_used = models.BooleanField(default=False)
     def __str__(self):
@@ -106,6 +107,7 @@ class PerfilEstudiante(models.Model):
         return self.nombre
 
 class Evaluacion(models.Model):
+    nombre = models.CharField(blank=False, null= False, max_length=300)
     fecha_inicio = models.DateField(blank=False, null=False)
     fecha_fin = models.DateField(blank=False, null=False)
     rubrica = models.ForeignKey(Rubrica, on_delete=models.PROTECT, null=False, blank=False)
