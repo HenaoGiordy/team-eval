@@ -301,6 +301,7 @@ def detalle_curso(request, curso_id):
                 if estudiante.cursos.get(id = curso_id):
                     messages.warning(request, "El estudiante ya está en el curso")
                     estudiantes_lista_paginada = PerfilEstudiante.objects.filter(user=user)
+                    estudiante = None
                     
             except EstudianteInactivo as e:
                 messages.error(request, e)
@@ -480,7 +481,133 @@ def profesor_informes(request):
 #Gestión de rúbricas
 @login_required
 def profesor_gestion_rubricas(request):
-    return render(request, 'profesor/gestion_rubricas.html')
+    pagination = Paginator(Rubrica.objects.all().order_by('-id'), 5)
+    page = request.GET.get('page')
+    rubrica_lista = pagination.get_page(page)
+    
+    if request.method == 'POST':
+        try:
+            if "guardar" in request.POST:
+                nombre_rubrica = request.POST.get('nombre_rubrica')
+                descripciones_criterios = request.POST.getlist('descripcion_criterio[]')
+                pesos_criterios = request.POST.getlist('peso_criterio[]')
+                escalas = request.POST.getlist('escala[]')
+                descripciones_escalas = request.POST.getlist('descripcion_escala[]')
+                
+                if not nombre_rubrica or not nombre_rubrica.strip():
+                    messages.error(request, "No puede estar vacío el campo de la rúbrica")
+                    return redirect('administrador_gestion_de_evaluacion')
+                
+                if not descripciones_criterios or not descripciones_escalas:
+                    messages.error(request, "No pueden estar vacíos los campos de criterios ni escalas")
+                    return redirect('profesor_gestion_rubricas')
+                
+                # Verificar que la suma de los pesos sea igual a 1
+                suma_pesos = sum(float(peso) for peso in pesos_criterios)
+                if suma_pesos != 1.0:
+                    messages.error(request, "La suma de los pesos debe ser igual a 1")
+                    return redirect('profesor_gestion_rubricas')
+                
+                nombre_rubrica = nombre_rubrica.lower()
+                
+                # Crear la rúbrica
+                rubrica = Rubrica.objects.create(nombre=nombre_rubrica)
+
+                # Crear los criterios
+                for descripcion, peso in zip(descripciones_criterios, pesos_criterios):
+                    Criterio.objects.create(descripcion=descripcion, peso=peso, rubrica=rubrica)
+
+                # Crear las calificaciones (escalas)
+                for escala, descripcion in zip(escalas, descripciones_escalas):
+                    Calificacion.objects.create(calificacion=escala, descripcion=descripcion, rubrica=rubrica)
+
+                messages.success(request, 'Rúbrica creada exitosamente.')
+                return redirect('profesor_gestion_rubricas')
+
+            if "buscar" in request.POST:
+                nombre_rubrica = request.POST.get("nombre_rubrica")
+                nombre_rubrica = nombre_rubrica.lower()
+                rubrica_lista = Rubrica.objects.filter(nombre=nombre_rubrica)
+                if not rubrica_lista:
+                    messages.error(request, "No se encontraron rúbricas con ese nombre")
+                    return redirect("profesor_gestion_rubricas")
+            
+            if "eliminar-rubrica" in request.POST:
+                rubrica_id = request.POST.get("eliminar-rubrica")
+                rubrica = Rubrica.objects.get(id=rubrica_id)
+                
+                if rubrica.is_used:
+                    raise RubricaEnUso("La rúbrica está siendo usada en una evaluación (No se puede eliminar)")
+                
+                rubrica.delete()
+                messages.warning(request, "Rúbrica eliminada exitosamente")
+                return redirect('profesor_gestion_rubricas')
+            
+            if "editar-rubrica" in request.POST:
+                rubrica_id_editar = request.POST.get("editar-rubrica")
+
+                # Prefix the input names with the rubrica_id
+                nombre_rubrica_editar = request.POST.get(f'nombre_rubrica_edit_{rubrica_id_editar}')
+                
+                descripciones_criterios_editar = request.POST.getlist(f'descripcion_criterio_edit_{rubrica_id_editar}[]')
+                
+                pesos_criterios_editar = request.POST.getlist(f'peso_criterio_edit_{rubrica_id_editar}[]')
+                
+                escalas_editar = request.POST.getlist(f'escala_edit_{rubrica_id_editar}[]')
+                
+                descripciones_escalas_editar = request.POST.getlist(f'descripcion_escala_edit_{rubrica_id_editar}[]')
+
+                rubrica_editar = Rubrica.objects.get(id=rubrica_id_editar)
+
+                if rubrica_editar.is_used:
+                    raise RubricaEnUso("La rúbrica está siendo usada en una evaluación (No se puede editar)")
+
+                if not nombre_rubrica_editar or not nombre_rubrica_editar.strip():
+                    messages.error(request, "No puede estar vacío el campo de la rúbrica")
+                    return redirect('profesor_gestion_rubricas')
+
+                if not descripciones_criterios_editar or not descripciones_escalas_editar:
+                    messages.error(request, "No pueden estar vacíos los campos de criterios ni escalas")
+                    return redirect('profesor_gestion_rubricas')
+
+                # Verificar que la suma de los pesos sea igual a 1
+                suma_pesos_editar = sum(float(peso) for peso in pesos_criterios_editar)
+
+                if suma_pesos_editar != 1.0:
+                    messages.error(request, "La suma de los pesos debe ser igual a 1")
+                    return redirect('profesor_gestion_rubricas')
+
+                nombre_rubrica_editar = nombre_rubrica_editar.lower()
+
+                # Actualizar la rúbrica
+                rubrica_editar.nombre = nombre_rubrica_editar
+                rubrica_editar.save()
+
+                # Eliminar criterios y escalas antiguos
+                rubrica_editar.criterio_set.all().delete()
+                rubrica_editar.calificacion_set.all().delete()
+
+                # Crear los nuevos criterios
+                for descripcion, peso in zip(descripciones_criterios_editar, pesos_criterios_editar):
+                    Criterio.objects.create(descripcion=descripcion, peso=float(peso), rubrica=rubrica_editar)
+
+                # Crear las nuevas calificaciones (escalas)
+                for escala, descripcion in zip(escalas_editar, descripciones_escalas_editar):
+                    Calificacion.objects.create(calificacion=escala, descripcion=descripcion, rubrica=rubrica_editar)
+
+                messages.success(request, "Rúbrica actualizada exitosamente.")
+                return redirect('profesor_gestion_rubricas')
+
+        except Rubrica.DoesNotExist:
+            messages.error(request, "No se encontró la rúbrica")
+        except ProtectedError:
+            messages.error(request, "La rúbrica está siendo usada en una evaluación (No se puede eliminar)")
+        except RubricaEnUso as e:
+            messages.error(request, e)
+        except InvalidOperation:
+            messages.error(request, "Debe ingresar un valor decimal")
+        
+    return render(request, 'profesor/gestion_rubricas.html', {'rubrica_lista': rubrica_lista})
 
 #@login_required
 def profesor(request):
