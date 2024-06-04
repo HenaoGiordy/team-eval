@@ -18,7 +18,7 @@
   <title>Team Eval</title>
 </head>
 
-<body>
+<body class="bg-ligth position-relative">
     {% if user.is_authenticated and user.role == "PROFESOR"%}
     {% include "profesor/components/sidebar.html" %}
     {% block content %}

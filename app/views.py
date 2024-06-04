@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from TeamEval import settings
-from app.exeptions import AlreadyExist, EmptyField, EstudianteInactivo, NumberError, PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso, RubricaNoEncontrada
+from app.exeptions import AlreadyExist, AutorNoAutorizado, EmptyField, EstudianteInactivo, NumberError, PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso, RubricaNoEncontrada
 from app.forms import MinimalPasswordChangeForm, UsernameForm
 from app.models import  Calificacion, Criterio, Evaluacion, Resultado, Retroalimentracion, Rubrica, User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
 from django.core.exceptions import ValidationError
@@ -543,6 +543,9 @@ def profesor_gestion_rubricas(request):
                 rubrica_id = request.POST.get("eliminar-rubrica")
                 rubrica = Rubrica.objects.get(id=rubrica_id)
                 
+                if rubrica.autor != request.user:
+                    raise AutorNoAutorizado("No estás autorizado para eliminar esta rúbrica")
+                
                 if rubrica.is_used:
                     raise RubricaEnUso("La rúbrica está siendo usada en una evaluación (No se puede eliminar)")
                 
@@ -566,6 +569,9 @@ def profesor_gestion_rubricas(request):
 
                 rubrica_editar = Rubrica.objects.get(id=rubrica_id_editar)
 
+                if rubrica_editar.autor != request.user:
+                    raise AutorNoAutorizado("No estás autorizado para editar esta rúbrica")
+                
                 if rubrica_editar.is_used:
                     raise RubricaEnUso("La rúbrica está siendo usada en una evaluación (No se puede editar)")
 
@@ -605,6 +611,8 @@ def profesor_gestion_rubricas(request):
                 messages.success(request, "Rúbrica actualizada exitosamente.")
                 return redirect('profesor_gestion_rubricas')
 
+        except AutorNoAutorizado as e:
+            messages.error(request, e)
         except Rubrica.DoesNotExist:
             messages.error(request, "No se encontró la rúbrica")
         except ProtectedError:
@@ -613,6 +621,7 @@ def profesor_gestion_rubricas(request):
             messages.error(request, e)
         except InvalidOperation:
             messages.error(request, "Debe ingresar un valor decimal")
+        
         
     return render(request, 'profesor/gestion_rubricas.html', {'rubrica_lista': rubrica_lista})
 
