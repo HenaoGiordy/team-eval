@@ -3,6 +3,7 @@
     </h5>
     <thead>
       <tr>
+        <th scope="col" class="fw-bold">Nombre</th>
         <th scope="col" class="fw-bold">Rúbrica</th>
         <th scope="col" class="fw-bold">Fecha inicio</th>
         <th scope="col" class="fw-bold">Fecha fin</th>
@@ -13,6 +14,7 @@
       {% if evaluaciones%}
         {%for evaluacion in evaluaciones%}
         <tr>
+          <td>{{ evaluacion.nombre }}</td>
           <td>{{ evaluacion.rubrica }}</td>
           <td>{{ evaluacion.fecha_inicio }} </td>
           <td>{{ evaluacion.fecha_fin }}</td>
