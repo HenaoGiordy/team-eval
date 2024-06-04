@@ -1,7 +1,11 @@
 {%if rubrica_lista%}
 {%  include "profesor/components/search_rubricas.html"%}
 <table class="table table-bordered w-100 mt-2">
-  <h5 class="card-header mt-3">Lista de rúbricas</h5>
+  <h5 class="card-header mt-3">Lista de rúbricas
+    <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Solamente puedes editar o eliminar las rúbricas que has creado y que no se hayan usado en una evaluación">
+      <i class="bi bi-question-circle-fill ml-1"></i>
+  </a>
+  </h5>
   <thead>
     <tr>
       <th scope="col" class="fw-bold">Nombre</th>
@@ -18,16 +22,16 @@
           <th scope="row">{{ rubrica.nombre | capfirst }}</th>
           <th scope="row">{{ rubrica.autor.first_name }}</th>
           <td class="text-center" >
-            {% if rubrica.is_used %}
+            {% if rubrica.is_used or  rubrica.autor != request.user%}
             <button type="button" class="btn btn-primary" data-id="{{ rubrica.id }}" name="ver" data-bs-toggle="modal" data-bs-target="#ver-{{ rubrica.id }}"><i class="bi bi-eye"></i></button>
             {%endif%}
-            <button type="button" {% if rubrica.is_used%} disabled {%endif%} class="btn btn-primary btn-ver-rubrica" name="edit-rubrica" data-id="{{ rubrica.id }}" data-bs-toggle="modal" data-bs-target="#edit-rubrica-{{ rubrica.id }}" >
+            <button type="button" {% if rubrica.is_used or rubrica.autor != request.user%} disabled {%endif%} class="btn btn-primary btn-ver-rubrica" name="edit-rubrica" data-id="{{ rubrica.id }}" data-bs-toggle="modal" data-bs-target="#edit-rubrica-{{ rubrica.id }}" >
               <i class="bi bi-pen"></i>
             </button>
             {%include "administrador/components/modal_edit_rubrica.html"%}
             {%include "administrador/components/modal_delete_rubrica.html"%}
             {%include "administrador/components/modal_ver.html"%}
-            <button type="button" class="btn btn-danger" {% if rubrica.is_used%} disabled {%endif%} data-id="{{ rubrica.id }}" name="delete-rubrica" data-bs-toggle="modal" data-bs-target="#eliminar-rubrica"><i class="bi bi-trash"></i></button>
+            <button type="button" class="btn btn-danger" {% if rubrica.is_used or rubrica.autor != request.user%} disabled {%endif%} data-id="{{ rubrica.id }}" name="delete-rubrica" data-bs-toggle="modal" data-bs-target="#eliminar-rubrica"><i class="bi bi-trash"></i></button>
           </td>
         </tr>
 

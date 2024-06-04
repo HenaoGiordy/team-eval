@@ -518,7 +518,7 @@ def profesor_gestion_rubricas(request):
                 nombre_rubrica = nombre_rubrica.lower()
                 
                 # Crear la rúbrica
-                rubrica = Rubrica.objects.create(nombre=nombre_rubrica)
+                rubrica = Rubrica.objects.create(nombre=nombre_rubrica, autor = request.user)
 
                 # Crear los criterios
                 for descripcion, peso in zip(descripciones_criterios, pesos_criterios):
