@@ -450,12 +450,12 @@ def profesor_grupo(request, curso_id):
                 grupo.save()
                 
             if "eliminar-estudiante-grupo" in request.POST:
-                estudiante_codigo = request.POST.get("codigo_estudiante")
-                grupo_id = request.POST.get("eliminar-estudiante-grupo")
+                estudiante_codigo = request.POST.get("eliminar-estudiante-grupo")
+                grupo_id = request.POST.get("grupo")
                 if estudiante_codigo is None:
                     raise EmptyField("Estudiante no especificado")
                 
-                estudiante = get_object_or_404(PerfilEstudiante, user__username=estudiante_codigo)
+                estudiante = get_object_or_404(PerfilEstudiante, id=estudiante_codigo)
                 grupo = get_object_or_404(Grupo, id=grupo_id)
                 
                 grupo.estudiantes.remove(estudiante)
