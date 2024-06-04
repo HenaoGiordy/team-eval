@@ -52,7 +52,7 @@
 <div class="container--cursos">
     {% for evaluacion in evaluaciones %}
     <div class="card mt-n3">
-        <h5 class="card-header" style="text-align: center;"><b>Nombre eval</b></h5>
+        <h5 class="card-header" style="text-align: center;"><b>{{ evaluacion.nombre }}</b></h5>
         <div class="card-body">
             <p class="card-text"><i class="bi bi-calendar4-week mr-1"></i><b>Fecha inicio:</b> {{ evaluacion.fecha_inicio }}</p>
             <p class="card-text"><i class="bi bi-calendar4-week mr-1"></i><b>Fecha fin:</b> {{ evaluacion.fecha_fin }}</p>
