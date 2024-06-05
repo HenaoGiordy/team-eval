@@ -1,0 +1,24 @@
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col" class="fw-bold text-center">Nombre Curso</th>
+        <th scope="col" class="fw-bold text-center">Periodo Académico</th>
+        <th scope="col" class="fw-bold text-center">Código Curso</th>
+        <th scope="col" class="fw-bold text-center">Número de evaluaciones</th>
+        <th scope="col" class="fw-bold text-center">Finalizado</th>
+        <th scope="col" class="fw-bold text-center">Ver Informe</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for curso in cursos%}
+      <tr>
+        <td class="text-center">{{ curso.nombre }}</td>
+        <td class="text-center">{{ curso.get_periodo_academico }}</td>
+        <td class="text-center">{{ curso.codigo }}</td>
+        <td class="text-center">{{ curso.num_evaluaciones }}</td>
+        <td class="text-center">{{ curso.has_finished }}</td>
+        <td class="text-center"><a href="{% url "ver_informe_curso" %}" class="btn btn-primary bi bi-eye-fill"></a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>

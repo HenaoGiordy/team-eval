@@ -484,7 +484,14 @@ def profesor_grupo(request, curso_id):
 #Informes
 @login_required
 def profesor_informes(request):
-    return render(request, 'profesor/informes.html')
+    usuario = request.user
+    profesor = PerfilProfesor.objects.get(user = usuario)
+    cursos = Curso.objects.filter(profesor=profesor).annotate(num_evaluaciones=Count('evaluacion'))
+    return render(request, 'profesor/informes.html', {"cursos" : cursos})
+
+@login_required
+def ver_informe_curso(request):
+    return render(request, 'profesor/ver_informe_curso.html')
 
 #Gestión de rúbricas
 @login_required
