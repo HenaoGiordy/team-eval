@@ -6,12 +6,17 @@
 <div class="container--cursos">
     {% for evaluacion in evaluaciones %}
     <div class="card mt-n1">
-        <h5 class="card-header" style="text-align: center;"><b>Nombre eval</b></h5>
+        <h5 class="card-header" style="text-align: center;"><b>{{ evaluacion.nombre }}</b></h5>
         <div class="card-body">
             <p class="card-text"><i class="bi bi-book mr-1"></i><b>Curso:</b> {{ evaluacion.curso.nombre }}</p>
             <p class="card-text"><i class="bi bi-journal-text mr-1"></i><b>Código curso:</b> {{ evaluacion.curso.codigo }}</p>
-            <p class="card-text"><i class="bi bi-folder mr-1"></i><b>Proyecto:</b> {{ curso.proyecto_asignado }}</p>
-            <a href="{% url "estudiante_ver_resultado" evaluacion.id%}" class="btn btn-primary">Resultados
+            {% for grupo in grupos %}
+                {% if grupo.curso == evaluacion.curso %}
+                <p class="card-text"><i class="bi bi-microsoft-teams mr-1"></i><b>Grupo:</b> {{ grupo.nombre }}</p>
+                    <p class="card-text"><i class="bi bi-folder mr-1"></i><b>Proyecto:</b> {{ grupo.proyecto_asignado }}</p>
+                {% endif %}
+            {% endfor %}
+            <a href="{% url "estudiante_ver_resultado" evaluacion.id %}" class="btn btn-primary">Resultados
                 <i class="bi bi-chevron-right ml-1"></i>
             </a>
         </div>
@@ -19,3 +24,4 @@
     {% endfor %}
 </div>
 {% endblock %}
+

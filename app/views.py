@@ -139,7 +139,8 @@ def estudiante_retroalimentacion(request):
     usuario = User.objects.get(username = request.user.username)
     perfil_estudiante = PerfilEstudiante.objects.get(user = usuario)
     evaluaciones = Evaluacion.objects.filter(resultado__evaluado=perfil_estudiante).distinct()
-    return render(request, 'estudiante/retroalimentacion.html', {"evaluaciones": evaluaciones})
+    grupos = Grupo.objects.filter(estudiantes=perfil_estudiante)
+    return render(request, 'estudiante/retroalimentacion.html', {"evaluaciones": evaluaciones, "grupos": grupos})
 
 @login_required
 def estudiante_ver_resultado(request, evaluacionid):
