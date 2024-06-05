@@ -1,7 +1,23 @@
-{% extends 'profesor/profesor.html'%}
-{%load static%}
+{% extends 'profesor/mainprofesor.html' %}
 {% block content %}
-<div  class="container__admin ">
-    <h1>Hola</h1>
+<div  class="container__admin">
+    <h2 class="titulos"><b>Evaluaciones del curso de <span class="font-italic">{{ curso }}<span></b></h2>
 </div>
-{%endblock%}
+<div class="container--cursos">
+    {% for evaluacion in evaluaciones %}
+    <div class="card mt-n1">
+        <h5 class="card-header" style="text-align: center;"><b>{{ evaluacion.nombre }}</b></h5>
+        <div class="card-body">
+            
+            <p class="card-text"><i class="bi bi-journal-text mr-1"></i><b>Rúbrica:</b> {{ evaluacion.rubrica.nombre }}</p>
+            <p class="card-text"><i class="bi bi-journal-text mr-1"></i><b>Inicio:</b> {{ evaluacion.fecha_inicio }}</p>
+            <p class="card-text"><i class="bi bi-journal-text mr-1"></i><b>Fin:</b> {{ evaluacion.fecha_fin }}</p>
+            <a href="{% url "ver_informe_evaluacion" curso.id evaluacion.id %}" class="btn btn-primary">Informe
+                <i class="bi bi-chevron-right ml-1"></i>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+

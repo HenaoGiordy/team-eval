@@ -3,7 +3,7 @@ from decimal import InvalidOperation
 from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
-from django.db.models import ProtectedError, Sum, Count, FloatField, F,ExpressionWrapper
+from django.db.models import ProtectedError, Sum, Count, FloatField, F,ExpressionWrapper, Avg, Subquery, OuterRef
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -156,7 +156,7 @@ def estudiante_ver_resultado(request, evaluacionid):
         'criterio_evaluado__descripcion',
         'criterio_evaluado__peso'
     ).annotate(
-        promedio_notas=Sum('nota__calificacion', output_field=FloatField()) / Count('nota__calificacion', output_field=FloatField())
+        promedio_notas=Avg('nota__calificacion', output_field=FloatField())
     ).annotate(
         valor_ponderado=ExpressionWrapper(F('promedio_notas') * F('criterio_evaluado__peso'), output_field=FloatField())
     )
@@ -489,9 +489,68 @@ def profesor_informes(request):
     cursos = Curso.objects.filter(profesor=profesor).annotate(num_evaluaciones=Count('evaluacion'))
     return render(request, 'profesor/informes.html', {"cursos" : cursos})
 
+from django.db.models import Sum
+
 @login_required
-def ver_informe_curso(request):
-    return render(request, 'profesor/ver_informe_curso.html')
+def ver_informe_curso(request, curso_id):
+    curso = get_object_or_404(Curso, id=curso_id)
+    evaluaciones = Evaluacion.objects.filter(curso=curso)
+    
+    return render(request, 'profesor/ver_informe_curso.html', {'curso': curso, 'evaluaciones': evaluaciones,})
+
+
+@login_required
+def ver_informe_evaluacion(request, curso_id, evaluacion_id):
+    curso = get_object_or_404(Curso, id=curso_id)
+    evaluacion = get_object_or_404(Evaluacion, id=evaluacion_id)
+    grupos = Grupo.objects.filter(curso=curso).prefetch_related('estudiantes')
+
+    # Obtener los criterios de la evaluación
+    criterios = Criterio.objects.filter(rubrica=evaluacion.rubrica)
+    
+    resultados = Resultado.objects.filter(
+        evaluacion=evaluacion
+    ).values(
+        'evaluado_id',
+        'criterio_evaluado__descripcion',
+        'criterio_evaluado__peso'
+    ).annotate(
+        promedio_notas=Avg('nota__calificacion', output_field=FloatField())
+    ).annotate(
+        valor_ponderado=ExpressionWrapper(F('promedio_notas') * F('criterio_evaluado__peso'), output_field=FloatField())
+    )
+
+    # Crear un diccionario para almacenar los totales por evaluado
+    totales_por_evaluado = {}
+    for resultado in resultados:
+        evaluado_id = resultado['evaluado_id']
+        valor_ponderado = resultado['valor_ponderado']
+        if evaluado_id not in totales_por_evaluado:
+            totales_por_evaluado[evaluado_id] = 0
+        totales_por_evaluado[evaluado_id] += valor_ponderado
+
+    context = {
+        'curso': curso,
+        'evaluacion': evaluacion,
+        'grupos': grupos,
+        'criterios': criterios,
+        'resultados': resultados,
+        'totales_por_evaluado': totales_por_evaluado
+    }
+    return render(request, 'profesor/ver_informe_evaluacion.html', context)
+    
+    
+    return render(request, 'profesor/ver_informe_evaluacion.html', {
+        'curso': curso,
+        'evaluacion': evaluacion,
+        'grupos': grupos,
+        'criterios': criterios,
+        'resultados' : resultados,
+        'notas_finales' : notas_finales
+    })
+
+
+
 
 #Gestión de rúbricas
 @login_required

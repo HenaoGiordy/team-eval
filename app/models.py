@@ -127,6 +127,7 @@ class Resultado(models.Model):
     evaluacion = models.ForeignKey(Evaluacion, on_delete=models.CASCADE)
     def __str__(self):
         return f"{self.criterio_evaluado} - Nota: {self.nota}"
+    @property
     def valor_ponderado(self):
         return self.nota.calificacion * self.criterio_evaluado.peso
 

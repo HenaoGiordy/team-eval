@@ -1,0 +1,12 @@
+{% extends 'profesor/mainprofesor.html' %}
+
+{% block content %}
+<div class="container__admin">
+    <h1 class="my-5">Resultados {{ evaluacion.nombre }}</h1>
+    {% for grupo in grupos %}
+    <div class="w-75 my-5">
+        {% include "profesor/components/table_informe_grupo.html"%}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
