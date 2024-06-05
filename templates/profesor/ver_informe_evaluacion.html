@@ -2,7 +2,14 @@
 
 {% block content %}
 <div class="container__admin">
-    <h1 class="my-5">Resultados {{ evaluacion.nombre }}</h1>
+    
+    <h1 class="my-5">Resultados {{ evaluacion.nombre }} 
+        <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Calificación promedio en cada criterio">
+        <i class="bi bi-question-circle-fill" style="font-size: xx-large;"></i>
+        </a>
+    </h1>
+    
+    
     {% for grupo in grupos %}
     <div class="w-75 my-5">
         {% include "profesor/components/table_informe_grupo.html"%}
