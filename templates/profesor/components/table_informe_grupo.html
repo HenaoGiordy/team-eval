@@ -1,13 +1,13 @@
 {% load custom_filters %}
 <h3>Grupo: {{ grupo.nombre }}</h3>
-<table class="table table-hover">
+<table class="table table-bordered table-hover">
   <thead>
     <tr>
       <th class="fw-bold text-center">Estudiante</th>
       {% for criterio in criterios %}
-        <th class="fw-bold text-center">{{ criterio.descripcion }} (Peso: {{ criterio.peso }})</th>
+        <th class="fw-bold text-center">{{ criterio.descripcion }} <span class="text-primary">(Peso: {{ criterio.peso }})</span></th>
       {% endfor %}
-      <th class="text-center fw-bold">Suma Ponderada</th>
+      <th class="text-center fw-bold">Promedio Ponderada</th>
     </tr>
   </thead>
   <tbody>
@@ -20,7 +20,7 @@
                 {% for resultado in resultados %}
                     {% if resultado.evaluado_id == estudiante_id and resultado.criterio_evaluado__descripcion == criterio.descripcion %}
                         <td class=" text-center">
-                            Promedio: {{ resultado.promedio_notas }} -- Ponderado: {{ resultado.valor_ponderado }}
+                            {{ resultado.promedio_notas }} 
                         </td>
                     {% endif %}
                 {% endfor %}

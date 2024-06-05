@@ -16,7 +16,7 @@
         <td class="text-center">{{ curso.get_periodo_academico }}</td>
         <td class="text-center">{{ curso.codigo }}</td>
         <td class="text-center">{{ curso.num_evaluaciones }}</td>
-        <td class="text-center">{{ curso.has_finished }}</td>
+        <td class="text-center">{% if curso.has_finished %}<span class="text-success"> Sí </span> {% else %} <span class="text-danger">No</span> {% endif %}</td>
         <td class="text-center"><a href="{% url "ver_informe_curso" curso.id%}" class="btn btn-primary bi bi-eye-fill"></a></td>
       </tr>
       {% endfor %}
