@@ -3,32 +3,31 @@
 <table class="table table-hover">
   <thead>
     <tr>
-      <th>Estudiante</th>
+      <th class="fw-bold text-center">Estudiante</th>
       {% for criterio in criterios %}
-        <th>{{ criterio.descripcion }} (Peso: {{ criterio.peso }})</th>
+        <th class="fw-bold text-center">{{ criterio.descripcion }} (Peso: {{ criterio.peso }})</th>
       {% endfor %}
-      <th>Suma Ponderada</th>
+      <th class="text-center fw-bold">Suma Ponderada</th>
     </tr>
   </thead>
   <tbody>
     {% for estudiante in grupo.estudiantes.all %}
     <tr>
-        <td>{{ estudiante.nombre }}</td>
+        <td class="text-center">{{ estudiante.nombre }}</td>
       
         {% for criterio in criterios %}
             {% with estudiante_id=estudiante.id %}
                 {% for resultado in resultados %}
                     {% if resultado.evaluado_id == estudiante_id and resultado.criterio_evaluado__descripcion == criterio.descripcion %}
-                        <td>
+                        <td class=" text-center">
                             Promedio: {{ resultado.promedio_notas }} -- Ponderado: {{ resultado.valor_ponderado }}
-                            <input value="{{ resultado.valor_ponderado }}" type="hidden" class="valor-ponderado">
                         </td>
                     {% endif %}
                 {% endfor %}
             {% endwith %}
         {% endfor %}
       
-        <td class="suma-ponderada">
+        <td class="text-center">
             {{ totales_por_evaluado|get_item:estudiante.id|floatformat:2 }}
         </td>
     </tr>
