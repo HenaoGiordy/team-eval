@@ -5,11 +5,11 @@
         <nav aria-label="breadcrumb"class="my-3 ml-3">
             <ol class="breadcrumb" style="background: none">
                 <li class="breadcrumb-item"><a href="{% url "estudiante_retroalimentacion" %}">Retroalimentación</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Nombre evaluación</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ evaluacion.nombre }}</li>
             </ol>
         </nav>
         <div class="header-row">
-            <h2 class="titulos mt-n4"><b>Resultados evaluación</b></h2>
+            <h2 class="titulos mt-n4"><b>Resultados {{ evaluacion.nombre }}</b></h2>
             <h5><a href="#" data-toggle="tooltip" data-bs-placement="right" title="Calificación promedio que te han dado tus compañeros de grupo y su ponderación.">
                 <i class="bi bi-question-circle-fill ml-1"></i>
             </a></h5>

@@ -12,7 +12,7 @@
             <p class="card-text"><i class="bi bi-journal-text mr-1"></i><b>Código curso:</b> {{ evaluacion.curso.codigo }}</p>
             {% for grupo in grupos %}
                 {% if grupo.curso == evaluacion.curso %}
-                <p class="card-text"><i class="bi bi-microsoft-teams mr-1"></i><b>Grupo:</b> {{ grupo.nombre }}</p>
+                <p class="card-text"><i class="bi bi-people-fill mr-1"></i><b>Grupo:</b> {{ grupo.nombre }}</p>
                     <p class="card-text"><i class="bi bi-folder mr-1"></i><b>Proyecto:</b> {{ grupo.proyecto_asignado }}</p>
                 {% endif %}
             {% endfor %}
