@@ -610,18 +610,6 @@ def ver_informe_evaluacion(request, curso_id, evaluacion_id):
         'totales_por_evaluado': totales_por_evaluado
     }
     return render(request, 'profesor/ver_informe_evaluacion.html', context)
-    
-    
-    return render(request, 'profesor/ver_informe_evaluacion.html', {
-        'curso': curso,
-        'evaluacion': evaluacion,
-        'grupos': grupos,
-        'criterios': criterios,
-        'resultados' : resultados,
-        'notas_finales' : notas_finales
-    })
-
-
 
 
 #Gestión de rúbricas
