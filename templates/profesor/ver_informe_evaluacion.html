@@ -9,16 +9,16 @@
                 <li class="breadcrumb-item active" aria-current="page">Resultados {{ evaluacion.nombre }}</li>
             </ol>
         </nav>
-        <div class="header-row">
+        <div class="header-row d-flex gap-3 ">
             <h2 class="titulos mt-n4"><b>Resultados {{ evaluacion.nombre }}</b></h2>
-            <h5><a href="#" data-toggle="tooltip" data-bs-placement="right" title="Calificación promedio en cada criterio">
-                <i class="bi bi-question-circle-fill" style="font-size: xx-large;"></i>
+            <h5><a href="#" data-toggle="tooltip" data-bs-placement="right" title="Calificaciones promedios por criterio">
+                <i class="bi bi-question-circle-fill fs-3" ></i>
             </a></h5>
         </div>
     </div>
     
     {% for grupo in grupos %}
-    <div class="w-75">
+    <div class="w-75 my-5">
         {% include "profesor/components/table_informe_grupo.html"%}
     </div>
     {% endfor %}

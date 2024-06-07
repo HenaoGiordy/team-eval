@@ -41,11 +41,11 @@ def login_register(request):
 
 def redirect_user_by_role(user):
     if user.get_role() == 'ADMIN':
-        return redirect('administrador')
+        return redirect('administrador_gestion_de_docentes')
     elif user.get_role() == 'ESTUDIANTE':
         return redirect('estudiante')
     elif user.get_role() == 'PROFESOR':
-        return redirect('profesor')
+        return redirect('profesor_cursos')
     else:
         return redirect('login_register')
 
