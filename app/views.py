@@ -371,7 +371,7 @@ def detalle_curso(request, curso_id):
             
             reader = csv.DictReader(decoded_file, delimiter=';')
             
-            # Limpiar el BOM si está presente, archivos utf-8
+            # Limpiar el BOM si está presente, archivos excel
             fieldnames = reader.fieldnames
             if fieldnames and fieldnames[0].startswith('\ufeff'):
                 fieldnames[0] = fieldnames[0][1:]
@@ -382,8 +382,8 @@ def detalle_curso(request, curso_id):
                 return render(request, 'profesor/detalle_curso.html', {"curso": curso, "estudiantes_lista_paginada": estudiantes_lista_paginada, "estudiante": estudiante})
             
             estudiantes_creados = 0
-            estudiantes_existentes = 0
-            
+            estudiantes_add = 0
+            estudiantes_en_cursos = 0
             with transaction.atomic():
                 for row in reader:
                     codigo = row.get('codigo estudiantil')
@@ -405,13 +405,20 @@ def detalle_curso(request, curso_id):
                         user.save()
                         estudiantes_creados += 1
                     else:
-                        estudiantes_existentes += 1
+                        pass
                     
                     perfil_estudiante, _ = PerfilEstudiante.objects.get_or_create(user=user)
-                    perfil_estudiante.cursos.add(curso)
+                    if perfil_estudiante.cursos.filter(id = curso.id).exists():
+                        estudiantes_en_cursos += 1
+                    else:
+                        perfil_estudiante.cursos.add(curso)
+                        estudiantes_add += 1
 
-                messages.success(request, f"{estudiantes_creados} estudiantes creados y añadidos, {estudiantes_existentes} ya existían en el curso.")
-                estudiantes_lista_paginada = curso.perfilestudiante_set.all().order_by("-id")
+                messages.success(request, f"{estudiantes_creados} estudiantes creados, {estudiantes_add} añadidos, {estudiantes_en_cursos} ya estaban en el curso.")
+                estudiantes_lista = curso.perfilestudiante_set.all().order_by("-id")
+                pagination = Paginator(estudiantes_lista, 10)
+                page = request.GET.get('page')
+                estudiantes_lista_paginada = pagination.get_page(page)
 
             
     return render(request, 'profesor/detalle_curso.html', {"curso": curso, "estudiantes_lista_paginada" : estudiantes_lista_paginada, "estudiante" : estudiante})
