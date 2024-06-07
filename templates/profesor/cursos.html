@@ -1,6 +1,13 @@
 {% extends "profesor/mainprofesor.html" %}
 {%block content%}
 <div  class="container__admin">
+  {% if messages %}
+        {% for message in messages %}
+        <div class="alert {{ message.tags }} position-absolute mt-5" style="z-index: 1" role="alert">
+            <p>{{ message }}</p>
+        </div>
+        {% endfor %}
+    {% endif %}
   <h2 class="titulos"><b>Lista de cursos</b></h2>
 </div>
 <div class="container--cursos">
@@ -15,6 +22,6 @@
           Ir a curso<i class="bi bi-chevron-right ml-1"></i></a>
       </div>
     </div>
-  {% endfor %} {% else %} <h3 style="text-align: center; margin-top: 20%">No tienes cursos</h3>{% endif %}
+  {% endfor %} {% else %} <h3 style="text-align: center; margin-top: 20%">No tienes cursos vigentes</h3>{% endif %}
 </div>
 {%endblock%}

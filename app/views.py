@@ -131,7 +131,7 @@ def login_recuperar_contraseña(request):
 def estudiante(request):
     usuario = User.objects.get(username = request.user.username)
     perfil = PerfilEstudiante.objects.get(user = usuario)
-    return render(request, 'estudiante/estudiante.html', {"cursos" : perfil.cursos.all(), "perfil": perfil})
+    return render(request, 'estudiante/estudiante.html', {"cursos" : perfil.cursos.filter(has_finished=False), "perfil": perfil})
 
 #Retroalimentación estudiante
 @login_required
@@ -265,7 +265,7 @@ def evaluar(request, evaluacionid ,grupoid):
 def profesor_cursos(request):
     user = request.user.id
     profesor = PerfilProfesor.objects.get(user = user)
-    cursos = profesor.curso_set.all()
+    cursos = profesor.curso_set.filter(has_finished=False)
     
     return render(request, 'profesor/cursos.html', {"cursos": cursos})
 
@@ -283,7 +283,7 @@ def filtrar_datos(request):
 @login_required
 def detalle_curso(request, curso_id):
     curso = get_object_or_404(Curso, id=curso_id)
-    estudiantes_lista = curso.perfilestudiante_set.all()
+    estudiantes_lista = curso.perfilestudiante_set.all().order_by("-id")
     pagination = Paginator(estudiantes_lista, 10)
     page = request.GET.get('page')
     estudiantes_lista_paginada = pagination.get_page(page)
@@ -348,7 +348,16 @@ def detalle_curso(request, curso_id):
                 estudiantes_lista_paginada = curso.perfilestudiante_set.all()
             except PerfilEstudiante.DoesNotExist:
                 messages.error(request, "No se encontró el estudiante para eliminar")
-    
+        
+        if "finalizar-curso" in request.POST:
+            curso_id = request.POST.get("finalizar-curso")
+            curso = Curso.objects.get(id = curso_id)
+
+            curso.has_finished = True
+            curso.save()
+            messages.success(request, f"El curso {curso.nombre} ha finalizado con éxito.")
+            return redirect("profesor_cursos")
+        
     return render(request, 'profesor/detalle_curso.html', {"curso": curso, "estudiantes_lista_paginada" : estudiantes_lista_paginada, "estudiante" : estudiante})
 
 #Configuración de evaluación del curso
