@@ -1,3 +1,5 @@
+import csv
+from django.db import transaction
 from datetime import datetime
 from decimal import InvalidOperation
 from django.db import IntegrityError
@@ -358,6 +360,60 @@ def detalle_curso(request, curso_id):
             messages.success(request, f"El curso {curso.nombre} ha finalizado con éxito.")
             return redirect("profesor_cursos")
         
+        if "guardar-cvs" in request.POST:
+            archivo = request.FILES.get("csv-estudiantes")
+            
+            if not archivo:
+                messages.error(request, "No se ha seleccionado ningún archivo.")
+                return render(request, 'profesor/detalle_curso.html', {"curso": curso, "estudiantes_lista_paginada": estudiantes_lista_paginada, "estudiante": estudiante})
+            
+            decoded_file = archivo.read().decode('utf-8').splitlines()
+            
+            reader = csv.DictReader(decoded_file, delimiter=';')
+            
+            # Limpiar el BOM si está presente, archivos utf-8
+            fieldnames = reader.fieldnames
+            if fieldnames and fieldnames[0].startswith('\ufeff'):
+                fieldnames[0] = fieldnames[0][1:]
+            
+            # Verificar si los nombres de columna son correctos
+            if fieldnames != ["codigo estudiantil", "nombre estudiante", "apellidos estudiante", "correo electronico"]:
+                messages.error(request, "El formato del archivo CSV no es válido.")
+                return render(request, 'profesor/detalle_curso.html', {"curso": curso, "estudiantes_lista_paginada": estudiantes_lista_paginada, "estudiante": estudiante})
+            
+            estudiantes_creados = 0
+            estudiantes_existentes = 0
+            
+            with transaction.atomic():
+                for row in reader:
+                    codigo = row.get('codigo estudiantil')
+                    nombre = row.get('nombre estudiante')
+                    apellidos = row.get('apellidos estudiante')
+                    email = row.get('correo electronico')
+                    
+                    if not (codigo and nombre and apellidos and email):
+                        messages.error(request, f"Faltan datos en la fila: {row}")
+                        continue
+
+                    user, created = User.objects.get_or_create(
+                        username=codigo,
+                        defaults={'first_name': nombre, 'last_name': apellidos, 'email': email, 'role': User.ROLES['ESTUDIANTE']}
+                    )
+                    
+                    if created:
+                        user.set_password(codigo)
+                        user.save()
+                        estudiantes_creados += 1
+                    else:
+                        estudiantes_existentes += 1
+                    
+                    perfil_estudiante, _ = PerfilEstudiante.objects.get_or_create(user=user)
+                    perfil_estudiante.cursos.add(curso)
+
+                messages.success(request, f"{estudiantes_creados} estudiantes creados y añadidos, {estudiantes_existentes} ya existían en el curso.")
+                estudiantes_lista_paginada = curso.perfilestudiante_set.all().order_by("-id")
+
+            
     return render(request, 'profesor/detalle_curso.html', {"curso": curso, "estudiantes_lista_paginada" : estudiantes_lista_paginada, "estudiante" : estudiante})
 
 #Configuración de evaluación del curso
