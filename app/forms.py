@@ -6,15 +6,9 @@ from django.contrib.auth.forms import PasswordChangeForm
 class UsernameForm(forms.Form):
     username = forms.CharField(label='Ingrese su código o No.Documento', 
                                max_length=150,
-                               widget=forms.TextInput(attrs={'class': 'form-control mt-2 text-center', 'placeholder': 'Código o documento', 'required' : 'true', "type" : "number"})
+                               widget=forms.TextInput(attrs={'class': 'form-control mt-2 text-center', 'placeholder': 'Código o documento', 'required' : 'true', "type" : "text"})
                                )
-    def clean_username(self):
-        username = self.cleaned_data['username']
-        if not username:
-            raise forms.ValidationError("Por favor, ingresa un nombre de usuario.")
-        if not re.match(r'^[0-9]+$', username):
-            raise forms.ValidationError("Por favor, ingresa un código válido (solo números).")
-        return username
+    
 
 class MinimalPasswordChangeForm(forms.Form):
     

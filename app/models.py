@@ -16,9 +16,10 @@ class User(AbstractUser):
 
     role = models.CharField(max_length=50, choices=ROLES)
     
-    username = models.IntegerField(
+    username = models.CharField(
         _("Codigo"),
         unique=True,
+        max_length=20,
         blank=False,
         help_text=_(
             "El código de usuario es único y de debe ser un valor numérico."

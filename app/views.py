@@ -825,7 +825,7 @@ def administrador_gestion_de_docentes(request):
             messages.error(request, "Ya existe un docente con ese documento")
         
         except ValueError  as e:
-            messages.error(request, f"Error: debe proporcionar un código")
+            messages.error(request, f"Debes escribir un número de documento.")
             
         except ValidationError as e:
             messages.error(request, f"El código debe ser mayor a 0: {e}")
@@ -896,8 +896,7 @@ def administrador_gestion_de_estudiantes(request):
                 username = request.POST.get('codigo-estudiante')
                 email = request.POST.get('email-estudiante')
                 
-                if int(username) <0 :
-                    raise ValidationError(username)
+                
                 
                 user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name,password=username, email=email, role="ESTUDIANTE")
                 messages.success(request, "Estudiante guardado correctamente")
