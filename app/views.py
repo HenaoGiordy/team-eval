@@ -172,18 +172,34 @@ def estudiante_ver_resultado(request, evaluacionid):
 #Vista curso estudiante
 @login_required
 def estudiante_curso(request, cursoid):
-    usuario = User.objects.get(username = request.user.username)
-    perfil = PerfilEstudiante.objects.get(user = usuario)
-    curso = perfil.cursos.get(id = cursoid)
+    usuario = User.objects.get(username=request.user.username)
+    perfil = PerfilEstudiante.objects.get(user=usuario)
+    curso = perfil.cursos.get(id=cursoid)
+    
     try:
-        grupo = perfil.grupo_set.get(curso = cursoid)
-        estudiantes_grupo = grupo.estudiantes.all().exclude(user = perfil.user)
-        #Evaluaciones
+        grupo = perfil.grupo_set.get(curso=cursoid)
+        estudiantes_grupo = grupo.estudiantes.all().exclude(user=perfil.user)
+        # Evaluaciones
         evaluaciones = grupo.curso.evaluacion_set.all()
+        
+        evaluaciones_status = []
+        for evaluacion in evaluaciones:
+            evaluados = Resultado.objects.filter(evaluacion=evaluacion, evaluador=perfil).values_list('evaluado_id', flat=True)
+            todos_evaluados = set(estudiantes_grupo.values_list('id', flat=True)) == set(evaluados)
+            evaluaciones_status.append({
+                'evaluacion': evaluacion,
+                'todos_evaluados': todos_evaluados
+            })
     except:
         messages.error(request, "Aún no estás en un grupo para este curso")
         return redirect('/estudiante/')
-    return render(request, 'estudiante/curso.html', {'curso': curso, 'grupo': grupo, 'estudiantes': estudiantes_grupo, "evaluaciones" : evaluaciones})
+    
+    return render(request, 'estudiante/curso.html', {
+        'curso': curso,
+        'grupo': grupo,
+        'estudiantes': estudiantes_grupo,
+        'evaluaciones_status': evaluaciones_status
+    })
 
 
 @login_required

@@ -1,6 +1,6 @@
 {% extends 'estudiante/mainestudiante.html' %}
 {% block content %}
-<div  class="container__admin">
+<div class="container__admin">
     <div class="container">
         <nav aria-label="breadcrumb" class="my-3 ml-3">
             <ol class="breadcrumb" style="background: none">
@@ -10,10 +10,6 @@
         </nav>
 
         <div class="header-row">
-        <!-- <a class="btn btn-secondary btn-volver mt-4" style="color: #0D6EFD; background-color: #d9d9d9; border: none;" href="{% url 'estudiante' %}">
-                <b>Volver</b>
-                <i class="bi bi-arrow-return-left"></i>
-            </a> -->
             <h2 class="titulos mt-n4"><b>Evaluaciones</b></h2>
         </div>
     </div>
@@ -50,17 +46,23 @@
 </div>
 
 <div class="container--cursos">
-    {% for evaluacion in evaluaciones %}
+    {% for status in evaluaciones_status %}
     <div class="card mt-n3">
-        <h5 class="card-header" style="text-align: center;"><b>{{ evaluacion.nombre }}</b></h5>
+        <h5 class="card-header" style="text-align: center;"><b>{{ status.evaluacion.nombre }}</b></h5>
         <div class="card-body">
-            <p class="card-text"><i class="bi bi-calendar4-week mr-1"></i><b>Fecha inicio:</b> {{ evaluacion.fecha_inicio }}</p>
-            <p class="card-text"><i class="bi bi-calendar4-week mr-1"></i><b>Fecha fin:</b> {{ evaluacion.fecha_fin }}</p>
-            <p class="card-text"><i class="bi bi-list-check mr-1"></i><b>Rúbrica:</b> {{ evaluacion.rubrica.nombre }}</p>
-            <a href="{% url "evaluar" evaluacion.id grupo.id%}" class="btn btn-primary d-flex justify-content-center align-items-center mb-1">
-                Evaluar<i class="bi bi-chevron-right ml-1"></i></a>
+            <p class="card-text"><i class="bi bi-calendar4-week mr-1"></i><b>Fecha inicio:</b> {{ status.evaluacion.fecha_inicio }}</p>
+            <p class="card-text"><i class="bi bi-calendar4-week mr-1"></i><b>Fecha fin:</b> {{ status.evaluacion.fecha_fin }}</p>
+            <p class="card-text"><i class="bi bi-list-check mr-1"></i><b>Rúbrica:</b> {{ status.evaluacion.rubrica.nombre }}</p>
+            {% if status.todos_evaluados %}
+                <p class="text-danger">Ya evaluaste a todos tus compañeros</p>
+                <a href="#" class="btn btn-primary d-flex justify-content-center align-items-center mb-1 disabled" tabindex="-1" aria-disabled="true">
+                    Evaluar<i class="bi bi-chevron-right ml-1"></i></a>
+            {% else %}
+                <a href="{% url 'evaluar' status.evaluacion.id grupo.id %}" class="btn btn-primary d-flex justify-content-center align-items-center mb-1">
+                    Evaluar<i class="bi bi-chevron-right ml-1"></i></a>
+            {% endif %}
         </div>
     </div>
     {% endfor %}
 </div>
-{%endblock%}
+{% endblock %}
