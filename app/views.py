@@ -187,72 +187,77 @@ def estudiante_curso(request, cursoid):
 
 
 @login_required
-def evaluar(request, evaluacionid ,grupoid):
-    #Evaluador
-    usuario = User.objects.get(username = request.user.username)
-    perfil_evaluador = PerfilEstudiante.objects.get(user = usuario)
-    #Rúbrica
-    evaluacion = Evaluacion.objects.get(id = evaluacionid)
+def evaluar(request, evaluacionid, grupoid):
+    # Evaluador
+    usuario = User.objects.get(username=request.user.username)
+    perfil_evaluador = PerfilEstudiante.objects.get(user=usuario)
+    # Rúbrica
+    evaluacion = Evaluacion.objects.get(id=evaluacionid)
     rubrica = evaluacion.rubrica
-    #Criterios
+    # Criterios
     criterios = rubrica.criterio_set.all()
-    #Escala
+    # Escala
     rubrica = rubrica.calificacion_set.all()
-    #Grupo
-    grupo = Grupo.objects.get(id = grupoid)
-    #Curso
+    # Grupo
+    grupo = Grupo.objects.get(id=grupoid)
+    # Curso
     curso = grupo.curso
-    #Estudiantes del grupo
-    estudiantes = grupo.estudiantes.all().exclude(id=perfil_evaluador.id)
-    
+    # Estudiantes del grupo que no han sido evaluados
+    estudiantes_evaluados = Resultado.objects.filter(evaluacion=evaluacion, evaluador=perfil_evaluador).values_list('evaluado_id', flat=True)
+    estudiantes = grupo.estudiantes.all().exclude(id__in=estudiantes_evaluados).exclude(id=perfil_evaluador.id)
+
     try:
         if request.method == "POST":
             calificaciones = request.POST.getlist("calificacion[]")
             criterios_evaluados = request.POST.getlist("criterios[]")
             retro_alimentacion = request.POST.get("retroalimentacion")
             evaluadoid = request.POST.get("evaluado")
-            
+
             if not evaluadoid:
                 raise EmptyField("Ingrese un estudiante")
-            
+
             if not evaluadoid.isdigit():
-                raise NumberError("Selecciona un estudiante") 
-            
+                raise NumberError("Selecciona un estudiante")
+
             try:
-                evaluado = PerfilEstudiante.objects.get(id = evaluadoid)
+                evaluado = PerfilEstudiante.objects.get(id=evaluadoid)
             except PerfilEstudiante.DoesNotExist:
                 messages.error(request, "El estudiante que intentas evaluar, por alguna razón no aparece.")
-            
+
             for califica in calificaciones:
                 if califica == "Seleccionar una calificación":
                     raise EmptyField("Debes asignar una calificación")
                 if not califica.isdigit():
                     raise EmptyField("No se puede introducir letras al valor de la calificación ni dejarlo vacío")
-            
+
             for calificacionid, criterioid in zip(calificaciones, criterios_evaluados):
-                
-                calificacion = Calificacion.objects.get(id = calificacionid)
+                calificacion = Calificacion.objects.get(id=calificacionid)
                 criterio = Criterio.objects.get(id=criterioid)
-                Resultado.objects.create(nota = calificacion, criterio_evaluado = criterio, evaluacion = evaluacion, evaluado =evaluado, evaluador=perfil_evaluador )
-            Retroalimentracion.objects.create(estudiante_retroalimentacion= evaluado, retroalimentacion = retro_alimentacion, evaluacion= evaluacion)
+                Resultado.objects.create(nota=calificacion, criterio_evaluado=criterio, evaluacion=evaluacion, evaluado=evaluado, evaluador=perfil_evaluador)
+            
+            Retroalimentracion.objects.create(estudiante_retroalimentacion=evaluado, retroalimentacion=retro_alimentacion, evaluacion=evaluacion)
             grupo.has_evaluated = True
             evaluacion.evaluados += 1
             evaluacion.save()
             grupo.save()
-            messages.success(request,"Evaluación enviada")
-            
+            messages.success(request, "Evaluación enviada")
+
     except IntegrityError:
         messages.error(request, "Ya has evaluado a este estudiante")
     except EmptyField as e:
         messages.error(request, e)
     except NumberError as e:
         messages.error(request, e)
-        
-    return render(request, 'estudiante/evaluar.html', { "evaluador" : perfil_evaluador,
-                                                       "curso":curso, "estudiantes":estudiantes, 
-                                                       "evaluacion": evaluacion, 
-                                                       "criterios": criterios,
-                                                       "rubrica": rubrica, "grupo" : grupo})
+
+    return render(request, 'estudiante/evaluar.html', {
+        "evaluador": perfil_evaluador,
+        "curso": curso,
+        "estudiantes": estudiantes,
+        "evaluacion": evaluacion,
+        "criterios": criterios,
+        "rubrica": rubrica,
+        "grupo": grupo
+    })
 
 #Vistas del profesor
 
