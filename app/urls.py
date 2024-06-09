@@ -23,6 +23,7 @@ urlpatterns= [
     path('profesor/informes', views.profesor_informes, name="profesor_informes"),    
     path('profesor/ver_informes_curso/<int:curso_id>', views.ver_informe_curso, name="ver_informe_curso"),    
     path('profesor/ver_informes_curso/<int:curso_id>/evaluacion/<int:evaluacion_id>', views.ver_informe_evaluacion, name="ver_informe_evaluacion"),    
+    path('profesor/estudiantes_faltantes/<int:curso_id>/evaluacion/<int:evaluacion_id>', views.profesor_estudiantes_faltantes, name="profesor_estudiantes_faltantes"),    
     path('logout/', views.logout_usuario, name="logout"),
     path('administrador/', views.administrador, name="administrador"),
     path('administrador/gestion_de_docentes', views.administrador_gestion_de_docentes, name="administrador_gestion_de_docentes"),

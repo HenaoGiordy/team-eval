@@ -5,15 +5,18 @@
         <nav aria-label="breadcrumb" class="my-3 ml-3">
             <ol class="breadcrumb" style="background: none">
                 <li class="breadcrumb-item"><a href="{% url 'profesor_informes' %}">Informes</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'ver_informe_evaluacion' curso.id evaluacion.id %}">Evaluaciones {{curso.nombre}}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'ver_informe_curso' curso.id %}">Evaluaciones {{curso.nombre}}</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Resultados {{ evaluacion.nombre }}</li>
             </ol>
         </nav>
-        <div class="header-row d-flex gap-3 ">
-            <h2 class="titulos mt-n4"><b>Resultados {{ evaluacion.nombre }}</b></h2>
-            <h5><a href="#" data-toggle="tooltip" data-bs-placement="right" title="Calificaciones promedios por criterio">
+        <div class="header-row d-flex flex-column gap-3 ">
+            <div class="d-flex gap-3">
+            <h2 class="titulos "><b>Resultados {{ evaluacion.nombre }}</b></h2>
+            <a href="#" class="d-flex align-items-center" data-toggle="tooltip" data-bs-placement="right" title="Calificaciones promedios por criterio">
                 <i class="bi bi-question-circle-fill fs-3" ></i>
-            </a></h5>
+            </a>
+            </div>  
+            <a class="btn btn-outline-secondary" href="{% url "profesor_estudiantes_faltantes" curso.id evaluacion.id %}">Estudiantes Faltantes</a>
         </div>
     </div>
     

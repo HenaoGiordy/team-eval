@@ -632,6 +632,25 @@ def ver_informe_evaluacion(request, curso_id, evaluacion_id):
     }
     return render(request, 'profesor/ver_informe_evaluacion.html', context)
 
+@login_required
+def profesor_estudiantes_faltantes(request, curso_id, evaluacion_id):
+    curso = get_object_or_404(Curso, id=curso_id)
+    evaluacion = get_object_or_404(Evaluacion, id=evaluacion_id)
+    grupos = Grupo.objects.filter(curso=curso).prefetch_related('estudiantes')
+    
+        # Retrieve all results for this evaluation
+    resultados = Resultado.objects.filter(evaluacion=evaluacion)
+
+    # Create a dictionary to track who has evaluated whom
+    evaluaciones_dict = {}
+    for resultado in resultados:
+        evaluador_id = resultado.evaluador.id
+        evaluado_id = resultado.evaluado.id
+        if evaluador_id not in evaluaciones_dict:
+            evaluaciones_dict[evaluador_id] = set()
+        evaluaciones_dict[evaluador_id].add(evaluado_id)
+    
+    return render(request, 'profesor/estudiantes_faltantes.html',{"curso":curso,"evaluacion":evaluacion, "grupos":grupos, "evaluaciones_dict":evaluaciones_dict})
 
 #Gestión de rúbricas
 @login_required
