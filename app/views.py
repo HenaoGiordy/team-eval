@@ -914,6 +914,54 @@ def administrador_gestion_de_estudiantes(request):
                 messages.success(request, "Estudiante actualizado correctamente")
                 return redirect(reverse('administrador_gestion_de_estudiantes'))
             
+            if "guardar-cvs" in request.POST:
+                archivo = request.FILES.get("csv-estudiantes")
+                
+                if not archivo:
+                    messages.error(request, "No se ha seleccionado ningún archivo.")
+                    return redirect(reverse('administrador_gestion_de_estudiantes'))                
+                decoded_file = archivo.read().decode('utf-8').splitlines()
+                
+                reader = csv.DictReader(decoded_file, delimiter=';')
+                
+                # Limpiar el BOM si está presente, archivos excel
+                fieldnames = reader.fieldnames
+                if fieldnames and fieldnames[0].startswith('\ufeff'):
+                    fieldnames[0] = fieldnames[0][1:]
+                
+                # Verificar si los nombres de columna son correctos
+                if fieldnames != ["codigo estudiantil", "nombre estudiante", "apellidos estudiante", "correo electronico"]:
+                    messages.error(request, "El formato del archivo CSV no es válido.")
+                    return redirect(reverse('administrador_gestion_de_estudiantes'))                 
+                estudiantes_creados = 0
+                estudiantes_existentes = 0
+                with transaction.atomic():
+                    for row in reader:
+                        codigo = row.get('codigo estudiantil')
+                        nombre = row.get('nombre estudiante')
+                        apellidos = row.get('apellidos estudiante')
+                        email = row.get('correo electronico')
+                        
+                        if not (codigo and nombre and apellidos and email):
+                            messages.error(request, f"Faltan datos en la fila: {row}")
+                            continue
+
+                        user, created = User.objects.get_or_create(
+                            username=codigo,
+                            defaults={'first_name': nombre, 'last_name': apellidos, 'email': email, 'role': User.ROLES['ESTUDIANTE']}
+                        )
+                        
+                        if created:
+                            user.set_password(codigo)
+                            user.save()
+                            estudiantes_creados += 1
+                        else:
+                            estudiantes_existentes += 1
+                        
+                        
+
+                    messages.success(request, f"{estudiantes_creados} estudiantes creados, {estudiantes_existentes} ya existían en la base de datos")
+                
         except IntegrityError:
             messages.error(request, "Ya existe un estudiante con ese código.")
         
@@ -925,7 +973,9 @@ def administrador_gestion_de_estudiantes(request):
         
         except Exception as e:
             messages.error(request, f"Error al procesar la solicitud: {e}")
-    
+        pagination = Paginator(PerfilEstudiante.objects.all().order_by('-id'), 10)
+        page = request.GET.get('page')
+        estudiantes_lista = pagination.get_page(page)
     return render(request, 'administrador/gestion-de-estudiantes.html', {'estudiantes_lista': estudiantes_lista})
 
 @login_required
