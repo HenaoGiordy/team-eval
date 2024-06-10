@@ -2,10 +2,10 @@
     <h5 class="card-header">Lista de evaluaciones</h5>
     <thead>
       <tr>
-        <th scope="col" class="fw-bold">Nombre</th>
-        <th scope="col" class="fw-bold">Rúbrica</th>
-        <th scope="col" class="fw-bold">Fecha inicio</th>
-        <th scope="col" class="fw-bold">Fecha fin</th>
+        <th scope="col" class="fw-bold text-center">Nombre</th>
+        <th scope="col" class="fw-bold text-center">Rúbrica</th>
+        <th scope="col" class="fw-bold text-center">Fecha inicio</th>
+        <th scope="col" class="fw-bold text-center">Fecha fin</th>
         <th scope="col" class="fw-bold d-flex">
           <span class="fw-bold text-center">Evaluaciones Completadas</span>
           <a href="#" class="d-flex align-items-center" data-toggle="tooltip" data-bs-placement="right" title="Estudiantes que han evaluado a todos sus compañeros.">
@@ -18,10 +18,10 @@
       {% if evaluaciones%}
         {%for evaluacion in evaluaciones%}
         <tr>
-          <td>{{ evaluacion.nombre }}</td>
-          <td>{{ evaluacion.rubrica }}</td>
-          <td>{{ evaluacion.fecha_inicio }} </td>
-          <td>{{ evaluacion.fecha_fin }}</td>
+          <td class="text-center">{{ evaluacion.nombre }}</td>
+          <td class="text-center">{{ evaluacion.rubrica }}</td>
+          <td class="text-center">{{ evaluacion.fecha_inicio }} </td>
+          <td class="text-center">{{ evaluacion.fecha_fin }}</td>
           <td class="text-center">{{ evaluacion.evaluados }}</td>
         </tr>
         {%endfor%}
