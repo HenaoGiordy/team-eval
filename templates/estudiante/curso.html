@@ -1,6 +1,13 @@
 {% extends 'estudiante/mainestudiante.html' %}
 {% block content %}
 <div class="container__admin">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert  {{ message.tags }} position-absolute" style="z-index: 1" role="alert">
+        <p>{{ message }}</p>
+    </div>
+    {% endfor %}
+{% endif %}
     <div class="container">
         <nav aria-label="breadcrumb" class="my-3 ml-3">
             <ol class="breadcrumb" style="background: none">

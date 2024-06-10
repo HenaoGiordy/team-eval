@@ -257,14 +257,18 @@ def evaluar(request, evaluacionid, grupoid):
             evaluacion.save()
             grupo.save()
             messages.success(request, "Evaluación enviada")
-
+            
     except IntegrityError:
         messages.error(request, "Ya has evaluado a este estudiante")
     except EmptyField as e:
         messages.error(request, e)
     except NumberError as e:
         messages.error(request, e)
-
+        
+    #Redirigir a la vistaevaluaciones cuando no hayan estudiantes por evaluar
+    if not estudiantes.exists():
+                return redirect(reverse("estudiante_curso", args=[curso.id]))
+            
     return render(request, 'estudiante/evaluar.html', {
         "evaluador": perfil_evaluador,
         "curso": curso,
