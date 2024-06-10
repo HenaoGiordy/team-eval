@@ -2,20 +2,20 @@
   <h5 class="card-header mt-3">Lista de cursos</h5>
     <thead>
       <tr>
-        <th scope="col" class="fw-bold">Curso</th>
-        <th scope="col" class="fw-bold">Código curso</th>
-        <th scope="col" class="fw-bold">Periodo académico</th>
-        <th scope="col" class="fw-bold">Cantidad evaluaciones</th>
-        <th scope="col" class="fw-bold">Finalizado</th>
-        <th scope="col" class="fw-bold">Informe</th>
+        <th scope="col" class="fw-bold text-center">Curso</th>
+        <th scope="col" class="fw-bold text-center">Código curso</th>
+        <th scope="col" class="fw-bold text-center">Periodo académico</th>
+        <th scope="col" class="fw-bold text-center">Cantidad evaluaciones</th>
+        <th scope="col" class="fw-bold text-center">Finalizado</th>
+        <th scope="col" class="fw-bold text-center">Informe</th>
       </tr>
     </thead>
     <tbody>
         {% for curso in cursos%}
       <tr>
-        <td>{{ curso.nombre }}</td>
-        <td>{{ curso.codigo }}</td>
-        <td>{{ curso.get_periodo_academico }}</td>
+        <td class="text-center">{{ curso.nombre }}</td>
+        <td class="text-center">{{ curso.codigo }}</td>
+        <td class="text-center">{{ curso.get_periodo_academico }}</td>
         <td class="text-center">{{ curso.num_evaluaciones }}</td>
         <td class="text-center">{% if curso.has_finished %}<span class="text-success"> Sí </span> {% else %} <span class="text-danger">No</span> {% endif %}</td>
         <td class="text-center"><a href="{% url "ver_informe_curso" curso.id%}" class="btn btn-primary bi bi-eye"></a></td>
