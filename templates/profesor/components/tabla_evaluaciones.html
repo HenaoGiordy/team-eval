@@ -7,7 +7,12 @@
         <th scope="col" class="fw-bold">Rúbrica</th>
         <th scope="col" class="fw-bold">Fecha inicio</th>
         <th scope="col" class="fw-bold">Fecha fin</th>
-        <th scope="col" class="fw-bold">Estudiantes evaluados</th>
+        <th scope="col" class="fw-bold d-flex">
+          <span class="fw-bold text-center">Evaluaciones Completadas</span>
+          <a href="#" class="d-flex align-items-center" data-toggle="tooltip" data-bs-placement="right" title="Estudiantes que han evaluado a todos sus compañeros.">
+            <i class="bi bi-question-circle-fill ml-1"></i>
+          </a>
+      </th>
       </tr>
     </thead>
     <tbody>
@@ -18,7 +23,7 @@
           <td>{{ evaluacion.rubrica }}</td>
           <td>{{ evaluacion.fecha_inicio }} </td>
           <td>{{ evaluacion.fecha_fin }}</td>
-          <td>{{ evaluacion.evaluados }}</td>
+          <td class="text-center">{{ evaluacion.evaluados }}</td>
         </tr>
         {%endfor%}
       {% endif%}

@@ -253,7 +253,6 @@ def evaluar(request, evaluacionid, grupoid):
             
             Retroalimentracion.objects.create(estudiante_retroalimentacion=evaluado, retroalimentacion=retro_alimentacion, evaluacion=evaluacion)
             grupo.has_evaluated = True
-            evaluacion.evaluados += 1
             evaluacion.save()
             grupo.save()
             messages.success(request, "Evaluación enviada")
@@ -267,7 +266,8 @@ def evaluar(request, evaluacionid, grupoid):
         
     #Redirigir a la vistaevaluaciones cuando no hayan estudiantes por evaluar
     if not estudiantes.exists():
-                return redirect(reverse("estudiante_curso", args=[curso.id]))
+        evaluacion.evaluados += 1
+        return redirect(reverse("estudiante_curso", args=[curso.id]))
             
     return render(request, 'estudiante/evaluar.html', {
         "evaluador": perfil_evaluador,
