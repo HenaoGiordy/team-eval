@@ -14,12 +14,21 @@
                 <td>{{ evaluador.nombre }} {{ evaluador.user.last_name }}</td>
                 {% for evaluado in grupo.estudiantes.all %}
                     <td class="text-center">
+                        
                         {% if evaluado.id == evaluador.id %}
                             <i class="bi bi-dash fs-4"></i>
                         {% else %}
-                        {% if evaluador.id in evaluaciones_dict|default:evaluado.id %}
-                                <i class="bi bi-check-circle-fill text-success fs-4"></i>
-                            {% else %}
+                            {% if evaluador.id in evaluaciones_dict %}
+                                    {% for key, value in evaluaciones_dict.items %}
+                                        {% if key == evaluador.id %}
+                                            {% if evaluado.id in value  %}
+                                                <i class="bi bi-check-circle-fill text-success fs-4"></i>
+                                                {% else %}
+                                                <i class="bi bi-x-circle-fill text-danger fs-4"></i>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% else %}
                                 <i class="bi bi-x-circle-fill text-danger fs-4"></i>
                             {% endif %}
                         {% endif %}
