@@ -674,12 +674,18 @@ def profesor_gestion_rubricas(request):
                 
                 if not nombre_rubrica or not nombre_rubrica.strip():
                     messages.error(request, "No puede estar vacío el campo de la rúbrica")
-                    return redirect('administrador_gestion_de_evaluacion')
+                    return redirect('profesor_gestion_rubricas')
                 
                 if not descripciones_criterios or not descripciones_escalas:
                     messages.error(request, "No pueden estar vacíos los campos de criterios ni escalas")
                     return redirect('profesor_gestion_rubricas')
                 
+                for calificacion in escalas:
+                    try:
+                        calificaciones = int(calificacion)
+                    except:
+                        messages.error(request, "Las calificaciones deben ser un valor entre 0-10")
+                        return redirect('profesor_gestion_rubricas')
                 # Verificar que la suma de los pesos sea igual a 1
                 suma_pesos = sum(float(peso) for peso in pesos_criterios)
                 if suma_pesos != 1.0:
@@ -687,6 +693,8 @@ def profesor_gestion_rubricas(request):
                     return redirect('profesor_gestion_rubricas')
                 
                 nombre_rubrica = nombre_rubrica.lower()
+                
+                
                 
                 # Crear la rúbrica
                 rubrica = Rubrica.objects.create(nombre=nombre_rubrica, autor = request.user)
@@ -1111,6 +1119,13 @@ def administrador_gestion_de_evaluacion(request):
                 if not nombre_rubrica or not nombre_rubrica.strip():
                     messages.error(request, "No puede estar vacío el campo de la rúbrica")
                     return redirect('administrador_gestion_de_evaluacion')
+                
+                for calificacion in escalas:
+                    try:
+                        calificaciones = int(calificacion)
+                    except:
+                        messages.error(request, "Las calificaciones deben ser un valor entre 0-10")
+                        return redirect('administrador_gestion_de_evaluacion')
                 
                 if not descripciones_criterios or not descripciones_escalas:
                     messages.error(request, "No pueden estar vacíos los campos de criterios ni escalas")
