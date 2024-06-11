@@ -5,17 +5,17 @@ from decimal import InvalidOperation
 from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
-from django.db.models import ProtectedError, Sum, Count, FloatField, F,ExpressionWrapper, Avg, Subquery, OuterRef
+from django.db.models import ProtectedError, Sum, Count, FloatField, F,ExpressionWrapper, Avg
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from TeamEval import settings
-from app.exeptions import AlreadyExist, AutorNoAutorizado, EmptyField, EstudianteInactivo, GrupoHasEvaluated, NumberError, PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso, RubricaNoEncontrada
+from app.exeptions import AlreadyExist, AutorNoAutorizado, EmptyField, EstudianteInactivo, GrupoHasEvaluated, InvalidDate, NumberError, PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso, RubricaNoEncontrada
 from app.forms import MinimalPasswordChangeForm, UsernameForm
 from app.models import  Calificacion, Criterio, Evaluacion, Resultado, Retroalimentracion, Rubrica, User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
 from django.core.exceptions import ValidationError
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.paginator import Paginator
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -465,17 +465,29 @@ def profesor_evaluacion_curso(request, curso_id):
     fecha_inicio = request.POST.get("fecha-inicio")
     fecha_fin = request.POST.get("fecha-fin")
     rubrica_id = request.POST.get("guardar-evaluacion")
+    fecha_actual = datetime.now().date()
+    
     try:
         if request.method == "POST":
             rubrica = Rubrica.objects.get(id = rubrica_id)
             if nombre_rubrica != rubrica.nombre +"-" +rubrica.autor.first_name:
                 raise RubricaNoEncontrada("No se encontró una rúbrica con ese nombre")
             
+            fecha_incio_validacion = datetime.strptime(fecha_inicio, '%Y-%m-%d').date()
+            fecha_fin_validacion = datetime.strptime(fecha_fin, '%Y-%m-%d').date()
+            
+            if fecha_incio_validacion < fecha_actual:
+                raise InvalidDate("La fecha inicial no puede ser inferior a la fecha actual")
+            if fecha_fin_validacion <= fecha_actual:
+                raise InvalidDate("la fecha final no puede ser inferior o igual a la fecha actual.")
+            
+            
             rubrica.is_used = True
             rubrica.save()
             Evaluacion.objects.create(fecha_inicio = fecha_inicio, fecha_fin = fecha_fin, curso = curso, rubrica = rubrica, nombre = nombre_evaluacion)
             messages.success(request, "Evaluación creada exitosamente")
-    
+    except InvalidDate as e:
+        messages.error(request, e)
     except RubricaNoEncontrada as e:
         messages.error(request, e)
     except Exception as e:
