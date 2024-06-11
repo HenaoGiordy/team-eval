@@ -11,7 +11,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from TeamEval import settings
-from app.exeptions import AlreadyExist, AutorNoAutorizado, EmptyField, EstudianteInactivo, NumberError, PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso, RubricaNoEncontrada
+from app.exeptions import AlreadyExist, AutorNoAutorizado, EmptyField, EstudianteInactivo, GrupoHasEvaluated, NumberError, PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso, RubricaNoEncontrada
 from app.forms import MinimalPasswordChangeForm, UsernameForm
 from app.models import  Calificacion, Criterio, Evaluacion, Resultado, Retroalimentracion, Rubrica, User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
 from django.core.exceptions import ValidationError
@@ -267,6 +267,7 @@ def evaluar(request, evaluacionid, grupoid):
     #Redirigir a la vistaevaluaciones cuando no hayan estudiantes por evaluar
     if not estudiantes.exists():
         evaluacion.evaluados += 1
+        evaluacion.save()
         return redirect(reverse("estudiante_curso", args=[curso.id]))
             
     return render(request, 'estudiante/evaluar.html', {
@@ -556,6 +557,9 @@ def profesor_grupo(request, curso_id):
                 estudiante = get_object_or_404(PerfilEstudiante, id=estudiante_codigo)
                 grupo = get_object_or_404(Grupo, id=grupo_id)
                 
+                if grupo.has_evaluated:
+                    raise GrupoHasEvaluated("El grupo ya empezó a evaluar, no puedes eliminar estudiantes.")
+                
                 grupo.estudiantes.remove(estudiante)
                 messages.success(request, "Estudiante eliminado del grupo exitosamente.")
                 
@@ -576,6 +580,9 @@ def profesor_grupo(request, curso_id):
                 
     except EmptyField as e:   
         messages.error(request, e)
+        
+    except GrupoHasEvaluated as e:
+        messages.warning(request, e)
     return render(request, 'profesor/grupo.html', {"curso_actual" : curso_actual, "curso": curso, "grupos": grupos})
 
 #Informes
