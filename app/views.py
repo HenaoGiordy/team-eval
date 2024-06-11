@@ -75,7 +75,7 @@ def request_username(request):
                 })
                 send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email])
                 
-                messages.success(request, 'Se ha enviado un enlace de restablecimiento de contraseña a tu correo electrónico.')
+                messages.success(request, f'Se ha enviado un enlace de restablecimiento de contraseña a tu correo electrónico {user.email}.')
                 return redirect('login')
             except User.DoesNotExist:
                 messages.error(request, 'El nombre de usuario no existe.')
