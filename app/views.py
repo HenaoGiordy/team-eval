@@ -858,6 +858,15 @@ def administrador_gestion_de_docentes(request):
                 usuario.username = request.POST.get('edit-documento')
                 usuario.email = request.POST.get('edit-email')
                 usuario.is_active = request.POST.get('edit-estado')
+                
+                profesor = PerfilProfesor.objects.get(user = user_id)
+                cursos_activos = Curso.objects.filter(profesor=profesor, has_finished=False)
+
+                if usuario.is_active == "False":
+                    if cursos_activos.exists():
+                        messages.warning(request, "El profesor tiene cursos Activos, no puede estar inactivo")
+                        return redirect(reverse("administrador_gestion_de_docentes"))
+                
                 usuario.save()
                 messages.success(request, "Docente actualizado correctamente")
                 return redirect(reverse('administrador_gestion_de_docentes'))
