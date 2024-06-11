@@ -370,7 +370,7 @@ def detalle_curso(request, curso_id):
                 grupos_asociados = Grupo.objects.filter(curso=curso)
                 
                 for grupo in grupos_asociados:
-                    if grupo.has_evaluated:
+                    if grupo.has_evaluated and estudiante_a_eliminar in grupo.estudiantes.all():
                         raise GrupoHasEvaluated("No puedes eliminar al estudiante, porque el grupo ya ha evaluado.")
                     grupo.estudiantes.remove(estudiante_a_eliminar)
                 
