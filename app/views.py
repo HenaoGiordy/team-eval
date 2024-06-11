@@ -366,17 +366,23 @@ def detalle_curso(request, curso_id):
             estudiante_id = request.POST.get("eliminar-estudiante")
             try:
                 estudiante_a_eliminar = PerfilEstudiante.objects.get(user__id=estudiante_id)
-                estudiante_a_eliminar.cursos.remove(curso)
+                
                 grupos_asociados = Grupo.objects.filter(curso=curso)
                 
                 for grupo in grupos_asociados:
+                    if grupo.has_evaluated:
+                        raise GrupoHasEvaluated("No puedes eliminar al estudiante, porque el grupo ya ha evaluado.")
                     grupo.estudiantes.remove(estudiante_a_eliminar)
-                    
+                
+                estudiante_a_eliminar.cursos.remove(curso)
                 messages.success(request, "Estudiante eliminado del curso exitosamente")
                 estudiantes_lista_paginada = curso.perfilestudiante_set.all()
+                
             except PerfilEstudiante.DoesNotExist:
                 messages.error(request, "No se encontró el estudiante para eliminar")
-        
+            except GrupoHasEvaluated as e:
+                messages.warning(request, e)
+                
         if "finalizar-curso" in request.POST:
             curso_id = request.POST.get("finalizar-curso")
             curso = Curso.objects.get(id = curso_id)
