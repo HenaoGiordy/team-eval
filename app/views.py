@@ -687,10 +687,15 @@ def profesor_gestion_rubricas(request):
                         messages.error(request, "Las calificaciones deben ser un valor entre 0-10")
                         return redirect('profesor_gestion_rubricas')
                 # Verificar que la suma de los pesos sea igual a 1
-                suma_pesos = sum(float(peso) for peso in pesos_criterios)
-                if suma_pesos != 1.0:
-                    messages.error(request, "La suma de los pesos debe ser igual a 1")
-                    return redirect('profesor_gestion_rubricas')
+                try:
+                    suma_pesos = sum(float(peso) for peso in pesos_criterios)
+                    if suma_pesos != 1.0:
+                        messages.error(request, "La suma de los pesos debe ser igual a 1")
+                        return redirect('profesor_gestion_rubricas')
+                except:
+                    messages.error(request, "Debes introducir valores decimales en los criterios")
+                    redirect('profesor_gestion_rubricas')
+                
                 
                 nombre_rubrica = nombre_rubrica.lower()
                 
@@ -1132,10 +1137,14 @@ def administrador_gestion_de_evaluacion(request):
                     return redirect('administrador_gestion_de_evaluacion')
                 
                 # Verificar que la suma de los pesos sea igual a 1
-                suma_pesos = sum(float(peso) for peso in pesos_criterios)
-                if suma_pesos != 1.0:
-                    messages.error(request, "La suma de los pesos debe ser igual a 1")
-                    return redirect('administrador_gestion_de_evaluacion')
+                try:
+                    suma_pesos = sum(float(peso) for peso in pesos_criterios)
+                    if suma_pesos != 1.0:
+                        messages.error(request, "La suma de los pesos debe ser igual a 1")
+                        return redirect('administrador_gestion_de_evaluacion')
+                except:
+                    messages.error(request, "Debes introducir valores decimales en los criterios")
+                    redirect('administrador_gestion_de_evaluacion')
                 
                 nombre_rubrica = nombre_rubrica.lower()
                 

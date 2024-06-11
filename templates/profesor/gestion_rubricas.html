@@ -63,8 +63,6 @@
 {%include "profesor/components/table_rubricas.html"%}
 </div>
 </div>
-
-{% endblock %}
 <script>
     document.getElementById('submit-btn-rubrica').addEventListener('click', function(event) {
         var nombreRubrica = document.getElementById('nombre-rubrica');
@@ -125,3 +123,4 @@
         }, 3000); // Esperar 5 segundos antes de iniciar el desvanecimiento
     }
 </script>
+{% endblock %}
