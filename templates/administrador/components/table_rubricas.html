@@ -27,7 +27,7 @@
             {%include "administrador/components/modal_edit_rubrica.html"%}
             {%include "administrador/components/modal_delete_rubrica.html"%}
             {%include "administrador/components/modal_ver.html"%}
-            <button type="button" class="btn btn-danger" {% if rubrica.is_used%} disabled {%endif%} data-id="{{ rubrica.id }}" name="delete-rubrica" data-bs-toggle="modal" data-bs-target="#eliminar-rubrica"><i class="bi bi-trash"></i></button>
+            <button type="button" class="btn btn-danger" {% if rubrica.is_used%} disabled {%endif%} data-id="{{ rubrica.id }}" name="delete-rubrica" data-bs-toggle="modal" data-bs-target="#eliminar-rubrica-{{rubrica.id}}"><i class="bi bi-trash"></i></button>
           </td>
         </tr>
 
