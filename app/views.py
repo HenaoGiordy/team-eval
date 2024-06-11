@@ -15,7 +15,7 @@ from app.exeptions import AlreadyExist, AutorNoAutorizado, EmptyField, Estudiant
 from app.forms import MinimalPasswordChangeForm, UsernameForm
 from app.models import  Calificacion, Criterio, Evaluacion, Resultado, Retroalimentracion, Rubrica, User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
 from django.core.exceptions import ValidationError
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -582,11 +582,16 @@ def profesor_grupo(request, curso_id):
 @login_required
 def profesor_informes(request):
     usuario = request.user
-    profesor = PerfilProfesor.objects.get(user = usuario)
-    cursos = Curso.objects.filter(profesor=profesor).annotate(num_evaluaciones=Count('evaluacion'))
-    return render(request, 'profesor/informes.html', {"cursos" : cursos})
+    profesor = PerfilProfesor.objects.get(user=usuario)
+    cursos_list = Curso.objects.filter(profesor=profesor).annotate(num_evaluaciones=Count('evaluacion'))
 
-from django.db.models import Sum
+    # Pagination
+    paginator = Paginator(cursos_list, 10)
+    page = request.GET.get('page')
+    lista_cursos = paginator.get_page(page)
+    
+    return render(request, 'profesor/informes.html', {"lista_cursos": lista_cursos})
+
 
 @login_required
 def ver_informe_curso(request, curso_id):

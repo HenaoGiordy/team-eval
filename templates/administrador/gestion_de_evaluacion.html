@@ -77,6 +77,11 @@
         for (var i = 0; i < inputs.length; i++) {
             total += parseFloat(inputs[i].value);
         }
+        
+        if (total >= 0.99){
+            total = 1
+        }
+        
 
         // Verificar si la suma es igual a 1
         if (total !== 1) {

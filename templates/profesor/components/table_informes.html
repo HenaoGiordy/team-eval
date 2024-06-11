@@ -11,15 +11,31 @@
       </tr>
     </thead>
     <tbody>
-        {% for curso in cursos%}
+        {% for curso in lista_cursos %}
       <tr>
         <td class="text-center">{{ curso.nombre }}</td>
         <td class="text-center">{{ curso.codigo }}</td>
         <td class="text-center">{{ curso.get_periodo_academico }}</td>
         <td class="text-center">{{ curso.num_evaluaciones }}</td>
         <td class="text-center">{% if curso.has_finished %}<span class="text-success"> Sí </span> {% else %} <span class="text-danger">No</span> {% endif %}</td>
-        <td class="text-center"><a href="{% url "ver_informe_curso" curso.id%}" class="btn btn-primary bi bi-eye"></a></td>
+        <td class="text-center"><a href="{% url "ver_informe_curso" curso.id %}" class="btn btn-primary bi bi-eye"></a></td>
       </tr>
       {% endfor %}
     </tbody>
-  </table>
+</table>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    {% if lista_cursos.has_previous %}
+    <li class="page-item"><a class="page-link" href="?page=1">Primer Página</a></li>
+    <li class="page-item"><a class="page-link" href="?page={{ lista_cursos.previous_page_number }}">&laquo Anterior</a></li>
+    {%endif%}
+    
+    <li class="page-item disabled"><a class="page-link" href="#"> Página {{ lista_cursos.number }} de {{ lista_cursos.paginator.num_pages }}</a></li>
+
+    {%if lista_cursos.has_next%}
+    <li class="page-item"><a class="page-link" href="?page={{ lista_cursos.next_page_number }}">Siguiente</a></li>
+    <li class="page-item"><a class="page-link" href="?page={{ lista_cursos.paginator.num_pages }}">&raquo última Página</a></li>
+    {%endif%}
+  </ul>
+</nav>
