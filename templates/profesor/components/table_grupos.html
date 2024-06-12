@@ -48,12 +48,10 @@
                 if (parseInt(numIntegrantes) > 0) {
                     event.preventDefault();
                     const mensaje = document.createElement("div");
-                    mensaje.classList.add("alert", "alert-danger", "mt-3", "text-center", 'position-absolute');
+                    mensaje.classList.add("alert", "alert-danger", "text-center", 'position-absolute');
                     mensaje.setAttribute("role", "alert");
                     mensaje.textContent = "No se puede eliminar el grupo porque tiene estudiantes asignados.";
                     tr.after(mensaje);
-                    mensaje.style.top = "7%";
-                    
                     mensaje.style.left = "39%";
                     
 

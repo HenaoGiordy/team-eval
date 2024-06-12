@@ -8,13 +8,13 @@
       {% for criterio in criterios %}
         <th class="fw-bold text-center">{{ criterio.descripcion }} <span class="text-primary">(Peso: {{ criterio.peso }})</span></th>
       {% endfor %}
-      <th class="text-center fw-bold">Promedio Ponderada</th>
+      <th class="text-center fw-bold">Promedio ponderado</th>
     </tr>
   </thead>
   <tbody>
     {% for estudiante in grupo.estudiantes.all %}
     <tr>
-        <td class="text-center">{{ estudiante.nombre }}</td>
+        <td class="text-center">{{ estudiante.nombre }} {{ estudiante.user.last_name }}</td>
       
         {% for criterio in criterios %}
             {% with estudiante_id=estudiante.id %}

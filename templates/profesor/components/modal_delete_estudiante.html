@@ -9,11 +9,6 @@
         <div class="modal-body">
           <p>¿Seguro que deseas eliminar a <span class="fw-bold">{{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</span> ?</p>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
-            <b>Cancelar</b>
-            <i class="bi bi-x-lg"></i>
-          </button>
           <!--Botón para eliminar el estudiante-->
           <form method="POST">
             {% csrf_token %} 
@@ -21,6 +16,11 @@
             <b>Eliminar</b>
             <i class="bi bi-trash"></i>
           </button>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
+              <b>Cancelar</b>
+              <i class="bi bi-x-lg"></i>
+            </button>
         </form>
         </div>
       </div>
