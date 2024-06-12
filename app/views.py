@@ -460,7 +460,7 @@ def detalle_curso(request, curso_id):
 @login_required
 def profesor_evaluacion_curso(request, curso_id):
     curso = Curso.objects.get(id = curso_id)
-    evaluaciones = Evaluacion.objects.filter(curso=curso)
+    evaluaciones = Evaluacion.objects.filter(curso=curso).order_by("-id")
     nombre_evaluacion = request.POST.get("nombre-evaluacion")
     nombre_rubrica = request.POST.get("rubrica")
     fecha_inicio = request.POST.get("fecha-inicio")
@@ -484,7 +484,7 @@ def profesor_evaluacion_curso(request, curso_id):
                 
                 if fecha_incio_validacion < fecha_actual:
                     raise InvalidDate("La fecha inicial no puede ser inferior a la fecha actual")
-                if fecha_fin_validacion <= fecha_actual:
+                if fecha_fin_validacion < fecha_actual:
                     raise InvalidDate("la fecha final no puede ser inferior o igual a la fecha actual.")
                 
                 
@@ -492,6 +492,7 @@ def profesor_evaluacion_curso(request, curso_id):
                 rubrica.save()
                 Evaluacion.objects.create(fecha_inicio = fecha_inicio, fecha_fin = fecha_fin, curso = curso, rubrica = rubrica, nombre = nombre_evaluacion)
                 messages.success(request, "Evaluación creada correctamente")
+                return redirect(reverse("crear_evaluacion", args=[curso.id]))
             
             if "edit-evaluacion" in request.POST:
                 evaluacion_id = request.POST.get("edit-evaluacion")
@@ -502,9 +503,9 @@ def profesor_evaluacion_curso(request, curso_id):
                 
                 evaluacion_fecha_fin = datetime.strptime(evaluacion_fecha_fin, '%Y-%m-%d').date()
                 
-                if evaluacion_fecha_fin <= fecha_actual:
+                if evaluacion_fecha_fin < fecha_actual:
                     raise InvalidDate("la fecha final no puede ser inferior o igual a la fecha actual.")
-                if evaluacion_fecha_fin < evaluacion_edit.fecha_fin:
+                if evaluacion_fecha_fin < evaluacion_edit.fecha_inicio:
                     raise InvalidDate("La fecha final no puede ser inferior a la fecha inicial")
                     
                 evaluacion_edit.fecha_fin = evaluacion_fecha_fin
