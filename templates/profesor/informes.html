@@ -2,8 +2,10 @@
 {%load static%}
 {% block content %}
 <div  class="container__admin ">
-    <h2 class="titulos"><b>Informes</b></h2>
-    <div class="w-75">
+    <h2 class="titulos"><b>Informes</b>
+        <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Se muestran los informes disponibles por curso, cada uno tiene evaluaciones creadas en el curso con sus respectivos resultados por grupo">
+            <i class="bi bi-question-circle-fill ml-1"></i>
+        </a></h2>    <div class="w-75">
     {% include "profesor/components/table_informes.html" %}
     </div>
 </div>

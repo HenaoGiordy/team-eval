@@ -8,20 +8,28 @@
         </div>
         {% endfor %}
     {% endif %}
-  <h2 class="titulos"><b>Lista de cursos</b></h2>
+    <h2 class="titulos"><b>Lista de cursos</b>
+      <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Lista de cursos asignados">
+        <i class="bi bi-question-circle-fill ml-1"></i>
+    </a></h4>
+    </h2>
 </div>
 <div class="container--cursos">
     {% if cursos%} {%for curse in cursos%}
     <div class="card mt-n1">
       <h5 class="card-header" style="text-align: center;"><b>{{ curse }}</b></h5>
       <div class="card-body">
-        <p class="card-text"><i class="bi bi-journal-text mr-1"></i><b>Código curso:</b> {{ curse.codigo }}</p>
+        <p class="card-text"><i class="bi bi-journal-text mr-1"></i><b>Código:</b> {{ curse.codigo }}</p>
         <p class="card-text"><i class="bi bi-mortarboard mr-1"></i><b>Cantidad estudiantes: </b> {{ curse.numero_estudiantes }}</p>
         <p class="card-text"><i class="bi bi-people-fill mr-1"></i><b>Cantidad grupos: </b> {{ curse.numero_grupos }}</p>
         <a href="{% url 'detalle_curso' curse.id %}" class="btn btn-primary d-flex justify-content-center align-items-center mb-1">
-          Ir a curso<i class="bi bi-chevron-right ml-1"></i></a>
+          <b>Ir a curso</b><i class="bi bi-chevron-right ml-1"></i></a>
       </div>
     </div>
-  {% endfor %} {% else %} <h3 style="text-align: center; margin-top: 20%">No tienes cursos vigentes</h3>{% endif %}
+    {% endfor %} {% else %} 
+    <div style="text-align: center;">
+      <img src="../static/img/ausencia.png" width="250" height="350"/>
+      <h3>No tienes cursos</h3>
+    {% endif %}
 </div>
 {%endblock%}

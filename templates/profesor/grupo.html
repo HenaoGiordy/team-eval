@@ -4,7 +4,7 @@
     <!--Alertas / notificaciones-->
     {% if messages %}
         {% for message in messages %}
-            <div class="alert {{ message.tags }} position-absolute mt-5" style="z-index: 1" role="alert">
+            <div class="alert {{ message.tags }} position-absolute" style="z-index: 1" role="alert">
                 <p>{{ message }}</p>
             </div>
         {% endfor %}
@@ -13,10 +13,10 @@
     <!--Formulario crear grupos-->
     <div class="container">
         <nav aria-label="breadcrumb" class="mt-3 ml-3">
-            <ol class="breadcrumb" style="background: none">
+            <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'profesor_cursos' %}">Cursos</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'detalle_curso' curso.id %}">{{ curso.nombre }}</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Grupos</li>
+                <li class="breadcrumb-item active" aria-current="page">Grupos del curso</li>
             </ol>
         </nav>    
 
@@ -30,7 +30,11 @@
     </div> 
 
     <div class="card-form mt-2 pb-2">
-        <h5 class="card-header">Creación de un grupo</h5>
+        <h5 class="card-header">Creación de un grupo
+            <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Primero se crea el grupo y luego se le agregan estudiantes con el botón (+) presente en la lista de grupos (tabla inferior)">
+                <i class="bi bi-question-circle-fill ml-1"></i>
+            </a>
+        </h5>        
         <div class="card-body">
             <form method="POST">
                 {% csrf_token %}

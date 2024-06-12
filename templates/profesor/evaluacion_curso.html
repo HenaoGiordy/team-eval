@@ -5,7 +5,7 @@
     <!--Alertas / notificaciones-->
     {% if messages %}
         {% for message in messages %}
-            <div class="alert  {{ message.tags }}  position-absolute mt-5" style="z-index: 1" role="alert">
+            <div class="alert  {{ message.tags }}  position-absolute" style="z-index: 1" role="alert">
                 <p>{{ message }}</p>
             </div>
         {% endfor %}
@@ -14,10 +14,10 @@
     <!--Formulario gestión de evaluación-->
     <div class="container">
         <nav aria-label="breadcrumb" class="mt-3 ml-3">
-            <ol class="breadcrumb" style="background: none">
+            <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'profesor_cursos' %}">Cursos</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'detalle_curso' curso.id %}">{{curso}}</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Evaluación</li>
+                <li class="breadcrumb-item active" aria-current="page">Evaluaciones del curso</li>
             </ol>
         </nav>   
 
