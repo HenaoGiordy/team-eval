@@ -468,6 +468,7 @@ def profesor_evaluacion_curso(request, curso_id):
     fecha_actual = datetime.now().date()
     
     for evaluacion in evaluaciones:
+        evaluacion.fecha_inicio = evaluacion.fecha_inicio.strftime('%Y-%m-%d')
         evaluacion.fecha_fin = evaluacion.fecha_fin.strftime('%Y-%m-%d')
     
     try:
@@ -491,8 +492,27 @@ def profesor_evaluacion_curso(request, curso_id):
                 Evaluacion.objects.create(fecha_inicio = fecha_inicio, fecha_fin = fecha_fin, curso = curso, rubrica = rubrica, nombre = nombre_evaluacion)
                 messages.success(request, "Evaluación creada correctamente")
             
-            if "edit-rubrica" in request.POST:
-                pass
+            if "edit-evaluacion" in request.POST:
+                evaluacion_id = request.POST.get("edit-evaluacion")
+                evaluacion_nombre = request.POST.get("evaluacion-nombre")
+                evaluacion_fecha_fin = request.POST.get("evaluacion-fecha-fin")
+                
+                evaluacion_edit = Evaluacion.objects.get(id = evaluacion_id)
+                
+                evaluacion_fecha_fin = datetime.strptime(evaluacion_fecha_fin, '%Y-%m-%d').date()
+                
+                if evaluacion_fecha_fin <= fecha_actual:
+                    raise InvalidDate("la fecha final no puede ser inferior o igual a la fecha actual.")
+                if evaluacion_fecha_fin < evaluacion_edit.fecha_fin:
+                    raise InvalidDate("La fecha final no puede ser inferior a la fecha inicial")
+                    
+                evaluacion_edit.fecha_fin = evaluacion_fecha_fin
+                evaluacion_edit.nombre = evaluacion_nombre
+                evaluacion_edit.save()
+                
+                
+                messages.success(request, "La evaluación se ha editado satisfactoriamente.")
+                return redirect(reverse("crear_evaluacion", args=[curso.id]))
             
     except InvalidDate as e:
         messages.error(request, e)

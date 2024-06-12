@@ -6,18 +6,18 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form method="POST">
+            {% csrf_token %} 
         <div class="modal-body d-flex flex-column align-items-center">
-                {% csrf_token %} 
                 <div class="w-75  ">
                     <div class="form-group">
                         <i class="bi bi-pencil"></i>
                         <label for="nombre-evaluacion">Nombre Evaluación</label>
-                        <input type="text" name="nombre-evaluacion" value="{{evaluacion.nombre }}" class="form-control" id="nombre-evaluacion" required>
+                        <input type="text" name="evaluacion-nombre" value="{{evaluacion.nombre }}" class="form-control" id="nombre-evaluacion" required>
                     </div> 
                     <div class="form-group ">
                         <i class="bi bi-calendar4-week"></i>
                         <label for="fecha-fin">Fecha fin</label>
-                        <input type="date" name="fecha-fin" value="{{evaluacion.fecha_fin }}" class="form-control text-center" id="fecha-fin" required>
+                        <input type="date" name="evaluacion-fecha-fin" value="{{evaluacion.fecha_fin }}" class="form-control text-center" id="fecha-fin" required>
                     </div>                    
                 </div>
             
@@ -28,7 +28,7 @@
                 <b>Cancelar</b>
             <i class="bi bi-x-lg"></i>
         </button>
-    <button type="button" class="btn btn-primary mt-n2">
+    <button type="submit" class="btn btn-primary mt-n2" value="{{evaluacion.id}}" name="edit-evaluacion">
         <b>Editar</b>
     </button>
 </div>
