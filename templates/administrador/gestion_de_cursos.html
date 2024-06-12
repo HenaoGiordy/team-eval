@@ -13,7 +13,11 @@
     <!--Formulario-->
     <h2 class="titulos"><b>Gestión de cursos</b></h2>
     <div class="card-form mt-2">
-        <h5 class="card-header">Crear un curso</h5>
+        <h5 class="card-header">Crear un curso
+            <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Diligencia los campos para crear un curso">
+                <i class="bi bi-question-circle-fill ml-1"></i>
+            </a>
+        </h5>
         <div class="card-body position-relative">
             <form method="POST">
                 {% csrf_token %} 
@@ -26,7 +30,7 @@
                                 <i class="bi bi-question-circle-fill ml-1"></i>
                             </a>
                         </label>
-                        <input type="text" class="form-control" name="codigo-curso" id="codigo-curso" placeholder="Código curso" required>
+                        <input type="text" class="form-control" name="codigo-curso" id="codigo-curso" placeholder="AAA-00000-000" pattern="^[A-Z]{3}-\d{5}-\d{3}$" title="Por favor, sigue el formato AAA-00000-000" required>
                     </div>
                     <div class="form-group col-md-5 mx-3">
                         <i class="bi bi-pencil"></i>
