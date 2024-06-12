@@ -175,7 +175,7 @@ def estudiante_curso(request, cursoid):
     usuario = User.objects.get(username=request.user.username)
     perfil = PerfilEstudiante.objects.get(user=usuario)
     curso = perfil.cursos.get(id=cursoid)
-    
+    fecha_hoy = datetime.now().date()
     try:
         grupo = perfil.grupo_set.get(curso=cursoid)
         estudiantes_grupo = grupo.estudiantes.all().exclude(user=perfil.user)
@@ -198,7 +198,8 @@ def estudiante_curso(request, cursoid):
         'curso': curso,
         'grupo': grupo,
         'estudiantes': estudiantes_grupo,
-        'evaluaciones_status': evaluaciones_status
+        'evaluaciones_status': evaluaciones_status,
+        'fecha_hoy': fecha_hoy
     })
 
 

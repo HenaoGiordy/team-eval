@@ -60,12 +60,15 @@
             <p class="card-text"><i class="bi bi-calendar4-week mr-1"></i><b>Fecha inicio:</b> {{ status.evaluacion.fecha_inicio }}</p>
             <p class="card-text"><i class="bi bi-calendar4-week mr-1"></i><b>Fecha fin:</b> {{ status.evaluacion.fecha_fin }}</p>
             <p class="card-text"><i class="bi bi-list-check mr-1"></i><b>Rúbrica:</b> {{ status.evaluacion.rubrica.nombre }}</p>
+            {% if status.evaluacion.fecha_fin < fecha_hoy  %}
+            <p class="text-danger">La fecha expiró</p>
+            {% endif %}
             {% if status.todos_evaluados %}
                 <p class="text-danger">Ya evaluaste a todos tus compañeros</p>
                 <a href="#" class="btn btn-primary d-flex justify-content-center align-items-center mb-1 disabled" tabindex="-1" aria-disabled="true">
                     Evaluar<i class="bi bi-chevron-right ml-1"></i></a>
             {% else %}
-                <a href="{% url 'evaluar' status.evaluacion.id grupo.id %}" class="btn btn-primary d-flex justify-content-center align-items-center mb-1">
+                <a {% if  status.evaluacion.fecha_fin < fecha_hoy %} class="btn btn-primary d-flex justify-content-center align-items-center mb-1 disabled"{% else %} class="btn btn-primary d-flex justify-content-center align-items-center mb-1" {% endif %} href="{% url 'evaluar' status.evaluacion.id grupo.id %}" >
                     Evaluar<i class="bi bi-chevron-right ml-1"></i></a>
             {% endif %}
         </div>
