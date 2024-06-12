@@ -644,7 +644,15 @@ def profesor_informes(request):
     paginator = Paginator(cursos_list, 10)
     page = request.GET.get('page')
     lista_cursos = paginator.get_page(page)
-    
+    if request.method == "POST":
+        if "buscar" in request.POST:
+            codigo = request.POST.get("codigo_curso")
+            curso = Curso.objects.filter(codigo = codigo).annotate(num_evaluaciones=Count('evaluacion'))
+            cursos_list = curso
+            paginator = Paginator(cursos_list, 10)
+            page = request.GET.get('page')
+            lista_cursos = paginator.get_page(page)
+            
     return render(request, 'profesor/informes.html', {"lista_cursos": lista_cursos})
 
 

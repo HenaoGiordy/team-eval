@@ -1,0 +1,11 @@
+<form class="d-flex mt-4 w-100 gap-2 justify-content-center" method="POST">
+    {% csrf_token %}
+    <input class="form-control w-25" name="codigo_curso" type="text" placeholder="Código Curso" aria-label="Search" required>
+    <button class="btn-search" name="buscar" type="submit" style="color: white">
+        <i class="bi bi-search"></i>
+    </button>
+    <a class="refrescar btn btn-secondary ml-2" style="color: #0D6EFD; background-color: #d9d9d9; border: none;" href="{%url "profesor_informes" %} ">
+        <b>Limpiar</b>
+        <i class="bi bi-eraser"></i>
+    </a>    
+</form> 
