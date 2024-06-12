@@ -2,9 +2,21 @@
   <thead>
     <tr>
       <th scope="col" class="fw-bold text-center">Criterios</th>
-      <th scope="col" class="fw-bold text-center">Promedio</th>
-      <th scope="col" class="fw-bold text-center">Peso</th>
-      <th scope="col" class="fw-bold text-center">Valor ponderado</th>
+      <th scope="col" class="fw-bold text-center">Promedio
+        <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Este valor es un promedio de todas las calificaciones dadas por tus compañeros de grupo">
+          <i class="bi bi-question-circle-fill ml-1"></i>
+      </a></h4>
+      </th>
+      <th scope="col" class="fw-bold text-center">Peso
+        <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Estos valores los asigna el docente en la rúbrica del curso">
+          <i class="bi bi-question-circle-fill ml-1"></i>
+      </a>
+      </th>
+      <th scope="col" class="fw-bold text-center">Valor ponderado
+        <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Este valor es calculado por la multiplicación del promedio y peso de cada criterio">
+          <i class="bi bi-question-circle-fill ml-1"></i>
+      </a></h4>
+      </th>
     </tr>
   </thead>
   <tbody>
@@ -23,7 +35,11 @@
   <tfoot>
       <tr>
           <td colspan="2"></td>
-          <td colspan="1" class="fw-bold text-end"> Nota final</td>
+          <td colspan="1" class="fw-bold text-end"> Nota final
+            <a href="#" data-toggle="tooltip" data-bs-placement="left" title="Este valor es la suma de todos los valores ponderados de cada criterio">
+              <i class="bi bi-question-circle-fill ml-1"></i>
+          </a></h4>
+          </td>
           <td class="table-active fw-bold text-center">{{ nota_final }}</td>
       </tr>
   </tfoot>

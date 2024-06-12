@@ -2,19 +2,18 @@
   <!--Seleccionar Estudiante a evaluar-->
   <form method="POST">
     {% csrf_token %}
-    <div class="w-100 d-flex justify-content-center my-2">
-      <select class="form-select col-9 text-center mt-n4" name="evaluado" aria-label="Seleccionar estudiante">
+    <div class="w-100 d-flex justify-content-center mt-4">
+      <select class="form-select col-6 text-center mt-n4" name="evaluado" aria-label="Seleccionar estudiante">
         <option selected>Seleccionar estudiante</option>
         {%for estudiante in estudiantes%}
         <option value="{{ estudiante.id }}">{{ estudiante.user.username }} - {{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</option>
-        <!--<option value="{{ estudiante.id }}">{{ estudiante }}---<span class="fw-bold">Código</span>: {{ estudiante.user.username }}</option>-->
         {% endfor %}
       </select>
     </div>
 
     <div class="row">
       <div class="col d-flex justify-content-center">
-        <table class="table table-bordered mt-2 w-75">
+        <table class="table table-bordered mt-2 w-50">
           <thead>
             <tr>
               <th class="text-center fw-bold">Criterios</th>
@@ -45,7 +44,7 @@
               <td colspan="2">
                 <div class="form-floating">
                   <textarea class="form-control" name="retroalimentacion" placeholder="Leave a comment here" id="floatingTextarea" class="text-primary-emphasis"></textarea>
-                  <label for="floatingTextarea" class="text-secondary">Comentarios</label>
+                  <label for="floatingTextarea" class="text-secondary">Comentarios (opcional)</label>
                 </div>
               </td>
             </tr>
