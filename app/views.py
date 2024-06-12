@@ -467,25 +467,33 @@ def profesor_evaluacion_curso(request, curso_id):
     rubrica_id = request.POST.get("guardar-evaluacion")
     fecha_actual = datetime.now().date()
     
+    for evaluacion in evaluaciones:
+        evaluacion.fecha_fin = evaluacion.fecha_fin.strftime('%Y-%m-%d')
+    
     try:
         if request.method == "POST":
-            rubrica = Rubrica.objects.get(id = rubrica_id)
-            if nombre_rubrica != rubrica.nombre +"-" +rubrica.autor.first_name:
-                raise RubricaNoEncontrada("No se encontró una rúbrica con ese nombre")
+            if "guardar-evaluacion" in request.POST:
+                rubrica = Rubrica.objects.get(id = rubrica_id)
+                if nombre_rubrica != rubrica.nombre +"-" +rubrica.autor.first_name:
+                    raise RubricaNoEncontrada("No se encontró una rúbrica con ese nombre")
+                
+                fecha_incio_validacion = datetime.strptime(fecha_inicio, '%Y-%m-%d').date()
+                fecha_fin_validacion = datetime.strptime(fecha_fin, '%Y-%m-%d').date()
+                
+                if fecha_incio_validacion < fecha_actual:
+                    raise InvalidDate("La fecha inicial no puede ser inferior a la fecha actual")
+                if fecha_fin_validacion <= fecha_actual:
+                    raise InvalidDate("la fecha final no puede ser inferior o igual a la fecha actual.")
+                
+                
+                rubrica.is_used = True
+                rubrica.save()
+                Evaluacion.objects.create(fecha_inicio = fecha_inicio, fecha_fin = fecha_fin, curso = curso, rubrica = rubrica, nombre = nombre_evaluacion)
+                messages.success(request, "Evaluación creada correctamente")
             
-            fecha_incio_validacion = datetime.strptime(fecha_inicio, '%Y-%m-%d').date()
-            fecha_fin_validacion = datetime.strptime(fecha_fin, '%Y-%m-%d').date()
+            if "edit-rubrica" in request.POST:
+                pass
             
-            if fecha_incio_validacion < fecha_actual:
-                raise InvalidDate("La fecha inicial no puede ser inferior a la fecha actual")
-            if fecha_fin_validacion <= fecha_actual:
-                raise InvalidDate("la fecha final no puede ser inferior o igual a la fecha actual.")
-            
-            
-            rubrica.is_used = True
-            rubrica.save()
-            Evaluacion.objects.create(fecha_inicio = fecha_inicio, fecha_fin = fecha_fin, curso = curso, rubrica = rubrica, nombre = nombre_evaluacion)
-            messages.success(request, "Evaluación creada correctamente")
     except InvalidDate as e:
         messages.error(request, e)
     except RubricaNoEncontrada as e:
