@@ -1,11 +1,9 @@
 {% load static %}
 <!-- Barra principal -->
 <nav class="navbar d-flex justify-content-between" style="background-color: #0D6EFD; position: fixed;right: 0;left: 0; top:0;z-index: 100;">
-  <a class="navbar-brand mx-3" style="color: #ffffff">Hola, {{ user.first_name }}
+  <a class="navbar-brand mx-3" style="color: #ffffff"><img src="{% static 'img/logoTeamEval.png' %}" width="33" height="33" class="mr-1"/>
+    Hola, {{ user.first_name }}
   </a>
-  <div class="mt-1"style="margin-left: 12%; color: white">
-    <img src="{% static 'img/logoTeamEval.png' %}" width="35" height="35"/>
-    <b>TeamEval</b></div>
   <a class="nav-link mx-2" href="{% url 'logout' %}" style="color: white">
     <!--Icono/metáfora de "Salir"-->
     <i class="bi bi-box-arrow-left"></i> Salir

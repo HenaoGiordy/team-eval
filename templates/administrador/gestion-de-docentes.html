@@ -13,7 +13,11 @@
     <!--Formulario-->
     <h2 class="titulos"><b>Gestión de docentes</b></h2>
     <div class="card-form mt-2">
-        <h5 class="card-header">Crear un docente</h5>
+        <h5 class="card-header">Crear un docente
+            <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Diligencia los campos para crear un docente">
+                <i class="bi bi-question-circle-fill ml-1"></i>
+            </a>
+        </h5>
         <div class="card-body position-relative">
             <form method="POST">
                 {% csrf_token %} 

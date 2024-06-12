@@ -28,12 +28,12 @@
     {%endfor%}
   </tbody>
 </table>
-{% comment %} Paginacion {% endcomment %}
+{% comment %} Paginación {% endcomment %}
 <nav aria-label="Page navigation example">
   <ul class="pagination">
 
     {% if docentes_lista.has_previous %}
-    <li class="page-item"><a class="page-link" href="?page=1">Primer Página</a></li>
+    <li class="page-item"><a class="page-link" href="?page=1">Primer página</a></li>
     <li class="page-item"><a class="page-link" href="?page={{ docentes_lista.previous_page_number }}">&laquo Anterior</a></li>
     {%endif%}
     
@@ -41,7 +41,7 @@
 
     {%if docentes_lista.has_next%}
     <li class="page-item"><a class="page-link" href="?page={{ docentes_lista.next_page_number }}">Siguiente</a></li>
-    <li class="page-item"><a class="page-link" href="?page={{ docentes_lista.paginator.num_pages }}">&raquo última Página</a></li>
+    <li class="page-item"><a class="page-link" href="?page={{ docentes_lista.paginator.num_pages }}">&raquo Última Página</a></li>
     {%endif%}
   </ul>
 {%endif%}
@@ -49,48 +49,82 @@
 </nav>
 </div>
 
-{% comment %} Modal {% endcomment %}
+{% comment %} Modal para editar {% endcomment %}
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel"><b>Editar</b></h1>
+        <h1 class="modal-title fs-5" id="staticBackdropLabel"><b>Editar docente</b></h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form method="POST">
           {% csrf_token %}
-          <i class="bi bi-pencil ml-1"></i>
-          <label for="edit-nombre">Nombre</label> 
-          <input type="text" name="edit-nombre" id="edit-nombre" class="form-control mt-n2" placeholder="Nombre" required>
-          <i class="bi bi-pencil ml-1"></i>
-          <label for="edit-apellidos" class="mt-2">Apellidos</label> 
-          <input type="text" name="edit-apellidos" id="edit-apellidos" class="form-control mt-n2" placeholder="Apellidos" required>
-          <i class="bi bi-person-lines-fill ml-1"></i>
-          <label for="edit-documento" class="mt-2">Documento</label> 
-          <input type="text" name="edit-documento" id="edit-documento" class="form-control mt-n2" placeholder="No. Documento" required>
-          <i class="bi bi-envelope-at ml-1"></i>
-          <label for="edit-email" class="mt-2">Correo</label> 
-          <input type="email" name="edit-email" id="edit-email" class="form-control mt-n2" placeholder="email" required>
-          <i class="bi bi-person-circle ml-1"></i>
-          <label for="estado-curso" class="mt-2">Estado Docente</label>
-          <select class="form-control mt-n2" name="edit-estado" id="edit-estado">
-            <option value="True">Activo</option>
-            <option value="False">Inactivo</option>
-        </select>
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
-          <b>Cancelar</b>
-          <i class="bi bi-x-lg"></i>
-        </button>
-        <button type="submit" name="edit-user" id="edit-user" value="{{ docente.user.id }}" class="btn btn-primary" style="border: none;">
-          <b>Guardar</b>
-          <i class="bi bi-floppy"></i>
-        </button>
-      </div>
-      <form>
+          <div class="form-row">
+            <div class="form-group col mt-2">
+              <i class="bi bi-pencil ml-1"></i>
+              <label for="edit-nombre" class="ml-2">Nombre</label> 
+            </div>
+            <div class="form-row col-lg-9 mt-2 mr-2">
+              <input type="text" name="edit-nombre" id="edit-nombre" class="form-control mt-n2" placeholder="Nombre" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col mt-2">
+              <i class="bi bi-pencil ml-1"></i>
+              <label for="edit-apellidos" class="ml-2">Apellidos</label> 
+            </div>
+            <div class="form-row col-lg-9 mt-2 mr-2">
+              <input type="text" name="edit-apellidos" id="edit-apellidos" class="form-control mt-n2" placeholder="Apellidos" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col mt-2">
+              <i class="bi bi-person-lines-fill ml-1"></i>
+              <label for="edit-documento">No. Documento</label> 
+            </div>
+            <div class="form-row col-lg-8 mt-2 mr-2">
+              <input type="text" name="edit-documento" id="edit-documento" class="form-control mt-n2" placeholder="No. Documento" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col mt-2">
+              <i class="bi bi-envelope-at ml-1"></i>
+              <label for="edit-email" class="ml-3">Correo</label> 
+            </div>
+            <div class="form-row col-lg-9 mt-2 mr-2">
+              <input type="email" name="edit-email" id="edit-email" class="form-control mt-n2" placeholder="email" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col mt-2">
+              <i class="bi bi-person-circle ml-1"></i>
+              <label for="estado-curso" class="ml-3">Estado</label>
+            </div>
+            <div class="form-row col-lg-9 mt-2 mr-2">
+              <select class="form-control mt-n2" name="edit-estado" id="edit-estado">
+                <option value="True">Activo</option>
+                <option value="False">Inactivo</option>
+              </select>
+            </div>
+          </div> 
+
+          <div class="modal-footer mt-n2">
+            <button type="submit" name="edit-user" id="edit-user" value="{{ docente.user.id }}" class="btn btn-primary" style="border: none;">
+              <b>Guardar</b>
+              <i class="bi bi-floppy"></i>
+            </button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
+              <b>Cancelar</b>
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+        </form>
+      </div>  
     </div>
   </div>
 </div>
