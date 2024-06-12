@@ -16,6 +16,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     <title>Team Eval</title>
+    <link rel="icon" type="image/png" href="{% static 'img/logoTeamEval.png' %}">
+
 </head>
 <body class=" position-relative">
     {% if user.is_authenticated and user.role == "ADMIN" %}

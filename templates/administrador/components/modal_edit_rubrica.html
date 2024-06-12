@@ -28,8 +28,8 @@
                     <tbody id="criterios_tbody_edit_{{ rubrica.id }}">
                         {% for criterio in rubrica.criterio_set.all %}
                         <tr>
-                            <td><input type="text" class="form-control" value="{{ criterio.descripcion }}" name="descripcion_criterio_edit_{{ rubrica.id }}[]" required></td>
-                            <td><input type="number" class="form-control" name="peso_criterio_edit_{{ rubrica.id }}[]" min="0.01" max="0.99" step="0.01"  value="{{ criterio.peso | stringformat:"s" }}"  title="Debe ser un número decimal con máximo dos decimales, entre 0.01 y 0.99" required></td>
+                            <td><input type="text" class="form-control" value="{{ criterio.descripcion }}" name="descripcion_criterio_edit_{{ rubrica.id }}[]" placeholder="Responsabilidad, Escucha..." required></td>
+                            <td><input type="number" class="form-control" name="peso_criterio_edit_{{ rubrica.id }}[]" min="0.01" max="0.99" step="0.01"  value="{{ criterio.peso | stringformat:"s" }}"  title="Debe ser un número decimal con máximo dos decimales, entre 0.01 y 0.99" placeholder="Ej: 0,5" required></td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -49,7 +49,7 @@
                         {% for escala in rubrica.calificacion_set.all %}
                         <tr>
                             <td><input type="number" class="form-control" name="escala_edit_{{ rubrica.id }}[]" min="0" max="10" value="{{ escala.calificacion }}" required></td>
-                            <td><input type="text" class="form-control" name="descripcion_escala_edit_{{ rubrica.id }}[]" value="{{ escala.descripcion }}" required></td>
+                            <td><input type="text" class="form-control" name="descripcion_escala_edit_{{ rubrica.id }}[]" value="{{ escala.descripcion }}" placeholder="Eficiente, Mejorable..." required></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -58,13 +58,13 @@
 
             </div>
             <div class="modal-footer mt-n3">
-                <button type="button" class="btn btn-secondary mt-n2" data-bs-dismiss="modal" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
-                    <b>Cancelar</b>
-                    <i class="bi bi-x-lg"></i>
-                </button>
                 <button type="submit" name="editar-rubrica" value="{{ rubrica.id }}" class="btn btn-primary mt-n2" style="border: none;">
                     <b>Guardar</b>
                     <i class="bi bi-floppy"></i>
+                </button>
+                <button type="button" class="btn btn-secondary mt-n2" data-bs-dismiss="modal" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
+                    <b>Cancelar</b>
+                    <i class="bi bi-x-lg"></i>
                 </button>
             </div>
         </div>

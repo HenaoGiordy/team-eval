@@ -338,11 +338,11 @@ def detalle_curso(request, curso_id):
                 
             except User.DoesNotExist:
                 # Manejar el caso donde el usuario no existe
-                messages.error(request, "No se encontró el estudiante con ese código")
+                messages.error(request, "No se encontró un estudiante con ese código")
                 estudiante = None
             except PerfilEstudiante.DoesNotExist:
                 # Manejar el caso donde el perfil del estudiante no existe
-                messages.error(request, "No se encontró el estudiante con ese código")
+                messages.error(request, "No se encontró un estudiante con ese código")
                 estudiante = None
             except Curso.DoesNotExist:
                     pass
@@ -485,7 +485,7 @@ def profesor_evaluacion_curso(request, curso_id):
             rubrica.is_used = True
             rubrica.save()
             Evaluacion.objects.create(fecha_inicio = fecha_inicio, fecha_fin = fecha_fin, curso = curso, rubrica = rubrica, nombre = nombre_evaluacion)
-            messages.success(request, "Evaluación creada exitosamente")
+            messages.success(request, "Evaluación creada correctamente")
     except InvalidDate as e:
         messages.error(request, e)
     except RubricaNoEncontrada as e:
@@ -526,16 +526,16 @@ def profesor_grupo(request, curso_id):
                     estudiante = PerfilEstudiante.objects.get(user=user, cursos= curso)
                     
                     if Grupo.objects.filter(curso=curso, estudiantes=estudiante).exists():
-                        raise AlreadyExist("El estudiante ya está en el grupo")
+                        raise AlreadyExist("El estudiante ya se encuentra agregado en el grupo")
                     
                     grupo = Grupo.objects.get(id = grupo_id)
                     grupo.estudiantes.add(estudiante)
-                    messages.success(request, "Estudiante añadido con éxito")
+                    messages.success(request, "Estudiante agregado al grupo exitosamente")
                     
                 except User.DoesNotExist:
-                    messages.error(request, "No se encontró el estudiante")
+                    messages.error(request, "No se encontró un estudiante con ese código")
                 except PerfilEstudiante.DoesNotExist:
-                    messages.error(request, "No se encontró el estudiante")
+                    messages.error(request, "No se encontró un estudiante con ese código")
                 except Grupo.DoesNotExist:
                     messages.error(request, "No se encontró el grupo")
                 except AlreadyExist as e:
@@ -550,7 +550,7 @@ def profesor_grupo(request, curso_id):
                     raise EmptyField("Escribe nombre de grupo y nombre de proyecto")
             
                 Grupo.objects.create(nombre=nombre_grupo, proyecto_asignado=nombre_proyecto, curso=curso) 
-                messages.success(request, "Grupo creado exitosamente.")
+                messages.success(request, "Grupo creado correctamente.")
             
             if "edit-info-grupo" in request.POST:
                 nombre_grupo_edit = request.POST.get("nombre-grupo-edit").strip()
@@ -720,7 +720,7 @@ def profesor_gestion_rubricas(request):
                 try:
                     suma_pesos = sum(float(peso) for peso in pesos_criterios)
                     if suma_pesos != 1.0:
-                        messages.error(request, "La suma de los pesos debe ser igual a 1")
+                        messages.error(request, "La suma de los pesos de todos los criterios debe ser igual a 1")
                         return redirect('profesor_gestion_rubricas')
                 except:
                     messages.error(request, "Debes introducir valores decimales en los criterios")
@@ -742,7 +742,7 @@ def profesor_gestion_rubricas(request):
                 for escala, descripcion in zip(escalas, descripciones_escalas):
                     Calificacion.objects.create(calificacion=escala, descripcion=descripcion, rubrica=rubrica)
 
-                messages.success(request, 'Rúbrica creada exitosamente.')
+                messages.success(request, 'Rúbrica creada correctamente.')
                 return redirect('profesor_gestion_rubricas')
 
             if "buscar" in request.POST:
@@ -801,7 +801,7 @@ def profesor_gestion_rubricas(request):
                 suma_pesos_editar = sum(float(peso) for peso in pesos_criterios_editar)
 
                 if suma_pesos_editar != 1.0:
-                    messages.error(request, "La suma de los pesos debe ser igual a 1")
+                    messages.error(request, "La suma de los pesos de todos los criterios debe ser igual a 1")
                     return redirect('profesor_gestion_rubricas')
 
                 nombre_rubrica_editar = nombre_rubrica_editar.lower()
@@ -1131,7 +1131,7 @@ def administrador_gestion_de_cursos(request):
         except ProfesorInactivo as e:
             messages.error(request, e)
         except IntegrityError:
-            messages.error(request, "Ya hay un curso con ese código")
+            messages.error(request, "Ya hay un curso con ese código en el mismo periodo")
         except PeriodoIncorrecto as e:
             messages.error(request, e)
         except PerfilProfesor.DoesNotExist:
@@ -1179,7 +1179,7 @@ def administrador_gestion_de_evaluacion(request):
                 try:
                     suma_pesos = sum(float(peso) for peso in pesos_criterios)
                     if suma_pesos != 1.0:
-                        messages.error(request, "La suma de los pesos debe ser igual a 1")
+                        messages.error(request, "La suma de los pesos de todos los criterios debe ser igual a 1")
                         return redirect('administrador_gestion_de_evaluacion')
                 except:
                     messages.error(request, "Debes introducir valores decimales en los criterios")
@@ -1251,7 +1251,7 @@ def administrador_gestion_de_evaluacion(request):
                 suma_pesos_editar = sum(float(peso) for peso in pesos_criterios_editar)
 
                 if suma_pesos_editar != 1.0:
-                    messages.error(request, "La suma de los pesos debe ser igual a 1")
+                    messages.error(request, "La suma de los pesos de todos los criterios debe ser igual a 1")
                     return redirect('administrador_gestion_de_evaluacion')
 
                 nombre_rubrica_editar = nombre_rubrica_editar.lower()

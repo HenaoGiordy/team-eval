@@ -9,13 +9,13 @@
           <p>¿Seguro que deseas eliminar la rúbrica <span class="fw-bold">{{ rubrica.nombre }}</span>?<p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
-            <b>Cancelar</b>
-            <i class="bi bi-x-lg"></i>
-          </button>
           <button type="submit" name="eliminar-rubrica" value="{{ rubrica.id }}" class="btn btn-danger">
             <b>Eliminar</b>
             <i class="bi bi-trash"></i>
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
+            <b>Cancelar</b>
+            <i class="bi bi-x-lg"></i>
           </button>
         </div>
       </div>

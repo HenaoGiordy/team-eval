@@ -3,7 +3,6 @@
 {% block content %}
     
 <div class="container__admin">
-
     <!--Alertas / notificaciones-->
     {% if messages %}
         {% for message in messages %}
@@ -16,29 +15,39 @@
     <h2 class="titulos"><b>Gestión de evaluación</b></h2>
     <div class="card-rubrica mt-2">
         <h5 class="card-header">Creación de una rúbrica
-            <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Una rúbrica debe tener minimo 2 criterios y la suma de todos sus pesos debe ser igual a 1">
+            <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Una rúbrica es una herramienta de evaluación que se usa para establecer criterios claros y objetivos para evaluar el desempeño de los estudiantes en una tarea o proyecto específico">
                 <i class="bi bi-question-circle-fill ml-1"></i>
             </a>
         </h5>
         <div class="card-body">
             <form method="POST">
                 {% csrf_token %} 
-                <div class="form-row justify-content">
-                    <div class="form-group col mt-2">
-                        <i class="bi bi-pencil mr-1"></i>
-                        <label for="nombre-rubrica">Nombre rúbrica</label>
-                    </div>
-                    <div class="form-row col-lg-10">
-                        <input type="text" class="form-control" name="nombre_rubrica" id="nombre-rubrica" placeholder="Nombre rúbrica" required>
-                        <p id="mensaje"></p>
-                    </div>
+                <div class="form-group-centered">
+                    <div class="form-row-centered">
+                        <div class="form-row">
+                            <div class="form-group col mt-2">
+                                <i class="bi bi-pencil mr-1"></i>
+                                <label for="nombre-rubrica">Nombre rúbrica</label>
+                            </div>
+                            <div class="form-row col-lg-7">
+                                <input type="text" class="form-control" name="nombre_rubrica" id="nombre-rubrica" placeholder="Nombre rúbrica" required>
+                                <p id="mensaje"></p>
+                            </div>
+                        </div>
+                    </div>    
                     <div class="d-flex w-100 gap-3 mt-1">
                         <div class="w-50 form-group">
-                            <h4 class="text-center">Lista criterios</h4>
+                            <h4 class="text-center">Lista criterios
+                                <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Deben haber mínimo 2 criterios y la suma de todos sus pesos debe ser igual a 1, Ej: 0,8 y 0,2 = 1">
+                                    <i class="bi bi-question-circle-fill ml-1"></i>
+                                </a></h4>
                             {% include "administrador/components/lst_criterios.html"%}
                         </div>
                         <div class="w-50">
-                            <h4 class="text-center">Lista escalas</h4>
+                            <h4 class="text-center">Lista escalas
+                                <a href="#" data-toggle="tooltip" data-bs-placement="right" title="La escala mínima es 1 siendo la calificación más baja y la máxima es 10 siendo la calificación más alta, Ej: 1= Deficiente y 5= Excelente">
+                                    <i class="bi bi-question-circle-fill ml-1"></i>
+                                </a></h4>
                             {% include "administrador/components/lst_escalas.html"%}
                         </div>
                     </div>
@@ -60,6 +69,7 @@
         {%include "administrador/components/table_rubricas.html"%}
     </div>
 </div>
+
 <script>
     document.getElementById('submit-btn-rubrica').addEventListener('click', function(event) {
         var nombreRubrica = document.getElementById('nombre-rubrica');

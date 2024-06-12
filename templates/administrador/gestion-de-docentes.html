@@ -15,7 +15,7 @@
     <div class="card-form mt-2">
         <h5 class="card-header">Crear un docente</h5>
         <div class="card-body position-relative">
-            <form method="POST" action="">
+            <form method="POST">
                 {% csrf_token %} 
                 <!-- Grupo de nombres y apellidos -->
                 <div class="form-row justify-content-center">
@@ -34,7 +34,7 @@
                 <div class="form-row justify-content-center">
                     <div class="form-group col-md-5 mx-3">
                         <i class="bi bi-person-lines-fill"></i>
-                        <label for="documento-docente">Documento</label>
+                        <label for="documento-docente">No. Documento</label>
                         <input type="text" name="documento-docente" class="form-control" id="documento-docente" placeholder="No. Documento" required>
                     </div>
                     <div class="form-group col-md-5 mx-3">
