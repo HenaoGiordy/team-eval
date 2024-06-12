@@ -16,9 +16,18 @@
                     <p class="card-text"><i class="bi bi-folder mr-1"></i><b>Proyecto:</b> {{ grupo.proyecto_asignado }}</p>
                 {% endif %}
             {% endfor %}
-            <a href="{% url "estudiante_ver_resultado" evaluacion.id %}" class="btn btn-primary">Resultados
+            {% if evaluacion.curso.has_finished %}
+            <a 
+            href="{% url "estudiante_ver_resultado" evaluacion.id %}" class="btn btn-primary">Resultados
                 <i class="bi bi-chevron-right ml-1"></i>
             </a>
+            {% else %}
+            <p class="text-secondary">Podrás ver la retroalimentación una vez acabe el curso</p>
+            <a 
+            href="#" class="btn btn-primary disabled">Resultados
+                <i class="bi bi-chevron-right ml-1"></i>
+            </a>
+            {% endif %}
         </div>
     </div>
     {% endfor %}

@@ -438,6 +438,8 @@ def detalle_curso(request, curso_id):
                         user.save()
                         estudiantes_creados += 1
                     else:
+                        user.is_active = True
+                        user.save()
                         pass
                     
                     perfil_estudiante, _ = PerfilEstudiante.objects.get_or_create(user=user)
@@ -1069,6 +1071,8 @@ def administrador_gestion_de_estudiantes(request):
                             user.save()
                             estudiantes_creados += 1
                         else:
+                            user.is_active = True
+                            user.save()
                             estudiantes_existentes += 1
                         
                         
