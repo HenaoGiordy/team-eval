@@ -10,18 +10,20 @@
             </ol>
         </nav>
         <div class="header-row d-flex flex-column gap-3">
-            <div class="d-flex gap-3">
+            <div class="d-flex gap-2">
             <h2 class="titulos "><b>Resultados {{ evaluacion.nombre }}</b></h2>
-            <a href="#" class="d-flex align-items-center" data-toggle="tooltip" data-bs-placement="right" title="Nota promedio por cada criterio con su respectiva nota ponderada (Suma de las calificaciones de los criterios, dividido por la cantidad de criterios)">
-                <i class="bi bi-question-circle-fill fs-2" ></i>
+            <a href="#" class="d-flex align-items-center" data-toggle="tooltip" data-bs-placement="right" title="Nota promedio por cada criterio con su respectiva nota ponderada y el promedio ponderado (Suma de las notas ponderadas)">
+                <i class="bi bi-question-circle-fill fs-3" ></i>
             </a>
             </div>
-            <a class="btn btn-outline-secondary" href="{% url "profesor_estudiantes_faltantes" curso.id evaluacion.id %}">Estudiantes Faltantes</a>
+            <p><a href="{% url "profesor_estudiantes_faltantes" curso.id evaluacion.id %}"><b>Estudiantes evaluados y pendientes</b></a></p>
+            <p class=" text-center"><span class="text-success">Nota promedio (Verde)</span> - <span class="text-primary">Nota Ponderara (Azul)</span></p>
+
         </div>
     </div>
     
     {% for grupo in grupos %}
-    <div class="w-75 mt-3">
+    <div class="w-75 mt-2">
         {% include "profesor/components/table_informe_grupo.html"%}
     </div>
     {% endfor %}

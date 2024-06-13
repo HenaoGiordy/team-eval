@@ -11,26 +11,17 @@
     {% endif %}
     <div class="container">
         <nav aria-label="breadcrumb" class="my-3 ml-3">
-            <ol class="breadcrumb" style="background: none">
+            <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'estudiante' %}">Cursos</a></li>
                 <li class="breadcrumb-item"><a href="{% url "estudiante_curso" curso.id%}">{{ grupo.curso.nombre}}</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Nombre evaluación</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ evaluacion.nombre }}</li>
             </ol>
         </nav>
-        <div class="header-row">
-            <h2 class="titulos mt-n4"><b>Realizar evaluación</b></h2>
-        </div>
-    </div>
-
-    <div class="card-form" style="box-shadow: none;">
-        <div class="card-body position-relative">
-            <form class="justify-content-center mt-n2">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="inputGroup-sizing-sm" style="background-color: #f8f9fa;">
-                        <i class="bi bi-pencil mr-1"></i><b>Nombre evaluación</b></span>
-                    <input style="background-color: #f8f9fa;" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="{{ evaluacion.nombre }}" disabled>
-                </div>
-            </form>   
+        <div class="header-row mb-2">
+            <h2 class="titulos mt-n4"><b>Evaluar {{ evaluacion.nombre }}</b>
+                <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Evalúa a tu grupo seleccionando el nombre de tus compañeros y califícalos según los criterios y escalas dadas por el docente">
+                    <i class="bi bi-question-circle-fill fs-3"></i>
+                </a></h4></h2>
         </div>
     </div>
     {% comment %} FORM PARA REALIZAR EVALUACIÓN {% endcomment %}

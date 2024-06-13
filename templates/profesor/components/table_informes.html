@@ -2,8 +2,8 @@
   <h5 class="card-header mt-3">Lista de informes por curso</h5>
     <thead>
       <tr>
-        <th scope="col" class="fw-bold text-center">Curso</th>
         <th scope="col" class="fw-bold text-center">Código curso</th>
+        <th scope="col" class="fw-bold text-center">Curso</th>
         <th scope="col" class="fw-bold text-center">Periodo académico</th>
         <th scope="col" class="fw-bold text-center">Cantidad evaluaciones</th>
         <th scope="col" class="fw-bold text-center">Finalizado</th>
@@ -13,8 +13,8 @@
     <tbody>
         {% for curso in lista_cursos %}
       <tr>
-        <td class="text-center">{{ curso.nombre }}</td>
         <td class="text-center">{{ curso.codigo }}</td>
+        <td class="text-center">{{ curso.nombre }}</td>
         <td class="text-center">{{ curso.get_periodo_academico }}</td>
         <td class="text-center">{{ curso.num_evaluaciones }}</td>
         <td class="text-center">{% if curso.has_finished %}<span class="text-success"> Sí </span> {% else %} <span class="text-danger">No</span> {% endif %}</td>
@@ -27,7 +27,7 @@
 <nav aria-label="Page navigation example">
   <ul class="pagination">
     {% if lista_cursos.has_previous %}
-    <li class="page-item"><a class="page-link" href="?page=1">Primer Página</a></li>
+    <li class="page-item"><a class="page-link" href="?page=1">Primer página</a></li>
     <li class="page-item"><a class="page-link" href="?page={{ lista_cursos.previous_page_number }}">&laquo Anterior</a></li>
     {%endif%}
     
@@ -35,7 +35,7 @@
 
     {%if lista_cursos.has_next%}
     <li class="page-item"><a class="page-link" href="?page={{ lista_cursos.next_page_number }}">Siguiente</a></li>
-    <li class="page-item"><a class="page-link" href="?page={{ lista_cursos.paginator.num_pages }}">&raquo última Página</a></li>
+    <li class="page-item"><a class="page-link" href="?page={{ lista_cursos.paginator.num_pages }}">&raquo Última página</a></li>
     {%endif%}
   </ul>
 </nav>

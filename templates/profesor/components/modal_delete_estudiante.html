@@ -1,28 +1,28 @@
 <!--Modal para confirmar la eliminación-->
 <div class="modal fade" id="delete-estudiante-{{estudiante.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" class="text-center" id="staticBackdropLabel"><b>Eliminar estudiante</b></h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p>¿Seguro que deseas eliminar a <span class="fw-bold">{{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</span> ?</p>
-        </div>
-          <!--Botón para eliminar el estudiante-->
-          <form method="POST">
-            {% csrf_token %} 
+  <div class="modal-dialog modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" class="text-center" id="staticBackdropLabel"><b>Eliminar estudiante</b></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>¿Seguro que deseas eliminar a <span class="fw-bold">{{ estudiante.user.first_name }} {{ estudiante.user.last_name }}</span> ?</p>
+      </div>
+      <!--Botón para eliminar el estudiante-->
+      <form method="POST">
+        {% csrf_token %} 
+        <div class="modal-footer">
           <button type="submit" class="btn btn-danger" name="eliminar-estudiante" value="{{ estudiante.user.id }}" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
             <b>Eliminar</b>
             <i class="bi bi-trash"></i>
           </button>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
-              <b>Cancelar</b>
-              <i class="bi bi-x-lg"></i>
-            </button>
-        </form>
-        </div>
-      </div>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
+            <b>Cancelar</b>
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>  
+      </form>
     </div>
   </div>
+</div>

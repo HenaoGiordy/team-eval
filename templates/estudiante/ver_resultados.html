@@ -3,7 +3,7 @@
 <div class="container__admin">
     <div class="container">
         <nav aria-label="breadcrumb"class="my-3 ml-3">
-            <ol class="breadcrumb" style="background: none">
+            <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url "estudiante_retroalimentacion" %}">Retroalimentación</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{{ evaluacion.nombre }}</li>
             </ol>
@@ -17,14 +17,17 @@
     </div>
     {% include "estudiante/components/tabla_retroalimentacion.html"%}
 
-    <div class="header-row">
-        <h2 class="titulos"><b>Comentarios</b></h2>
-    </div>    
-
     <div class=" flex-column w-75">
-        {% for retro in comentarios %}
-            <p class="form-control mt-2">{{ retro.retroalimentacion }}</p>
-        {% endfor %}
+        {% if comentarios %}
+            {% for retro in comentarios %}
+                {% if retro.retroalimentacion %}
+                    <div class="header-row">
+                        <h2 class="titulos"><b>Comentarios</b></h2>
+                    </div>  
+                    <p class="form-control mt-2">{{ retro.retroalimentacion }}</p>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -1,7 +1,11 @@
 {% extends 'estudiante/mainestudiante.html' %}
 {% block content %}
 <div  class="container__admin">
-    <h2 class="titulos"><b>Retroalimentación</b></h2>
+    <h2 class="titulos"><b>Retroalimentación</b>
+        <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Lista de retroalimentaciones por curso">
+            <i class="bi bi-question-circle-fill fs-3"></i>
+        </a></h4>
+    </h2>
 </div>
 <div class="container--cursos">
     {% for evaluacion in evaluaciones %}
@@ -18,7 +22,7 @@
             {% endfor %}
             {% if evaluacion.fecha_fin < fecha_hoy  or evaluacion.curso.has_finished %}
             <a 
-            href="{% url "estudiante_ver_resultado" evaluacion.id %}" class="btn btn-primary">Resultados
+            href="{% url "estudiante_ver_resultado" evaluacion.id %}" class="btn btn-primary"><b>Resultados</b>
                 <i class="bi bi-chevron-right ml-1"></i>
             </a>
             {% else %}

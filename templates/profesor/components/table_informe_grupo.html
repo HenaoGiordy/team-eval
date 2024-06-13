@@ -1,7 +1,6 @@
 {% load custom_filters %}
 <table class="table table-bordered table-hover ">
   <p class="card-header">Grupo: {{ grupo.nombre }}   </p>
-  <p class="card-header text-center"><span class="text-success">Nota promedio (Verde)</span> -- <span class="text-primary">Nota Ponderara (Azul)</span></p>
   <thead>
     <tr>
       <th class="fw-bold text-center">Estudiante</th>
@@ -21,7 +20,7 @@
                 {% for resultado in resultados %}
                     {% if resultado.evaluado_id == estudiante_id and resultado.criterio_evaluado__descripcion == criterio.descripcion %}
                         <td class=" text-center">
-                            <p><span class="text-success">{{ resultado.promedio_notas }}</span>----<span class="text-primary">{{ resultado.valor_ponderado}}</span></p>
+                            <p><span class="text-success">{{ resultado.promedio_notas }}</span> - <span class="text-primary">{{ resultado.valor_ponderado}}</span></p>
                         </td>
                     {% endif %}
                 {% endfor %}
