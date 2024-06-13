@@ -2,6 +2,13 @@
 {%load static%}
 {% block content %}
 <div  class="container__admin ">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {{ message.tags }} position-absolute" style="z-index: 1" role="alert">
+                <p>{{ message }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
     <h2 class="titulos"><b>Informes</b>
         <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Se muestran los informes disponibles por curso, cada uno tiene evaluaciones creadas en el curso con sus respectivos resultados por grupo">
             <i class="bi bi-question-circle-fill ml-1"></i>

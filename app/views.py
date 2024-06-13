@@ -651,6 +651,10 @@ def profesor_informes(request):
         if "buscar" in request.POST:
             codigo = request.POST.get("codigo_curso")
             curso = Curso.objects.filter(codigo = codigo).annotate(num_evaluaciones=Count('evaluacion'))
+            
+            if not curso.exists():
+                messages.warning(request, "No se encontró un curso con ese código")
+                return redirect(reverse("profesor_informes"))
             cursos_list = curso
             paginator = Paginator(cursos_list, 10)
             page = request.GET.get('page')
