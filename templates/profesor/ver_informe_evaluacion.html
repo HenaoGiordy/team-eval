@@ -10,20 +10,67 @@
             </ol>
         </nav>
         <div class="header-row d-flex flex-column gap-3">
-            <div class="d-flex gap-3">
+            <div class="d-flex gap-2">
             <h2 class="titulos "><b>Resultados {{ evaluacion.nombre }}</b></h2>
-            <a href="#" class="d-flex align-items-center" data-toggle="tooltip" data-bs-placement="right" title="Nota promedio por cada criterio con su respectiva nota ponderada (Suma de las calificaciones de los criterios, dividido por la cantidad de criterios)">
-                <i class="bi bi-question-circle-fill fs-2" ></i>
+            <a href="#" class="d-flex align-items-center" data-toggle="tooltip" data-bs-placement="right" title="Nota promedio por cada criterio con su respectiva nota ponderada y el promedio ponderado (Suma de las notas ponderadas)">
+                <i class="bi bi-question-circle-fill fs-3" ></i>
             </a>
             </div>
-            <a class="btn btn-outline-secondary" href="{% url "profesor_estudiantes_faltantes" curso.id evaluacion.id %}">Estudiantes Faltantes</a>
+            <h5 class="text-decoration-underline" style="color: #0D6EFD"><a href="{% url "profesor_estudiantes_faltantes" curso.id evaluacion.id %}">Estudiantes evaluados y pendientes</a></h5>
+            <p class=" text-center p-3 bg-warning-subtle bg-opacity-10 border border-warning rounded-end rounded-start"><span class="text-success">Nota promedio (Verde)</span> - <span class="text-primary">Nota Ponderara (Azul)</span></p>
         </div>
     </div>
     
-    {% for grupo in grupos %}
-    <div class="w-75 mt-3">
-        {% include "profesor/components/table_informe_grupo.html"%}
+    <div class="w-75 mt-2">
+        {% for grupo in grupos %}
+            <div id="grupo-{{ grupo.nombre }}" class="grupo-container">
+                {% include "profesor/components/table_informe_grupo.html" %}
+            </div>
+        {% endfor %}
     </div>
-    {% endfor %}
+    
+    <div class="d-flex gap-2">
+        <button id="download-btn" class="btn btn-primary my-3 mt-n1" style="display: none;">
+            <b>Descargar</b>
+            <i class="bi bi-download"></i>
+        </button>
+        <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Descarga de un archivo Excel donde cada grupo está separados por hojas">
+            <i class="bi bi-question-circle-fill fs-4"></i>
+        </a>
+    </div>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var tables = document.querySelectorAll('.grupo-container table');
+        var downloadBtn = document.getElementById('download-btn');
+        
+        // Mostrar el botón solo si hay tablas
+        if (tables.length > 0) {
+            downloadBtn.style.display = 'block';
+        }
+    
+        downloadBtn.addEventListener('click', function() {
+            function tableToSheet(table) {
+                return XLSX.utils.table_to_sheet(table);
+            }
+    
+            function downloadExcel(workbook, filename) {
+                XLSX.writeFile(workbook, filename);
+            }
+    
+            var wb = XLSX.utils.book_new();
+            
+            tables.forEach((table, index) => {
+                var grupoContainer = table.closest('.grupo-container');
+                var grupoName = grupoContainer ? grupoContainer.id.replace('grupo-', '') : 'Sheet ' + (index + 1);
+                var ws = tableToSheet(table);
+                XLSX.utils.book_append_sheet(wb, ws, grupoName);
+            });
+    
+            downloadExcel(wb, "Informes {{ evaluacion.nombre }}.xlsx");
+        });
+    });
+    </script>
+    
 </div>
 {% endblock %}

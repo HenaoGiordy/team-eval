@@ -559,7 +559,7 @@ def profesor_grupo(request, curso_id):
                     estudiante = PerfilEstudiante.objects.get(user=user, cursos= curso)
                     
                     if Grupo.objects.filter(curso=curso, estudiantes=estudiante).exists():
-                        raise AlreadyExist("El estudiante ya se encuentra agregado en el grupo")
+                        raise AlreadyExist("El estudiante ya se encuentra agregado en un grupo")
                     
                     grupo = Grupo.objects.get(id = grupo_id)
                     grupo.estudiantes.add(estudiante)

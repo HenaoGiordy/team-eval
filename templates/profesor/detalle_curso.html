@@ -58,7 +58,7 @@
                     </a>
                     </form>   
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#finalizar-curso">
-                        <b>Finalizar Curso</b><i class="bi bi-check2-square ml-1"></i></button>
+                        <b>Finalizar curso</b><i class="bi bi-check2-square ml-1"></i></button>
                     {% include "profesor/components/modal-finalizar-curso.html" %}
                 </div>
 
@@ -79,7 +79,8 @@
                         {% csrf_token %}
                         <div class="col-auto mt-3 ml-2">
                             <p>Descarga la plantilla <a href="/static/anexos/Plantilla-TeamEval.csv"><b>aquí</b></a>
-                            <label for="formFile" class="form-label">y selecciona el archivo modificado</label>
+                            y selecciona el archivo modificado
+                            <label for="formFile" class="form-label"></label>
                             <input class="form-control" name="csv-estudiantes" type="file" id="formFile" accept=".csv"></p>
                         </div>
                         
