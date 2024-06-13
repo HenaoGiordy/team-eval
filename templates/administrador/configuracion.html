@@ -1,0 +1,30 @@
+{% extends "administrador/administrador.html" %}
+{%block content%}
+<div class="container__admin">
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert {{ message.tags }} position-absolute mt-5" style="z-index: 1" role="alert">
+            <p>{{ message }}</p>
+        </div>
+        {% endfor %}
+    {% endif %}
+    <div class="mt-4 p-4" >
+        <form method="post" class="mb-5">
+            {% csrf_token %}
+            <div class="form-group">
+                <h5 class="text-center fw-bold mb-4">Cambiar Correo Electrónico</h5>
+                {{ email_form.as_p }}
+            </div>
+            <button type="submit" name="cambiar_correo" class="btn btn-primary">Cambiar correo</button>
+        </form>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <h5  class="text-center fw-bold mb-4">Cambiar Contraseña</h5>
+                {{ password_form.as_p }}
+            </div>
+            <button type="submit" name="cambiar_password" class="btn btn-primary">Cambiar contraseña</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

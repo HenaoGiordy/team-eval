@@ -43,9 +43,17 @@
         <span>Informes</span>
       </a>
     </li>
+    
   </ul>
 
+  
   {% comment %} Footer del sidebar {% endcomment %}
-  <div class="elemento-sidebar d-flex justify-content-space-between">
+  <div class="elemento-sidebar d-flex justify-content-space-between ">
+    <ul style="position:absolute; bottom: 40px; padding:0; left:0" class="w-100">
+      <a class="item-sidebar py-2 dropdown__link bordes {% if request.path == "/profesor/configuracion" %}active{% endif %}" href="{% url "profesor_configuracion" %}" style="border-bottom:1px solid #0D6EFD">
+        <i class="bi bi-nut mr-1"></i>
+        <span>Configuración</span>
+      </a>
+    </ul>
   </div>
 </div>

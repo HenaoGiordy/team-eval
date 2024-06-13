@@ -21,7 +21,7 @@
 
         {% url 'profesor_evaluacion_curso' as profesor_evaluacion_curso_url %}
         <li class="dropdown__list" id="evaluacion">
-            <a class="item-sidebar py-2 dropdown__link bordes {% if not "retroalimentacion" in request.path %}active{% endif %}" href="{% url "estudiante" %}">
+            <a class="item-sidebar py-2 dropdown__link bordes {% if  "/estudiante/" == request.path %}active{% endif %}" href="{% url "estudiante" %}">
             <i class="bi bi-file-earmark-check mr-1"></i>
             <span>Evaluaciones</span>
             </a>
@@ -37,6 +37,13 @@
     </ul>
 
     {% comment %} Footer del sidebar {% endcomment %}
-    <div class="elemento-sidebar d-flex justify-content-space-between"></div>
+    <div class="elemento-sidebar d-flex justify-content-space-between ">
+        <ul style="position:absolute; bottom: 40px; padding:0; left:0" class="w-100">
+            <a class="item-sidebar py-2 dropdown__link bordes {% if request.path == "/estudiante/configuracion" %}active{% endif %}" href="{% url "estudiante_configuracion" %}" style="border-bottom:1px solid #0D6EFD">
+            <i class="bi bi-nut mr-1"></i>
+            <span>Configuración</span>
+            </a>
+        </ul>
+    </div>
 </div>
 

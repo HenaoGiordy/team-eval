@@ -11,8 +11,9 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from TeamEval import settings
+from django.contrib.auth import update_session_auth_hash
 from app.exeptions import AlreadyExist, AutorNoAutorizado, EmptyField, EstudianteInactivo, GrupoHasEvaluated, InvalidDate, NumberError, PeriodoIncorrecto, ProfesorInactivo, RubricaEnUso, RubricaNoEncontrada
-from app.forms import MinimalPasswordChangeForm, UsernameForm
+from app.forms import ChangeEmailForm, ChangePasswordForm, MinimalPasswordChangeForm, UsernameForm
 from app.models import  Calificacion, Criterio, Evaluacion, Resultado, Retroalimentracion, Rubrica, User, PerfilEstudiante, Grupo, PerfilProfesor, Curso
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
@@ -134,6 +135,53 @@ def estudiante(request):
     usuario = User.objects.get(username = request.user.username)
     perfil = PerfilEstudiante.objects.get(user = usuario)
     return render(request, 'estudiante/estudiante.html', {"cursos" : perfil.cursos.filter(has_finished=False), "perfil": perfil})
+
+def estudiante_configuracion(request):
+    if request.method == 'POST':
+        email_form = ChangeEmailForm(request.POST, user=request.user)
+        password_form = ChangePasswordForm(request.user, data=request.POST)
+
+        if "cambiar_correo" in request.POST:
+            if email_form.is_valid():
+                email_form.save()
+                messages.success(request, 'Correo electrónico actualizado correctamente.')
+                return redirect(reverse("estudiante_configuracion")) 
+            else:
+                for field, errors in email_form.errors.items():
+                    if field == '__all__':
+                        for error in errors:
+                            messages.error(request, f'{error}')
+                    else:
+                        for error in errors:
+                            messages.error(request, f' {error}')
+                return redirect(reverse("estudiante_configuracion")) 
+
+        if "cambiar_password" in request.POST:
+            if password_form.is_valid():
+                user = password_form.save()
+                update_session_auth_hash(request, user)  # Mantener la sesión iniciada
+                messages.success(request, 'Contraseña actualizada correctamente.')
+                return redirect(reverse("estudiante_configuracion"))
+            else:
+                
+                for field, errors in password_form.errors.items():
+                    if field == '__all__':
+                        for error in errors:
+                            messages.error(request, f' {error}')
+                    else:
+                        for error in errors:
+                            messages.error(request, f'{error}')
+                return redirect(reverse("estudiante_configuracion")) 
+    
+    else:
+        email_form = ChangeEmailForm(user=request.user)
+        password_form = ChangePasswordForm(user=request.user)
+         
+
+    return render(request, 'estudiante/configuracion.html', {
+        'email_form': email_form,
+        'password_form': password_form
+    })
 
 #Retroalimentación estudiante
 @login_required
@@ -712,6 +760,54 @@ def ver_informe_evaluacion(request, curso_id, evaluacion_id):
     return render(request, 'profesor/ver_informe_evaluacion.html', context)
 
 @login_required
+def profesor_configuracion(request):
+    if request.method == 'POST':
+        email_form = ChangeEmailForm(request.POST, user=request.user)
+        password_form = ChangePasswordForm(request.user, data=request.POST)
+
+        if "cambiar_correo" in request.POST:
+            if email_form.is_valid():
+                email_form.save()
+                messages.success(request, 'Correo electrónico actualizado correctamente.')
+                return redirect(reverse("profesor_configuracion")) 
+            else:
+                for field, errors in email_form.errors.items():
+                    if field == '__all__':
+                        for error in errors:
+                            messages.error(request, f'{error}')
+                    else:
+                        for error in errors:
+                            messages.error(request, f' {error}')
+                return redirect(reverse("profesor_configuracion")) 
+
+        if "cambiar_password" in request.POST:
+            if password_form.is_valid():
+                user = password_form.save()
+                update_session_auth_hash(request, user)  # Mantener la sesión iniciada
+                messages.success(request, 'Contraseña actualizada correctamente.')
+                return redirect(reverse("profesor_configuracion"))
+            else:
+                
+                for field, errors in password_form.errors.items():
+                    if field == '__all__':
+                        for error in errors:
+                            messages.error(request, f' {error}')
+                    else:
+                        for error in errors:
+                            messages.error(request, f'{error}')
+                return redirect(reverse("profesor_configuracion")) 
+    
+    else:
+        email_form = ChangeEmailForm(user=request.user)
+        password_form = ChangePasswordForm(user=request.user)
+         
+
+    return render(request, 'profesor/configuracion.html', {
+        'email_form': email_form,
+        'password_form': password_form
+    })
+
+@login_required
 def profesor_estudiantes_faltantes(request, curso_id, evaluacion_id):
     curso = get_object_or_404(Curso, id=curso_id)
     evaluacion = get_object_or_404(Evaluacion, id=evaluacion_id)
@@ -1117,6 +1213,53 @@ def obtener_detalles_curso(request, curso_id):
         return JsonResponse({'error': 'El usuario no existe'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+def administrador_configuracion(request):
+    if request.method == 'POST':
+        email_form = ChangeEmailForm(request.POST, user=request.user)
+        password_form = ChangePasswordForm(request.user, data=request.POST)
+
+        if "cambiar_correo" in request.POST:
+            if email_form.is_valid():
+                email_form.save()
+                messages.success(request, 'Correo electrónico actualizado correctamente.')
+                return redirect(reverse("administrador_configuracion")) 
+            else:
+                for field, errors in email_form.errors.items():
+                    if field == '__all__':
+                        for error in errors:
+                            messages.error(request, f'{error}')
+                    else:
+                        for error in errors:
+                            messages.error(request, f' {error}')
+                return redirect(reverse("administrador_configuracion")) 
+
+        if "cambiar_password" in request.POST:
+            if password_form.is_valid():
+                user = password_form.save()
+                update_session_auth_hash(request, user)  # Mantener la sesión iniciada
+                messages.success(request, 'Contraseña actualizada correctamente.')
+                return redirect(reverse("administrador_configuracion"))
+            else:
+                
+                for field, errors in password_form.errors.items():
+                    if field == '__all__':
+                        for error in errors:
+                            messages.error(request, f' {error}')
+                    else:
+                        for error in errors:
+                            messages.error(request, f'{error}')
+                return redirect(reverse("administrador_configuracion")) 
+    
+    else:
+        email_form = ChangeEmailForm(user=request.user)
+        password_form = ChangePasswordForm(user=request.user)
+         
+
+    return render(request, 'administrador/configuracion.html', {
+        'email_form': email_form,
+        'password_form': password_form
+    })
 
 @login_required
 def administrador_gestion_de_cursos(request):
