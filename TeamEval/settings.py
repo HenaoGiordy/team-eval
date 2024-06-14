@@ -52,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'app.middleware.Handle404Middleware'
 ]
 
 ROOT_URLCONF = 'TeamEval.urls'
@@ -138,8 +139,7 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'app.User'
 
-LOGIN_REDIRECT_URL = 'login_register'
-LOGOUT_REDIRECT_URL = 'login_register'
+
 
 MESSAGE_TAGS = {
         messages.DEBUG: 'alert-secondary',
