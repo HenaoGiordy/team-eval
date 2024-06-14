@@ -4,7 +4,7 @@
 
 {% if messages %}
         {% for message in messages %}
-        <div class="alert {{ message.tags }} alert-dismissible d-flex w-75 justify-content-center position-absolute alert-modificador"  role="alert">
+        <div class="alert {{ message.tags }} position-absolute" style="z-index: 1" role="alert">
             <p>{{ message }}</p>
         </div>
         {% endfor %}
