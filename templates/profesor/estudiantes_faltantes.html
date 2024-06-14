@@ -1,17 +1,26 @@
 {% extends "profesor/mainprofesor.html" %}
 {%block content%}
 <div class="container__admin">
-    <nav aria-label="breadcrumb" class="my-3 ml-3">
-        <ol class="breadcrumb" style="background: none">
-            <li class="breadcrumb-item"><a href="{% url 'profesor_informes' %}">Informes</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'ver_informe_curso' curso.id %}">Evaluaciones {{curso.nombre}}</a></li>
-            <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'ver_informe_evaluacion' curso.id evaluacion.id %}">Resultados {{ evaluacion.nombre }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Estudiantes Faltantes</li>
-        </ol>
-    </nav>
-    <h1>Estudiantes Faltantes Por Evaluar</h1>
-    {% for grupo in grupos %}
-    <div class="w-75 my-5">
+    <div class="container">
+        <nav aria-label="breadcrumb" class="my-3 ml-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'profesor_informes' %}">Informes</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'ver_informe_curso' curso.id %}">Evaluaciones {{curso.nombre}}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'ver_informe_evaluacion' curso.id evaluacion.id %}">Resultados {{ evaluacion.nombre }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Estudiantes evaluados y pendientes</li>
+            </ol>
+        </nav>
+        <div class="header-row">
+            <h2 class="titulos mt-n4"><b>Estudiantes evaluados y pendientes</b>
+                <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Tabla especie de matriz que muestra que estudiantes han evaluado y cúales no">
+                    <i class="bi bi-question-circle-fill fs-3"></i>
+                </a></h4>
+            </h2>
+        </div>
+    </div>      
+
+        {% for grupo in grupos %}
+    <div class="w-75 mt-3">
         {% include "profesor/components/table_estudiantes_faltantes.html" %}
     </div>
     {% endfor %}

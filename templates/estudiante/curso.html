@@ -10,14 +10,18 @@
 {% endif %}
     <div class="container">
         <nav aria-label="breadcrumb" class="my-3 ml-3">
-            <ol class="breadcrumb" style="background: none">
+            <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'estudiante' %}">Cursos</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{{curso.nombre}}</li>
             </ol>
         </nav>
 
         <div class="header-row">
-            <h2 class="titulos mt-n4"><b>Evaluaciones</b></h2>
+            <h2 class="titulos mt-n4"><b>Evaluaciones</b>
+                <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Lista de evaluaciones del curso">
+                    <i class="bi bi-question-circle-fill fs-3"></i>
+                </a></h2>
+            </h2>
         </div>
     </div>
 
@@ -26,7 +30,7 @@
             <form class="justify-content-center mt-n2">
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="inputGroup-sizing-sm" style="background-color: #f8f9fa;">
-                        <i class="bi bi-pencil mr-1"></i><b>Nombre curso</b></span>
+                        <i class="bi bi-pencil mr-1"></i><b>Curso</b></span>
                     <input style="background-color: #f8f9fa;" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" value="{{ curso }}" disabled>
                 </div>
 
@@ -61,15 +65,15 @@
             <p class="card-text"><i class="bi bi-calendar4-week mr-1"></i><b>Fecha fin:</b> {{ status.evaluacion.fecha_fin }}</p>
             <p class="card-text"><i class="bi bi-list-check mr-1"></i><b>Rúbrica:</b> {{ status.evaluacion.rubrica.nombre }}</p>
             {% if status.evaluacion.fecha_fin < fecha_hoy  %}
-            <p class="text-danger">La fecha expiró</p>
+            <p class="text-danger fw-bold" style="text-align: center;">La evaluación expiró</p>
             {% endif %}
             {% if status.todos_evaluados %}
-                <p class="text-danger">Ya evaluaste a todos tus compañeros</p>
+                <p class="text-danger fw-bold" style="text-align: center;">Ya evaluaste a todos tus compañeros</p>
                 <a href="#" class="btn btn-primary d-flex justify-content-center align-items-center mb-1 disabled" tabindex="-1" aria-disabled="true">
-                    Evaluar<i class="bi bi-chevron-right ml-1"></i></a>
+                    <b>Evaluar</b><i class="bi bi-chevron-right ml-1"></i></a>
             {% else %}
                 <a {% if  status.evaluacion.fecha_fin < fecha_hoy %} class="btn btn-primary d-flex justify-content-center align-items-center mb-1 disabled"{% else %} class="btn btn-primary d-flex justify-content-center align-items-center mb-1" {% endif %} href="{% url 'evaluar' status.evaluacion.id grupo.id %}" >
-                    Evaluar<i class="bi bi-chevron-right ml-1"></i></a>
+                    <b>Evaluar</b><i class="bi bi-chevron-right ml-1"></i></a>
             {% endif %}
         </div>
     </div>

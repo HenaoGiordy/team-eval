@@ -1,38 +1,46 @@
 <div class="modal fade" id="edit-evaluacion-{{evaluacion.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content ">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel"><b>Editar Evaluacion</b></h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form method="POST">
-            {% csrf_token %} 
-        <div class="modal-body d-flex flex-column align-items-center">
-                <div class="w-75  ">
-                    <div class="form-group">
-                        <i class="bi bi-pencil"></i>
-                        <label for="nombre-evaluacion">Nombre Evaluación</label>
-                        <input type="text" name="evaluacion-nombre" value="{{evaluacion.nombre }}" class="form-control" id="nombre-evaluacion" required>
-                    </div> 
-                    <div class="form-group ">
-                        <i class="bi bi-calendar4-week"></i>
-                        <label for="fecha-fin">Fecha fin</label>
-                        <input type="date" name="evaluacion-fecha-fin" value="{{evaluacion.fecha_fin }}" class="form-control text-center" id="fecha-fin" required>
-                    </div>                    
-                </div>
-            
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h5 class="modal-title fs-5" id="staticBackdropLabel"><b>Editar evaluación</b></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
             </div>
-        
-        <div class="modal-footer mt-n4">
-            <button type="button" class="btn btn-secondary mt-n2" data-bs-dismiss="modal" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
-                <b>Cancelar</b>
-            <i class="bi bi-x-lg"></i>
-        </button>
-    <button type="submit" class="btn btn-primary mt-n2" value="{{evaluacion.id}}" name="edit-evaluacion">
-        <b>Editar</b>
-    </button>
+            <div class="modal-body">
+                <form method="POST">
+                    {% csrf_token %} 
+                    <div class="form-row">
+                        <div class="form-group col mt-2">
+                            <i class="bi bi-pencil"></i>
+                            <label for="nombre-evaluacion">Nombre evaluación</label>
+                        </div> 
+                        <div class="form-row col-lg-7 mt-2 mr-2">
+                            <input type="text" name="evaluacion-nombre" value="{{evaluacion.nombre }}" class="form-control" id="nombre-evaluacion" required>
+                        </div>
+                    </div>
+                        
+                    <div class="form-row">
+                        <div class="form-group col mt-1">
+                            <i class="bi bi-calendar4-week"></i>
+                            <label for="fecha-fin">Fecha fin</label>
+                        </div> 
+                        <div class="form-row col-lg-9 mt-n1 mr-2">
+                            <input type="date" name="evaluacion-fecha-fin" value="{{evaluacion.fecha_fin }}" class="form-control" id="fecha-fin" required>
+                        </div>
+                    </div>
+                
+                    <div class="modal-footer mt-n1">
+                        <button type="submit" class="btn btn-primary mt-n2" style="border: none;" value="{{evaluacion.id}}" name="edit-evaluacion">
+                            <b>Guardar</b>
+                            <i class="bi bi-floppy"></i>
+                        </button>
+                        <button type="button" class="btn btn-secondary mt-n2" data-bs-dismiss="modal" style="color: #0D6EFD; background-color: #d9d9d9; border: none;">
+                            <b>Cancelar</b>
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
-</div>
-</div>
-</div>
-</form>

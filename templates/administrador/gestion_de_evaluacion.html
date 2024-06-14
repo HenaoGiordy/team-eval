@@ -12,7 +12,10 @@
         {% endfor %}
     {% endif %}
     <!--Formulario-->
-    <h2 class="titulos"><b>Gestión de evaluación</b></h2>
+    <h2 class="titulos"><b>Gestión de evaluación</b>
+        <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Diligencia los campos para crear una rúbrica">
+            <i class="bi bi-question-circle-fill fs-3"></i>
+        </a></h2>
     <div class="card-rubrica mt-2">
         <h5 class="card-header">Creación de una rúbrica
             <a href="#" data-toggle="tooltip" data-bs-placement="right" title="Una rúbrica es una herramienta de evaluación que se usa para establecer criterios claros y objetivos para evaluar el desempeño de los estudiantes en una tarea o proyecto específico">
@@ -45,7 +48,7 @@
                         </div>
                         <div class="w-50">
                             <h4 class="text-center">Lista escalas
-                                <a href="#" data-toggle="tooltip" data-bs-placement="right" title="La escala mínima es 1 siendo la calificación más baja y la máxima es 10 siendo la calificación más alta, Ej: 1= Deficiente y 5= Excelente">
+                                <a href="#" data-toggle="tooltip" data-bs-placement="right" title="La escala mínima es 0 siendo la calificación más baja y la máxima es 10 siendo la calificación más alta, Ej: 0= Deficiente y 5= Excelente">
                                     <i class="bi bi-question-circle-fill ml-1"></i>
                                 </a></h4>
                             {% include "administrador/components/lst_escalas.html"%}
