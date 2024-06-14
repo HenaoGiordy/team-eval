@@ -12,7 +12,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from django.contrib.messages import constants as messages
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-^t_6rf%a-y)*a2sj$1tp$ne$0v4%kdmz1oivfmgx$htbxq$z7a'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -80,11 +83,11 @@ WSGI_APPLICATION = 'TeamEval.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'teamEval_database',  
-        'USER': 'postgres',       
-        'PASSWORD': 'Postgres*',  
-        'HOST': 'localhost',     
-        'PORT': '5432',          
+        'NAME': os.getenv('DATABASE_NAME'),  
+        'USER': os.getenv('DATABASE_USER'),       
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),  
+        'HOST': os.getenv('DATABASE_HOST'),     
+        'PORT': os.getenv('DATABASE_PORT'),          
     }
 }
 
@@ -150,5 +153,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'team.eval2024@gmail.com'
-EMAIL_HOST_PASSWORD = 'nhii vbyp dewm vbsb'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
